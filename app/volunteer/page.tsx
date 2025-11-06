@@ -1,11 +1,11 @@
-import React from 'react'
-import { Button } from '@radix-ui/themes';
+import Link from "next/link"
+import { Button } from "@radix-ui/themes";
 
 const VolunteerPage = () => {
   return (
     <div>
-        VolunteerPage
-        <Button>New Volunteer Event</Button>
+      <h1>VolunteerPage</h1>
+      <Button><Link href="/volunteer/create-event">Create Volunteer Event</Link></Button>
     </div>
   )
 }

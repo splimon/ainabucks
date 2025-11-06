@@ -8,7 +8,7 @@ import NavBar from "./NavBar";
 
 export const metadata: Metadata = {
   title: "Aina Bucks",
-  description: "A platform for tracking and rewarding volunteer hours",
+  description: "Volunteer. Earn. Redeem.",
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
       <body>
         <Theme>
           <NavBar />
-          <main>{children}</main>
+          <main className="p-5">{children}</main>
         </Theme>
       </body>
     </html>
