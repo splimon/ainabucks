@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Theme>
+        <Theme accentColor="grass">
           <NavBar />
           <main className="p-5">{children}</main>
         </Theme>
