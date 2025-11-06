@@ -11,7 +11,7 @@ const NavBar = () => {
 
   const links = [
     { href: '/', label: 'Dashboard' },
-    { href: '/volunteer', label: 'Volunteer Opportunities' },
+    { href: '/volunteer', label: 'Volunteer Events' },
     { href: '/rewards', label: 'Rewards' },
     { href: '/event-history', label: 'Event History' },
   ];

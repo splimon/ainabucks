@@ -1,3 +1,6 @@
+// Load environment variables from .env before evaluating the config so
+// `env("DATABASE_URL")` can read it during Prisma CLI commands.
+import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
 export default defineConfig({
