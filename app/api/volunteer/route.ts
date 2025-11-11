@@ -7,7 +7,8 @@ const VolunteerEventSchema = z.object({
   description: z.string().min(1),
   date: z.string().min(1),
   location: z.string().min(1),
-  points: z.number().min(0),
+  ainaBucksAwarded: z.number().min(0),
+  volunteerHours: z.number().min(0),
   userId: z.number().min(1),
 });
 
@@ -27,7 +28,8 @@ export async function POST(request: NextRequest) {
       description: validation.data.description,
       date: new Date(validation.data.date),
       location: validation.data.location,
-      points: validation.data.points,
+      ainaBucksAwarded: validation.data.ainaBucksAwarded,
+      volunteerHours: validation.data.volunteerHours,
       user: {
         connect: { id: validation.data.userId },
       },
@@ -39,6 +41,3 @@ export async function POST(request: NextRequest) {
     { status: 201 } // 201 = Object Created
   );
 }
-
-
-// volunteer 250 hours a year => 

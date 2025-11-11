@@ -14,36 +14,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-/*
-  User model to store user details
-*/
+/**
+ * User model to store user details
+ */
 model User {
-  id              Int              @id @default(autoincrement())
-  email           String           @unique
-  name            String?
-  passwordHash    String
-  points          Int              @default(0) // Could remove? Use PointTransaction for history
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  points       Int      @default(0) // Could remove? Use PointTransaction for history
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // Relation to VolunteerEvent, so user can have multiple events
-  volunteerEvents VolunteerEvent[] 
+  volunteerEvents VolunteerEvent[]
 }
 
-/*
-  VolunteerEvent model to store volunteer event details created by users (admins)
-*/
+/**
+ * VolunteerEvent model to store volunteer event details created by users (admins)
+ */
 model VolunteerEvent {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  date        DateTime
-  location    String
-  points      Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  userId      Int // Foreign key to User model
-  
+  id               Int      @id @default(autoincrement())
+  title            String
+  description      String
+  date             DateTime
+  location         String
+  ainaBucksAwarded Int      @default(0)
+  volunteerHours   Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           Int // Foreign key to User model
+
   // Each event belongs to one user and user can have multiple events
-  user        User     @relation(fields: [userId], references: [id]) 
+  user User @relation(fields: [userId], references: [id])
 }
