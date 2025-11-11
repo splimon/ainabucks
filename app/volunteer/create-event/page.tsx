@@ -6,23 +6,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 // import { useSession } from 'next-auth/react'; // or your auth hook
+import { zodResolver } from '@hookform/resolvers/zod';
+import { VolunteerEventSchema } from "@/app/validationSchemas";
+import { z } from "zod";
 
-interface CreateEventForm {
-  title: string;
-  description: string;
-  date: string;
-  time: string;
-  location: string;
-  ainaBucksAwarded: number;
-  volunteerHours: number;
-  userId: number;
-}
+type CreateEventForm = z.infer<typeof VolunteerEventSchema>;
 
 const NewEventPage = () => {
   const router = useRouter();
   // const { data: session } = useSession();
   const userId = 1; // replace with session?.user.id once you have it
-  const {register, handleSubmit} = useForm<CreateEventForm>();
+  const {register, handleSubmit, formState: {errors}} = useForm<CreateEventForm>({
+    resolver: zodResolver(VolunteerEventSchema)
+  });
   const [error, setError] = useState('');
 
   return (
@@ -68,12 +64,25 @@ const NewEventPage = () => {
       })}>
           <h1>Create New Volunteer Event</h1>
           <TextField.Root placeholder="Event Title" variant="classic" {...register('title')} />
+          {errors.title && <p className="text-red-600">{errors.title.message}</p>}
+          
           <TextArea placeholder="Event Description" variant="classic" resize="vertical" {...register('description')} />
+          {errors.description && <p className="text-red-600">{errors.description.message}</p>}
+
           <TextField.Root placeholder="Event Date (e.g. 12/31/2025)" variant="classic" {...register('date')} />
+          {errors.date && <p className="text-red-600">{errors.date.message}</p>}
+
           <TextField.Root placeholder="Event Time (e.g. 14:00)" variant="classic" {...register('time')} />
+          {errors.time && <p className="text-red-600">{errors.time.message}</p>}
+
           <TextField.Root placeholder="Event Location" variant="classic" {...register('location')} />
+          {errors.location && <p className="text-red-600">{errors.location.message}</p>}
+
           <TextField.Root placeholder="Aina Bucks Awarded (e.g. 50)" variant="classic" {...register('ainaBucksAwarded')} />
+          {errors.ainaBucksAwarded && <p className="text-red-600">{errors.ainaBucksAwarded.message}</p>}
+
           <TextField.Root placeholder="Volunteer Hours (e.g. 5)" variant="classic" {...register('volunteerHours')} />
+          {errors.volunteerHours && <p className="text-red-600">{errors.volunteerHours.message}</p>}
           <Button>Submit</Button>
       </form>
     </div>
