@@ -6,7 +6,7 @@ export const VolunteerEventSchema = z.object({
   date: z.string().min(1, 'Date is required'),
   time: z.string().min(1, 'Time is required'),
   location: z.string().min(1, 'Location is required'),
-  ainaBucksAwarded: z.number().min(0, 'Aina Bucks Awarded must be at least 0'),
-  volunteerHours: z.number().min(0, 'Volunteer Hours must be at least 0'),
+  ainaBucksAwarded: z.coerce.number().min(0, 'Aina Bucks Awarded must be at least 0'),
+  volunteerHours: z.coerce.number().min(0, 'Volunteer Hours must be at least 0'),
   userId: z.number().min(1, 'User ID is required'),
 });
