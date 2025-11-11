@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { VolunteerEventSchema } from "@/app/validationSchemas";
 import { z } from "zod";
+import ErrorMessage from "../components/ErrorMessage";
 
 type CreateEventForm = z.infer<typeof VolunteerEventSchema>;
 
@@ -64,25 +65,25 @@ const NewEventPage = () => {
       })}>
           <h1>Create New Volunteer Event</h1>
           <TextField.Root placeholder="Event Title" variant="classic" {...register('title')} />
-          {errors.title && <p className="text-red-600">{errors.title.message}</p>}
-          
+          <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
           <TextArea placeholder="Event Description" variant="classic" resize="vertical" {...register('description')} />
-          {errors.description && <p className="text-red-600">{errors.description.message}</p>}
+          <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
           <TextField.Root placeholder="Event Date (e.g. 12/31/2025)" variant="classic" {...register('date')} />
-          {errors.date && <p className="text-red-600">{errors.date.message}</p>}
+          <ErrorMessage>{errors.date?.message}</ErrorMessage>
 
           <TextField.Root placeholder="Event Time (e.g. 14:00)" variant="classic" {...register('time')} />
-          {errors.time && <p className="text-red-600">{errors.time.message}</p>}
+          <ErrorMessage>{errors.time?.message}</ErrorMessage>
 
           <TextField.Root placeholder="Event Location" variant="classic" {...register('location')} />
-          {errors.location && <p className="text-red-600">{errors.location.message}</p>}
+          <ErrorMessage>{errors.location?.message}</ErrorMessage>
 
           <TextField.Root placeholder="Aina Bucks Awarded (e.g. 50)" variant="classic" {...register('ainaBucksAwarded')} />
-          {errors.ainaBucksAwarded && <p className="text-red-600">{errors.ainaBucksAwarded.message}</p>}
+          <ErrorMessage>{errors.ainaBucksAwarded?.message}</ErrorMessage>
 
           <TextField.Root placeholder="Volunteer Hours (e.g. 5)" variant="classic" {...register('volunteerHours')} />
-          {errors.volunteerHours && <p className="text-red-600">{errors.volunteerHours.message}</p>}
+          <ErrorMessage>{errors.volunteerHours?.message}</ErrorMessage>
           <Button>Submit</Button>
       </form>
     </div>
