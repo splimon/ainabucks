@@ -3,13 +3,13 @@ import { z } from 'zod';
 import prisma from '../../../lib/prisma';
 
 const VolunteerEventSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
-  date: z.string().min(1),
-  location: z.string().min(1),
-  ainaBucksAwarded: z.number().min(0),
-  volunteerHours: z.number().min(0),
-  userId: z.number().min(1),
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().min(1, 'Description is required'),
+  date: z.string().min(1, 'Date is required'),
+  location: z.string().min(1, 'Location is required'),
+  ainaBucksAwarded: z.number().min(0, 'Aina Bucks Awarded must be at least 0'),
+  volunteerHours: z.number().min(0, 'Volunteer Hours must be at least 0'),
+  userId: z.number().min(1, 'User ID is required'),
 });
 
 export async function POST(request: NextRequest) {
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   const validation = VolunteerEventSchema.safeParse(body);
   if (!validation.success) {
     return NextResponse.json(
-      { errors: validation.error.issues },
+      { errors: validation.error.format()},
       { status: 400 }
     );
   }
