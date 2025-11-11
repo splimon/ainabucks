@@ -64,6 +64,7 @@ const NewEventPage = () => {
 
       setError('');
       router.push('/volunteer');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError('Failed to create event. Please try again.');
     } finally {
