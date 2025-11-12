@@ -120,3 +120,51 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Auth Container - Centers the auth card on the page */
+  .auth-container {
+    @apply min-h-screen bg-gradient-to-b from-green-50 to-green-100 
+          flex flex-col items-center justify-center py-12 px-4;
+  }
+
+  /* Auth Logo - Logo section at the top */
+  .auth-logo {
+    @apply flex items-center mb-5;
+  }
+
+  /* Auth Card - Main white card container */
+  .auth-card {
+    @apply bg-white rounded-3xl shadow-lg border border-gray-200 
+          p-8 w-full max-w-xl;
+  }
+
+  /* Auth Tabs - Tab toggle between Sign In / Sign Up */
+  .auth-tabs {
+    @apply flex gap-0 mb-8 bg-gray-100 rounded-xl p-2;
+  }
+
+  /* Individual Tab Button */
+  .auth-tab {
+    @apply flex-1 py-3 px-6 text-center font-medium text-gray-600 
+          rounded-lg transition-all cursor-pointer
+          hover:text-emerald-800;
+  }
+
+  /* Active Tab State */
+  .auth-tab-active {
+    @apply bg-white text-gray-900 shadow-sm;
+  }
+
+  /* Auth Label - Form field labels */
+  .auth-label {
+    @apply block text-gray-700 font-semibold mb-2 text-base;
+  }
+
+  /* Auth Input - Form input fields */
+  .auth-input {
+    @apply w-full px-4 py-3 text-base border border-gray-300 rounded-xl
+          focus:ring-2 focus:ring-green-500 focus:border-transparent
+          placeholder:text-gray-400;
+  }
+}

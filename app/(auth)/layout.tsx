@@ -1,10 +1,10 @@
 import React from 'react'
 import { ReactNode } from 'react'
 
-const layout = ({ children } : { children: ReactNode }) => {
+const Layout = ({ children } : { children: ReactNode }) => {
   return (
-    <div>{children}</div>
+    <main>{children}</main>
   )
 }
 
-export default layout
+export default Layout
