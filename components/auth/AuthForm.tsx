@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link";
-import { FIELD_NAMES, FIELD_TYPES } from '@/constants'
+import { FIELD_NAMES, FIELD_PLACEHOLDERS, FIELD_TYPES } from '@/constants'
 
 interface Props<T extends FieldValues> {
     schema: ZodType<T>,
@@ -98,9 +98,13 @@ const AuthForm = <T extends FieldValues>({
                     <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                    <Input required type={
-                        FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]
-                    } {...field} />
+                    <Input 
+                        required 
+                        type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]}
+                        placeholder={FIELD_PLACEHOLDERS[field.name as keyof typeof FIELD_PLACEHOLDERS]}
+                        className="auth-input"
+                        {...field} 
+                      />
                 </FormControl>
                 <FormMessage />
                 </FormItem>

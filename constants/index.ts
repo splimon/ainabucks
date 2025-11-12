@@ -12,6 +12,12 @@ export const FIELD_TYPES = {
   confirmPassword: "password",
 };
 
+export const FIELD_PLACEHOLDERS = {
+  fullName: "John Doe",
+  email: "your@email.com",
+  password: "••••••••",
+  confirmPassword: "••••••••",
+};
 
 export const sampleEvents = [
   {
