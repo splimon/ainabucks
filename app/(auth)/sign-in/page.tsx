@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Sprout } from "lucide-react";
 import AuthForm from "@/components/auth/AuthForm";
 import { SignInSchema } from "@/lib/validations";
+import { signIn } from "@/app/(root)/auth";
+import { signInWithCredentials } from "@/lib/actions/auth";
 
 const SignIn = () => {
   return (
@@ -28,7 +30,7 @@ const SignIn = () => {
             email: "",
             password: "",
           }}
-          onSubmit={() => {}}
+          onSubmit={signInWithCredentials}
         />
       </div>
     </div>

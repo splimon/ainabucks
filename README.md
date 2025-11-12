@@ -6,6 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
 
 ---
+
 ## 📖 About
 
 ‘Aina Bucks is a mobile app that streamlines volunteer event management through QR code check-ins and automated attendance tracking for organizers. It encourages volunteer engagement through rewards where volunteers contribute time or labor to community projects, earn "bucks" and redeem them for goods
@@ -86,11 +87,13 @@ Before you begin, ensure you have:
 ## 📁 Project Structure
 
 ---
+
 ## 📚 Architecture Overview
 
 ### Tech Stack
 
 **Frontend:**
+
 - Next.js 15 (App Router)
 - React 19
 - TypeScript
@@ -98,16 +101,19 @@ Before you begin, ensure you have:
 - shadcn/ui components
 
 **Backend:**
+
 - Next.js API Routes
 - Neon PostgreSQL (Serverless)
 - Drizzle ORM
 
 **Authentication:**
+
 - Neon Auth (Stack Auth integration)
 
 ### Database Schema
 
 Main tables:
+
 - `users_table` - User accounts and profiles
 - [Add other main tables]
 
@@ -149,9 +155,7 @@ See [`database/schema.ts`](./database/schema.ts) for the complete schema.
 
 Features:
 
--
-
----
+- ***
 
 ## 🔧 Development Commands
 

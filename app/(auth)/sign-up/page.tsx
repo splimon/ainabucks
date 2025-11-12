@@ -5,6 +5,7 @@ import { Sprout } from "lucide-react";
 import AuthForm from "@/components/auth/AuthForm";
 import { SignUpSchema } from "@/lib/validations";
 import Link from "next/link";
+import { signUp } from "@/lib/actions/auth";
 
 const SignUp = () => {
   return (
@@ -30,7 +31,7 @@ const SignUp = () => {
             password: "",
             confirmPassword: "",
           }}
-          onSubmit={() => {}}
+          onSubmit={signUp}
         />
       </div>
     </div>

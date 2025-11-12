@@ -4,6 +4,9 @@ import "./globals.css";
 import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
+import { Toaster } from "@/components/ui/sonner";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "./(root)/auth";
 
 const ibmPlexSans = localFont({
   src: [
@@ -24,14 +27,20 @@ export const metadata: Metadata = {
   description: "Volunteer. Earn. Redeem.",
 };
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = async ({ children }: { children: ReactNode }) => {
+  const session = await auth();
+
   return (
     <html lang="en">
+      <SessionProvider session={session}>
       <body
         className={`${ibmPlexSans.className} ${geistMono.variable} antialiased`}
       >
         {children}
+
+        <Toaster />
       </body>
+      </SessionProvider>
     </html>
   );
 };
