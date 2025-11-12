@@ -12,7 +12,7 @@ import { Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-const Navbar = () => {
+const SignedOutNavbar = () => {
   const router = useRouter();
 
   const handleSignInClick = () => {
@@ -27,7 +27,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="max-w-7xl mx-auto flex justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">
           <Link href="/">
@@ -54,7 +54,7 @@ const Navbar = () => {
         {/* Navigation Menu */}
         <NavigationMenu>
           <NavigationMenuList className="gap-6">
-            <NavigationMenuItem>
+            <NavigationMenuItem >
               <NavigationMenuLink asChild>
                 <Link
                   href="/volunteer"
@@ -86,7 +86,7 @@ const Navbar = () => {
         </NavigationMenu>
 
         {/* Auth Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3">
           <Button
             onClick={handleSignInClick}
             variant="outline"
@@ -106,4 +106,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SignedOutNavbar;
