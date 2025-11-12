@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
 import { Sprout } from 'lucide-react'
+import Link from 'next/link'
 
 const Navbar = () => {
   return (
@@ -15,6 +16,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center">
+          <Link href="/">
             <svg 
               viewBox="0 0 24 24" 
               fill="none" 
@@ -24,27 +26,37 @@ const Navbar = () => {
             >
               <Sprout color='white'/>
             </svg>
+          </Link>
           </div>
-          <span className="text-2xl font-bold text-green-800">ʻĀina Bucks</span>
+          <Link 
+          className="text-2xl font-bold text-green-800"
+          href="/"
+          >
+            ʻĀina Bucks
+            </Link>
         </div>
 
         {/* Navigation Menu */}
         <NavigationMenu>
           <NavigationMenuList className="gap-6">
             <NavigationMenuItem>
-              <NavigationMenuLink 
-                href="/volunteer"
-                className="text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
-              >
-                Volunteer
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/volunteer"
+                  className="text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                >
+                  Volunteer
+                </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink 
-                href="/rewards"
-                className="text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
-              >
-                Rewards
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/rewards"
+                  className="text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                >
+                  Rewards
+                </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>

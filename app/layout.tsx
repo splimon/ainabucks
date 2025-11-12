@@ -4,6 +4,7 @@ import "./globals.css";
 import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
+import Navbar from "@/components/home/Navbar";
 
 const ibmPlexSans = localFont({
   src: [
@@ -30,6 +31,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <body
         className={`${ibmPlexSans.className} ${geistMono.variable} antialiased`}
       >
+        <Navbar />
         {children}
       </body>
     </html>
