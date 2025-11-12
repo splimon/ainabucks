@@ -7,10 +7,6 @@ import { ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "./(root)/auth";
 import { Toaster } from "sonner";
-import SignedInNavbar from "@/components/home/SignedInNavbar";
-import SignedOutNavbar from "@/components/home/SignedOutNavbar";
-import { DefaultValues } from "react-hook-form";
-import { ZodType } from "zod";
 
 const ibmPlexSans = localFont({
   src: [

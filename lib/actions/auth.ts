@@ -1,3 +1,8 @@
+/*
+* This file contains server-side actions for user authentication, including sign-up and sign-in functionalities.
+* It interacts with the database to create new users and validate existing ones.
+*/
+
 "use server";
 
 import { db } from "@/database/drizzle";

@@ -1,3 +1,8 @@
+/*
+* This file sets up NextAuth for user authentication using credentials.
+* It defines how users are authenticated and how sessions are managed.
+*/
+
 import NextAuth, { User } from "next-auth";
 import { db } from "@/database/drizzle";
 import { usersTable } from "@/database/schema";

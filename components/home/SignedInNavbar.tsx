@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 const SignedInNavbar = () => {
   const router = useRouter();
@@ -88,17 +89,11 @@ const SignedInNavbar = () => {
         {/* Auth Buttons */}
         <div className="flex gap-3">
           <Button
-            onClick={handleSignInClick}
+            onClick={() => signOut({ callbackUrl: '/' })}
             variant="outline"
-            className="px-6 py-2.5 border-2 border-gray-300 text-gray-700 font-semibold hover:border-green-700 hover:text-green-700 hover:scale-105 hover:cursor-pointer"
+            className="px-6 py-2.5 border-2 border-red-300 text-red-700 font-semibold hover:border-red-700"
           >
-            Sign In
-          </Button>
-          <Button
-            onClick={handleSignUpClick}
-            className="px-6 py-2.5 bg-green-700 text-white font-semibold hover:bg-green-800 hover:scale-105 hover:cursor-pointer"
-          >
-            Join Now
+            Sign Out
           </Button>
         </div>
       </div>

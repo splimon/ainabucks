@@ -1,16 +1,10 @@
 "use client";
 
 import React from "react";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import { Sprout } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const SignedOutNavbar = () => {
   const router = useRouter();
@@ -22,8 +16,6 @@ const SignedOutNavbar = () => {
   const handleSignUpClick = () => {
     router.push("/sign-up");
   };
-
-  const pathname = usePathname();
 
   return (
     <nav className="bg-white border-b border-gray-200 px-6 py-4">
