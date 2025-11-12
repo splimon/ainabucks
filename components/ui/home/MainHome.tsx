@@ -2,8 +2,8 @@ import React from 'react'
 
 const MainHome = () => {
   return (
-    <main className="h-screen bg-linear-to-b from-green-50 to-green-100">
-      <div className="max-w-6xl mx-auto md:py-32">
+    <main className="min-h-[calc(100vh-73px)] bg-gradient-to-b from-green-50 to-green-100 flex items-center">
+      <div className="max-w-6xl mx-auto px-6 w-full">
         {/* Hero Content */}
         <div className="text-center space-y-8">
           {/* Main Heading */}
