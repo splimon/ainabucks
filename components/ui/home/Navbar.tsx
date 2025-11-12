@@ -34,7 +34,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink 
                 href="/volunteer"
-                className="text-gray-700 hover:text-green-700 font-medium transition-colors"
+                className="text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
               >
                 Volunteer
               </NavigationMenuLink>
@@ -42,7 +42,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuLink 
                 href="/rewards"
-                className="text-gray-700 hover:text-green-700 font-medium transition-colors"
+                className="text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
               >
                 Rewards
               </NavigationMenuLink>
@@ -54,12 +54,12 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           <Button 
             variant="outline" 
-            className="px-6 py-2.5 border-2 border-gray-300 text-gray-700 font-semibold hover:border-green-700 hover:text-green-700"
+            className="px-6 py-2.5 border-2 border-gray-300 text-gray-700 font-semibold hover:border-green-700 hover:text-green-700 hover:scale-105"
           >
             Sign In
           </Button>
           <Button 
-            className="px-6 py-2.5 bg-green-700 text-white font-semibold hover:bg-green-800"
+            className="px-6 py-2.5 bg-green-700 text-white font-semibold hover:bg-green-800 hover:scale-105"
           >
             Join Now
           </Button>
