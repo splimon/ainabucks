@@ -8,11 +8,11 @@ import Navbar from "@/components/home/Navbar";
 
 const ibmPlexSans = localFont({
   src: [
-    { path: '/fonts/IBMPlexSans-Regular.ttf', weight: '400', style: 'normal' },
-    { path: '/fonts/IBMPlexSans-Medium.ttf', weight: '500', style: 'normal' },
-    { path: '/fonts/IBMPlexSans-SemiBold.ttf', weight: '600', style: 'normal' },
-    { path: '/fonts/IBMPlexSans-Bold.ttf', weight: '700', style: 'normal' },
-  ]
+    { path: "/fonts/IBMPlexSans-Regular.ttf", weight: "400", style: "normal" },
+    { path: "/fonts/IBMPlexSans-Medium.ttf", weight: "500", style: "normal" },
+    { path: "/fonts/IBMPlexSans-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "/fonts/IBMPlexSans-Bold.ttf", weight: "700", style: "normal" },
+  ],
 });
 
 const geistMono = Geist_Mono({
@@ -36,6 +36,6 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       </body>
     </html>
   );
-}
+};
 
 export default RootLayout;

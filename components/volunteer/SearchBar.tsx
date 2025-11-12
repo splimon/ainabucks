@@ -1,12 +1,12 @@
-import React from 'react'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Search as SearchIcon } from 'lucide-react'
+import React from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search as SearchIcon } from "lucide-react";
 
 interface SearchProps {
-  searchQuery: string
-  onSearchChange: (value: string) => void
-  onSortClick: () => void
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
+  onSortClick: () => void;
 }
 
 const Search = ({ searchQuery, onSearchChange, onSortClick }: SearchProps) => {
@@ -30,7 +30,7 @@ const Search = ({ searchQuery, onSearchChange, onSortClick }: SearchProps) => {
         Sort By
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

@@ -1,15 +1,17 @@
-import MainHome from '@/components/home/MainHome'
-import React, { ReactNode } from 'react'
+import MainHome from "@/components/home/MainHome";
+import React, { ReactNode } from "react";
 
-const Layout = ({ children } : { children: ReactNode }) => {
-  return <main className='root-container'>
-    <div className='mx-auto max-w'>
+const Layout = ({ children }: { children: ReactNode }) => {
+  return (
+    <main className="root-container">
+      <div className="mx-auto max-w">
         <MainHome />
         {/* <div className='mt-20 pb-20'>
             {children}
         </div> */}
-    </div>
- </main>
-}
+      </div>
+    </main>
+  );
+};
 
-export default Layout
+export default Layout;

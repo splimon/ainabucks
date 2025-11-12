@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const MainHome = () => {
   return (
@@ -14,8 +14,8 @@ const MainHome = () => {
 
           {/* Subheading */}
           <p className="text-xl md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Join ʻĀina Bucks and transform your volunteer hours into meaningful rewards.
-            Contribute to community projects, earn bucks, and redeem
+            Join ʻĀina Bucks and transform your volunteer hours into meaningful
+            rewards. Contribute to community projects, earn bucks, and redeem
             them for local goods and services.
           </p>
 
@@ -28,7 +28,7 @@ const MainHome = () => {
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default MainHome
+export default MainHome;
