@@ -1,6 +1,16 @@
+'use client'
+
 import React from "react";
+import { useRouter } from 'next/navigation';
+import { Button } from "../ui/button";
 
 const MainHome = () => {
+  const router = useRouter();
+
+  const handleBrowseOppsClick = () => {
+    router.push('/volunteer');
+  }
+
   return (
     <main className="min-h-[calc(100vh-73px)] bg-linear-to-b from-green-50 to-green-100 flex items-center">
       <div className="max-w-6xl mx-auto px-6 w-full">
@@ -21,9 +31,9 @@ const MainHome = () => {
 
           {/* CTA Button */}
           <div className="pt-6">
-            <button className="px-10 py-4 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-all hover:scale-105 shadow-lg">
+            <Button onClick={handleBrowseOppsClick} className="px-10 py-6 bg-green-700 text-white text-sm font-semibold rounded-lg hover:bg-green-800 transition-all hover:scale-105 shadow-lg hover:cursor-pointer">
               Browse Opportunities
-            </button>
+            </Button>
           </div>
         </div>
       </div>
