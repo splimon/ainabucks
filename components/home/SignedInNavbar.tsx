@@ -12,7 +12,7 @@ import { Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
-const SignedOutNavbar = () => {
+const SignedInNavbar = () => {
   const router = useRouter();
 
   const handleSignInClick = () => {
@@ -51,6 +51,40 @@ const SignedOutNavbar = () => {
           </Link>
         </div>
 
+        {/* Navigation Menu */}
+        <NavigationMenu>
+          <NavigationMenuList className="gap-6">
+            <NavigationMenuItem >
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/volunteer"
+                  className={
+                    pathname === "/volunteer"
+                      ? "text-green-700 bg-green-100 font-medium"
+                      : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                  }
+                >
+                  Volunteer
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/rewards"
+                  className={
+                    pathname === "/rewards"
+                      ? "text-green-700 bg-green-100 font-medium"
+                      : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                  }
+                >
+                  Rewards
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+
         {/* Auth Buttons */}
         <div className="flex gap-3">
           <Button
@@ -72,4 +106,4 @@ const SignedOutNavbar = () => {
   );
 };
 
-export default SignedOutNavbar;
+export default SignedInNavbar;
