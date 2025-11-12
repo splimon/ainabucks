@@ -4,9 +4,9 @@ import "./globals.css";
 import { Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { ReactNode } from "react";
-import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "./(root)/auth";
+import { Toaster } from "sonner";
 
 const ibmPlexSans = localFont({
   src: [
