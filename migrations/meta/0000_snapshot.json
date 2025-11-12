@@ -64,16 +64,12 @@
         "users_table_id_unique": {
           "name": "users_table_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         },
         "users_table_email_unique": {
           "name": "users_table_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -85,28 +81,17 @@
     "public.event_status": {
       "name": "event_status",
       "schema": "public",
-      "values": [
-        "UPCOMING",
-        "REGISTERED",
-        "COMPLETED"
-      ]
+      "values": ["UPCOMING", "REGISTERED", "COMPLETED"]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "USER",
-        "ADMIN"
-      ]
+      "values": ["USER", "ADMIN"]
     },
     "public.status": {
       "name": "status",
       "schema": "public",
-      "values": [
-        "PENDING",
-        "APPROVED",
-        "REJECTED"
-      ]
+      "values": ["PENDING", "APPROVED", "REJECTED"]
     }
   },
   "schemas": {},
