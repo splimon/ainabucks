@@ -1,4 +1,5 @@
 /*
+ *   components/auth/AuthForm.tsx
  *   This component is a generic authentication form that can handle both sign-in and sign-up.
  *   It uses Zod for schema validation and React Hook Form for form state management.
  *   To implement the form, provide the appropriate schema, default values, and submission handler via props.
@@ -7,7 +8,7 @@
 
 "use client";
 
-import React, { use } from "react";
+import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   DefaultValues,
@@ -115,11 +116,13 @@ const AuthForm = <T extends FieldValues>({
               name={field as Path<T>}
               render={({ field }) => (
                 <FormItem>
+                  {/* Form Label (e.g. Name, Email, Password) */}
                   <FormLabel className="capitalize">
                     {FIELD_NAMES[field.name as keyof typeof FIELD_NAMES]}
                     <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
+                    {/* Input Fields */}
                     <Input
                       required
                       type={FIELD_TYPES[field.name as keyof typeof FIELD_TYPES]}

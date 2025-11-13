@@ -1,3 +1,8 @@
+/*
+* app/(root)/profile/page.tsx
+* Profile page component that displays user information and upcoming events.
+*/
+
 import React from "react";
 import { auth } from "../auth";
 import { redirect } from "next/navigation";
@@ -6,6 +11,7 @@ const ProfilePage = async () => {
   // Check if user is authenticated
   const session = await auth();
 
+  // Redirect to home page if not authenticated
   if (!session || !session.user) redirect("/");
 
   return (

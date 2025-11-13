@@ -1,3 +1,8 @@
+/*
+* components/home/MainHome.tsx
+* Renders the main home page with a hero section.
+*/
+
 "use client";
 
 import React from "react";

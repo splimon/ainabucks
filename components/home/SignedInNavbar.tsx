@@ -1,3 +1,9 @@
+/*
+* components/home/SignedInNavbar.tsx
+* Renders the navigation bar for signed-in users with links
+* to Volunteer, Rewards, Profile with Avatar, and a Sign Out button.
+*/
+
 "use client";
 
 import React from "react";
@@ -14,7 +20,6 @@ import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Session } from "next-auth";
-import { get } from "http";
 import { getInitials } from "@/lib/utils";
 
 const SignedInNavbar = ({session}: {session: Session}) => {

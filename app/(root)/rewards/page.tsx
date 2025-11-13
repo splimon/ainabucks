@@ -1,3 +1,8 @@
+/**
+* app/(root)/rewards/page.tsx
+* Rewards page component that displays a coming soon message.
+*/
+
 import React from "react";
 
 const Rewards = () => {

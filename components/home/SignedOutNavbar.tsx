@@ -1,5 +1,5 @@
 /*
- * SignedOutNavbar.tsx
+ * components/home/SignedOutNavbar.tsx
  * Navbar component displayed when the user is signed out.
  */
 
