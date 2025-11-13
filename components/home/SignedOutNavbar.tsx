@@ -1,7 +1,7 @@
 /*
-* SignedOutNavbar.tsx
-* Navbar component displayed when the user is signed out.
-*/
+ * SignedOutNavbar.tsx
+ * Navbar component displayed when the user is signed out.
+ */
 
 "use client";
 
@@ -28,20 +28,18 @@ const SignedOutNavbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="w-6 h-6"
-                stroke="white"
-                strokeWidth="2"
-              >
-                <Sprout color="white" />
-              </svg>
-            </div>
-          <span
-            className="text-2xl font-bold text-green-800 hover:text-green-900 transition-colors"
-          >
+          <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="w-6 h-6"
+              stroke="white"
+              strokeWidth="2"
+            >
+              <Sprout color="white" />
+            </svg>
+          </div>
+          <span className="text-2xl font-bold text-green-800 hover:text-green-900 transition-colors">
             ʻĀina Bucks
           </span>
         </div>

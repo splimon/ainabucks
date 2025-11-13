@@ -60,10 +60,10 @@ const AuthForm = <T extends FieldValues>({
     const result = await onSubmit(data);
     if (result.success) {
       toast.success(
-      isSignIn
-        ? "You have successfully signed in."
-        : "You have successfully signed up."
-    );
+        isSignIn
+          ? "You have successfully signed in."
+          : "You have successfully signed up.",
+      );
       router.push("/");
     } else {
       toast.error(result.error ?? "An error occurred. Please try again.");

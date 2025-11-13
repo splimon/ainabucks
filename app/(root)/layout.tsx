@@ -5,14 +5,14 @@ import { auth } from "./auth";
 
 const Layout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
-  
+
   return (
     <main className="root-container">
       <div className="mx-auto max-w">
         <div>
           {session ? <SignedInNavbar /> : <SignedOutNavbar />}
           {children}
-          </div>
+        </div>
       </div>
     </main>
   );

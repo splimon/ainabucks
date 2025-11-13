@@ -4,7 +4,7 @@ import { auth } from "./auth";
 
 const Home = async () => {
   const session = await auth();
-  
+
   if (session && session.user) {
     redirect("/profile");
   }

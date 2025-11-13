@@ -33,12 +33,12 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <SessionProvider session={session}>
-      <body
-        className={`${ibmPlexSans.className} ${geistMono.variable} antialiased`}
-      >
-        {children}
-        <Toaster />
-      </body>
+        <body
+          className={`${ibmPlexSans.className} ${geistMono.variable} antialiased`}
+        >
+          {children}
+          <Toaster />
+        </body>
       </SessionProvider>
     </html>
   );
