@@ -10,19 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sprout } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 
 const SignedInNavbar = () => {
-  const router = useRouter();
-
-  const handleSignInClick = () => {
-    router.push("/sign-in");
-  };
-
-  const handleSignUpClick = () => {
-    router.push("/sign-up");
-  };
 
   const pathname = usePathname();
 

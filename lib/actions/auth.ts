@@ -1,4 +1,6 @@
 /*
+* lib/actions/auth.ts
+*
 * This file contains server-side actions for user authentication, including sign-up and sign-in functionalities.
 * It interacts with the database to create new users and validate existing ones.
 */
@@ -29,7 +31,7 @@ export const signInWithCredentials = async (
       return { success: false, message: result.error };
     }
 
-    // Sign in successful
+    // Sign in successful - redirect to profile
     return { success: true, message: "Sign in successful" };
   } catch (error) {
     console.log(error, "SIGN IN ERROR");
