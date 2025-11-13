@@ -8,7 +8,7 @@ const MainHome = () => {
   const router = useRouter();
 
   const handleBrowseOppsClick = () => {
-    router.push("/volunteer");
+    router.push("/sign-in");
   };
 
   return (
