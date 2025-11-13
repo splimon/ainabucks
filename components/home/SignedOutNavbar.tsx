@@ -1,18 +1,24 @@
+/*
+* SignedOutNavbar.tsx
+* Navbar component displayed when the user is signed out.
+*/
+
 "use client";
 
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Sprout } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const SignedOutNavbar = () => {
   const router = useRouter();
 
+  // If sign in button is clicked, navigate to sign-in page
   const handleSignInClick = () => {
     router.push("/sign-in");
   };
 
+  // If sign up button is clicked, navigate to sign-up page
   const handleSignUpClick = () => {
     router.push("/sign-up");
   };
@@ -22,8 +28,7 @@ const SignedOutNavbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <Link href="/">
-            <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center cursor-pointer">
+            <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -34,17 +39,16 @@ const SignedOutNavbar = () => {
                 <Sprout color="white" />
               </svg>
             </div>
-          </Link>
-          <Link
+          <span
             className="text-2xl font-bold text-green-800 hover:text-green-900 transition-colors"
-            href="/"
           >
             ʻĀina Bucks
-          </Link>
+          </span>
         </div>
 
         {/* Auth Buttons */}
         <div className="flex gap-3">
+          {/*Sign In Button */}
           <Button
             onClick={handleSignInClick}
             variant="outline"
@@ -52,6 +56,8 @@ const SignedOutNavbar = () => {
           >
             Sign In
           </Button>
+
+          {/* Join Now Button */}
           <Button
             onClick={handleSignUpClick}
             className="px-6 py-2.5 bg-green-700 text-white font-semibold hover:bg-green-800 hover:scale-105 hover:cursor-pointer"
