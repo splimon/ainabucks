@@ -1,8 +1,8 @@
 /*
-* components/home/SignedInNavbar.tsx
-* Renders the navigation bar for signed-in users with links
-* to Volunteer, Rewards, Profile with Avatar, and a Sign Out button.
-*/
+ * components/home/SignedInNavbar.tsx
+ * Renders the navigation bar for signed-in users with links
+ * to Volunteer, Rewards, Profile with Avatar, and a Sign Out button.
+ */
 
 "use client";
 
@@ -22,7 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Session } from "next-auth";
 import { getInitials } from "@/lib/utils";
 
-const SignedInNavbar = ({session}: {session: Session}) => {
+const SignedInNavbar = ({ session }: { session: Session }) => {
   const pathname = usePathname();
 
   return (
@@ -85,24 +85,24 @@ const SignedInNavbar = ({session}: {session: Session}) => {
               {/* Profile */}
               <NavigationMenuItem>
                 <div className="flex items-center gap-0.5">
-                <Avatar>
-                  <AvatarImage />
-                  <AvatarFallback className="bg-blue-200">
-                    {getInitials(session?.user?.name || "")}
+                  <Avatar>
+                    <AvatarImage />
+                    <AvatarFallback className="bg-blue-200">
+                      {getInitials(session?.user?.name || "")}
                     </AvatarFallback>
-                </Avatar>
-                <NavigationMenuLink asChild>
-                  <Link
-                    href="/profile"
-                    className={
-                      pathname === "/profile"
-                        ? "text-green-700 bg-gray-100 font-medium"
-                        : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
-                    }
-                  >
-                    {session?.user?.name || "Profile"}
-                  </Link>
-                </NavigationMenuLink>
+                  </Avatar>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/profile"
+                      className={
+                        pathname === "/profile"
+                          ? "text-green-700 bg-gray-100 font-medium"
+                          : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                      }
+                    >
+                      {session?.user?.name || "Profile"}
+                    </Link>
+                  </NavigationMenuLink>
                 </div>
               </NavigationMenuItem>
             </NavigationMenuList>

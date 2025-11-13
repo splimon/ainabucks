@@ -1,7 +1,7 @@
 /*
-* components/home/MainHome.tsx
-* Renders the main home page with a hero section.
-*/
+ * components/home/MainHome.tsx
+ * Renders the main home page with a hero section.
+ */
 
 "use client";
 

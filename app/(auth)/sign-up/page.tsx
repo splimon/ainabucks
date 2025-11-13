@@ -1,7 +1,7 @@
 /*
-* app/(auth)/sign-up/page.tsx
-* Sign-Up page component that includes the sign-up form.
-*/
+ * app/(auth)/sign-up/page.tsx
+ * Sign-Up page component that includes the sign-up form.
+ */
 
 "use client";
 

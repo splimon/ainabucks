@@ -1,7 +1,7 @@
 /*
-* app/(root)/volunteer/page.tsx
-* Volunteer page component that displays volunteer opportunities.
-*/
+ * app/(root)/volunteer/page.tsx
+ * Volunteer page component that displays volunteer opportunities.
+ */
 
 "use client";
 

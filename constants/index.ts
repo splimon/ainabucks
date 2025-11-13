@@ -1,8 +1,8 @@
 /*
-  * constants/index.ts
-  * This file contains constant values used across the application,
-  * including field names, types, placeholders, and sample event data.
-  */
+ * constants/index.ts
+ * This file contains constant values used across the application,
+ * including field names, types, placeholders, and sample event data.
+ */
 
 export const FIELD_NAMES = {
   fullName: "Full Name",

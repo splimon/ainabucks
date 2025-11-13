@@ -25,9 +25,9 @@ export const signInWithCredentials = async (
 
   // Get user IP address from headers for rate limiting or logging purposes
   const ip = (await headers()).get("x-forwarded-for") || "unknown";
-  const {success} = await ratelimit.limit(ip); // Implement rate limiting logic as needed
+  const { success } = await ratelimit.limit(ip); // Implement rate limiting logic as needed
 
-  if (!success) return redirect('/too-fast');
+  if (!success) return redirect("/too-fast");
 
   try {
     const result = await signIn("credentials", {
@@ -55,9 +55,9 @@ export const signUp = async (params: AuthCredentials) => {
 
   // Get user IP address from headers for rate limiting or logging purposes
   const ip = (await headers()).get("x-forwarded-for") || "unknown";
-  const {success} = await ratelimit.limit(ip); // Implement rate limiting logic as needed
+  const { success } = await ratelimit.limit(ip); // Implement rate limiting logic as needed
 
-  if (!success) return redirect('/too-fast');
+  if (!success) return redirect("/too-fast");
 
   // Check if the user already exists
   const existingUser = await db

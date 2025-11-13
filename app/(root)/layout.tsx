@@ -1,8 +1,8 @@
 /*
-* app/(root)/layout.tsx
-* Root layout component that conditionally renders navigation bars
-* based on user authentication status.
-*/
+ * app/(root)/layout.tsx
+ * Root layout component that conditionally renders navigation bars
+ * based on user authentication status.
+ */
 
 import SignedInNavbar from "@/components/home/SignedInNavbar";
 import SignedOutNavbar from "@/components/home/SignedOutNavbar";

@@ -1,7 +1,7 @@
 /*
-* app/(root)/profile/page.tsx
-* Profile page component that displays user information and upcoming events.
-*/
+ * app/(root)/profile/page.tsx
+ * Profile page component that displays user information and upcoming events.
+ */
 
 import React from "react";
 import { auth } from "../auth";

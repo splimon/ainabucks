@@ -1,7 +1,7 @@
 /*
-* lib/validations.ts
-* Zod schemas for validating sign-up and sign-in forms.
-*/
+ * lib/validations.ts
+ * Zod schemas for validating sign-up and sign-in forms.
+ */
 
 import { z } from "zod";
 

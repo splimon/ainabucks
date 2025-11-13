@@ -1,7 +1,7 @@
 /*
-  * /lib/config.ts
-  * Configuration file for the application.
-*/
+ * /lib/config.ts
+ * Configuration file for the application.
+ */
 
 const config = {
   env: {
@@ -13,7 +13,7 @@ const config = {
       qstashToken: process.env.QSTASH_TOKEN!,
       qstashCurrentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY!,
       qstashNextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY!,
-    }
+    },
   },
 };
 

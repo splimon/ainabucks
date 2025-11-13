@@ -1,7 +1,7 @@
 /**
-* app/(root)/rewards/page.tsx
-* Rewards page component that displays a coming soon message.
-*/
+ * app/(root)/rewards/page.tsx
+ * Rewards page component that displays a coming soon message.
+ */
 
 import React from "react";
 

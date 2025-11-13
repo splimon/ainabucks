@@ -1,5 +1,5 @@
 /*
-* app/(root)/auth.ts
+ * app/(root)/auth.ts
  * Sets up NextAuth for user authentication using credentials.
  * It defines how users are authenticated and how sessions are managed.
  */

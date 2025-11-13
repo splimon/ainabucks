@@ -1,7 +1,7 @@
 /*
-* app/(auth)/layout.tsx
-* Layout component for authentication pages.
-*/
+ * app/(auth)/layout.tsx
+ * Layout component for authentication pages.
+ */
 
 import React from "react";
 import { ReactNode } from "react";
