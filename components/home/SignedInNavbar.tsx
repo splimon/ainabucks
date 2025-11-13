@@ -12,8 +12,12 @@ import { Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Session } from "next-auth";
+import { get } from "http";
+import { getInitials } from "@/lib/utils";
 
-const SignedInNavbar = () => {
+const SignedInNavbar = ({session}: {session: Session}) => {
   const pathname = usePathname();
 
   return (
@@ -75,6 +79,13 @@ const SignedInNavbar = () => {
 
               {/* Profile */}
               <NavigationMenuItem>
+                <div className="flex items-center gap-0.5">
+                <Avatar>
+                  <AvatarImage />
+                  <AvatarFallback className="bg-blue-200">
+                    {getInitials(session?.user?.name || "")}
+                    </AvatarFallback>
+                </Avatar>
                 <NavigationMenuLink asChild>
                   <Link
                     href="/profile"
@@ -84,9 +95,10 @@ const SignedInNavbar = () => {
                         : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
                     }
                   >
-                    Profile
+                    {session?.user?.name || "Profile"}
                   </Link>
                 </NavigationMenuLink>
+                </div>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>

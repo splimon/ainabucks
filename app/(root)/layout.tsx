@@ -10,7 +10,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     <main className="root-container">
       <div className="mx-auto max-w">
         <div>
-          {session ? <SignedInNavbar /> : <SignedOutNavbar />}
+          {session ? <SignedInNavbar session={session} /> : <SignedOutNavbar />}
           {children}
         </div>
       </div>
