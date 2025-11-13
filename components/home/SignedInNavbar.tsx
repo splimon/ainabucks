@@ -22,8 +22,7 @@ const SignedInNavbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <Link href="/">
-            <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center cursor-pointer">
+            <div className="w-10 h-10 bg-green-700 rounded-lg flex items-center justify-center">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -34,25 +33,25 @@ const SignedInNavbar = () => {
                 <Sprout color="white" />
               </svg>
             </div>
-          </Link>
-          <Link
+          <span
             className="text-2xl font-bold text-green-800 hover:text-green-900 transition-colors"
-            href="/"
           >
             ʻĀina Bucks
-          </Link>
+          </span>
         </div>
 
         {/* Navigation Menu */}
         <NavigationMenu>
           <NavigationMenuList className="gap-6">
+
+            {/* Volunteer */}
             <NavigationMenuItem >
               <NavigationMenuLink asChild>
                 <Link
                   href="/volunteer"
                   className={
                     pathname === "/volunteer"
-                      ? "text-green-700 bg-green-100 font-medium"
+                      ? "text-green-700 bg-gray-100 font-medium"
                       : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
                   }
                 >
@@ -60,17 +59,35 @@ const SignedInNavbar = () => {
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
+
+            {/* Rewards */}
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link
                   href="/rewards"
                   className={
                     pathname === "/rewards"
-                      ? "text-green-700 bg-green-100 font-medium"
+                      ? "text-green-700 bg-gray-100 font-medium"
                       : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
                   }
                 >
                   Rewards
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            {/* Profile */}
+            <NavigationMenuItem>
+              <NavigationMenuLink asChild>
+                <Link
+                  href="/profile"
+                  className={
+                    pathname === "/profile"
+                      ? "text-green-700 bg-gray-100 font-medium"
+                      : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                  }
+                >
+                  Profile
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -82,7 +99,7 @@ const SignedInNavbar = () => {
           <Button
             onClick={() => signOut({ callbackUrl: '/' })}
             variant="outline"
-            className="px-6 py-2.5 border-2 border-red-300 text-red-700 font-semibold hover:border-red-700"
+            className="px-6 py-2.5 border-2 border-red-300 text-red-700 font-semibold hover:border-red-700 hover:scale-105 hover: cursor-pointer"
           >
             Sign Out
           </Button>

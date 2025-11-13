@@ -1,18 +1,15 @@
-import { auth } from '@/app/(root)/auth'
-import { redirect } from 'next/navigation';
 import React from 'react'
+import { auth } from '../auth';
+import { redirect } from 'next/navigation';
 
-const Profile = async () => {
-    // Check if user is authenticated
+const ProfilePage = async () => {
+  // Check if user is authenticated
   const session = await auth();
 
-  // If no session, redirect to sign-in
-  if (!session || !session.user) {
-    redirect('/sign-in')
-  }
+  if (!session || !session.user) redirect('/');
 
   return (
-    <div className="min-h-[calc(100vh-73px)] bg-gradient-to-b from-green-50 to-green-100 py-6">
+    <div className="min-h-[calc(100vh-73px)] bg-linear-to-b from-green-50 to-green-100 py-6">
       <div className="mb-8 max-w-7xl mx-auto px-6">
         <h1 className="text-4xl font-bold leading-tight mb-3">
           Welcome, {session.user.name}!
@@ -44,4 +41,4 @@ const Profile = async () => {
   )
 }
 
-export default Profile
+export default ProfilePage

@@ -31,7 +31,7 @@ export const signInWithCredentials = async (
       return { success: false, message: result.error };
     }
 
-    // Sign in successful - redirect to profile
+    // Sign in successful
     return { success: true, message: "Sign in successful" };
   } catch (error) {
     console.log(error, "SIGN IN ERROR");
