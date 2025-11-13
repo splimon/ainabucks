@@ -41,6 +41,7 @@ const SignedInNavbar = () => {
         </div>
 
         {/* Navigation Menu */}
+        <div className="flex items-center gap-8">
         <NavigationMenu>
           <NavigationMenuList className="gap-6">
 
@@ -93,6 +94,7 @@ const SignedInNavbar = () => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+        
 
         {/* Auth Buttons */}
         <div className="flex gap-3">
@@ -103,6 +105,7 @@ const SignedInNavbar = () => {
           >
             Sign Out
           </Button>
+        </div>
         </div>
       </div>
     </nav>
