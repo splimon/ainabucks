@@ -5,6 +5,7 @@
 
 const config = {
   env: {
+    apiEndpoint: process.env.NEXT_PUBLIC_API_ENDPOINT!,
     prodApiEndpoint: process.env.NEXT_PUBLIC_PROD_API_ENDPOINT!,
     databaseUrl: process.env.DATABASE_URL!,
     upstash: {
@@ -15,6 +16,7 @@ const config = {
       qstashCurrentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY!,
       qstashNextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY!,
     },
+    resendToken: process.env.RESEND_API_KEY!,
   },
 };
 
