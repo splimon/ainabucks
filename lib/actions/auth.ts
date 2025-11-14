@@ -17,7 +17,7 @@ import { headers } from "next/headers";
 import ratelimit from "@/lib/ratelimit";
 import { redirect } from "next/navigation";
 import { workflowClient } from "../workflow";
-import config from "../config";
+import config from "@/lib/config";
 
 /* Helper function to sign in user after sign up */
 export const signInWithCredentials = async (
@@ -92,7 +92,7 @@ export const signUp = async (params: AuthCredentials) => {
 
     // Trigger welcome email workflow via Upstash Workflow
     await workflowClient.trigger({
-      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
+      url: `${config.env.prodApiEndpoint}/app/api/workflow/onboarding`,
       body: {
         email,
         fullName,

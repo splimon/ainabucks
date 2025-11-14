@@ -1,5 +1,5 @@
 import { Client as WorkflowClient } from "@upstash/workflow";
-import config from "../lib/config";
+import config from "@/lib/config";
 import { Client as QStashClient, resend } from "@upstash/qstash";
 
 // Initialize Upstash Workflow Client
