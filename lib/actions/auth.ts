@@ -90,9 +90,11 @@ export const signUp = async (params: AuthCredentials) => {
       passwordHash: hashedPassword,
     });
 
+    console.log(`✅ User created: ${email}`);
+
     // Trigger welcome email workflow via Upstash Workflow
     await workflowClient.trigger({
-      url: `${config.env.prodApiEndpoint}/app/api/workflow/onboarding`,
+      url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
       body: {
         email,
         fullName,
