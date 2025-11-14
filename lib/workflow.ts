@@ -18,7 +18,7 @@ export const sendEmail = async ({email, subject, message} :
       provider: resend({ token: config.env.resendToken }),
     },
     body: {
-      from: "‘Āina Bucks <hello.ainabucks.com>",
+      from: "‘Āina Bucks <contact@ainabucks.com>", // Email expires 2025-12-14
       to: [email],
       subject: subject,
       html: `<p>${message}</p>`,
