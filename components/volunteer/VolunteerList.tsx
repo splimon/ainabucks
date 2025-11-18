@@ -1,18 +1,11 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ChevronRight, ImageIcon } from "lucide-react";
+import type { Event } from "@/database/schema";
 
 // Define the structure of a volunteer event
-interface Event {
-  id: number;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  ainaBucks: number;
-  hours: number;
-  photo: string;
+interface VolunteerListProps {
+  events: Event[]; // Use Event from schema
 }
 
 // Props that the VolunteerList component accepts
@@ -38,7 +31,6 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
   return (
     <div className="max-w-7xl mx-auto w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Map through each event and render a card */}
         {events.map((event) => (
           <div
             key={event.id}
@@ -54,30 +46,29 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
 
                   {/* Date and Location info */}
                   <div className="space-y-2 mb-6">
-                    {/* Date row with calendar icon */}
+                    {/* Date row */}
                     <div className="flex items-center gap-2 text-gray-600">
                       <Calendar className="w-5 h-5" />
                       <span className="text-base">
-                        {formatDate(event.date)} at {event.time}
+                        {formatDate(event.date)} at {event.startTime}
                       </span>
                     </div>
 
-                    {/* Location row with map pin icon */}
+                    {/* Location row */}
                     <div className="flex items-center gap-2 text-gray-600">
                       <MapPin className="w-5 h-5" />
-                      <span className="text-base">{event.location}</span>
+                      <span className="text-base">{event.locationName}</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Right side: Event Image */}
+                {/* Event Image */}
                 <div className="w-64 h-44 bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
-                  {/* Conditional rendering: Show image if URL exists, otherwise show placeholder icon */}
-                  {event.photo ? (
+                  {event.imageUrl ? (
                     <img
-                      src={event.photo}
+                      src={event.imageUrl}
                       alt={event.title}
-                      className="w-full h-full object-cover" // object-cover maintains aspect ratio
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <ImageIcon className="w-16 h-16 text-gray-400" />
@@ -85,22 +76,22 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                 </div>
               </div>
 
-              {/* Card Footer Section */}
+              {/* Card Footer */}
               <div className="flex items-center justify-between mt-6 pt-6 border-t border-gray-200">
-                {/* Left side: ʻĀina Bucks and Hours */}
+                {/* ʻĀina Bucks and Hours */}
                 <div className="flex items-center gap-4">
-                  {/* ʻĀina Bucks amount */}
                   <span className="text-xl font-bold text-orange-600">
                     +{event.ainaBucks} Bucks
                   </span>
-
-                  {/* Event duration (hours) */}
                   <span className="text-base text-gray-600">
-                    {event.hours} hrs
+                    {/* Handle decimal duration properly */}
+                    {typeof event.duration === 'string' 
+                      ? parseFloat(event.duration)
+                      : event.duration} hrs
                   </span>
                 </div>
 
-                {/* Right side: More Information button */}
+                {/* More Info Button */}
                 <Button className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2">
                   Learn More
                   <ChevronRight className="w-4 h-4" />
@@ -111,11 +102,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
         ))}
       </div>
 
-      {/* 
-        No Results Message
-        - Only displays when filteredEvents array is empty (length === 0)
-        - Centered text with padding
-      */}
+      {/* No Results Message */}
       {events.length === 0 && (
         <div className="text-center py-12">
           <p className="text-xl text-gray-500">

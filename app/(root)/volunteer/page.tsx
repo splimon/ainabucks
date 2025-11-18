@@ -3,16 +3,36 @@
  * Volunteer page component that displays volunteer opportunities.
  */
 
-"use client";
-
 import SearchBar from "@/components/volunteer/SearchBar";
-import VolunteerList from "@/components/volunteer/VolunteerList";
-import { sampleEvents } from "@/constants";
 import React from "react";
+import { auth } from "../auth";
+import { db } from "@/database/drizzle";
+import { eventsTable } from "@/database/schema";
+import { desc } from "drizzle-orm";
+import type { Event } from "@/database/schema";
+import VolunteerPageClient from "@/components/volunteer/VolunteerPageClient";
 
-const Volunteer = () => {
+const Volunteer = async () => {
+  const session = await auth();
+
+  // Fetch all events from database, ordered by newest first
+  const latestEvents: Event[] = await db
+    .select()
+    .from(eventsTable)
+    .orderBy(desc(eventsTable.createdAt));
+
+
+  // Transform database results to match component expectations
+  // This handles the decimal duration conversion and null handling
+  const transformedEvents = latestEvents.map((event) => ({
+    ...event,
+    whatToBring: event.whatToBring || [], // Convert null to empty array
+    requirements: event.requirements || [], // Convert null to empty array
+  }));
+
   return (
     <div className="min-h-[calc(100vh-73px)] bg-linear-to-b from-green-50 to-green-100 py-6">
+      {/* Header Section */}
       <div className="mb-8 max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold leading-tight py-3">
           Volunteer Opportunities
@@ -23,16 +43,8 @@ const Volunteer = () => {
         </p>
       </div>
 
-      <SearchBar
-        searchQuery={""}
-        onSearchChange={function (value: string): void {
-          throw new Error("Function not implemented.");
-        }}
-        onSortClick={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-      <VolunteerList title="Volunteer Opportunities" events={sampleEvents} />
+      {/* Event List */}
+      <VolunteerPageClient initialEvents={transformedEvents} />
     </div>
   );
 };
