@@ -5,7 +5,7 @@ import { Input } from '../ui/input'
 
 const Header = ({ session }: { session: Session }) => {
     return (
-        <header className=" px-8 py-6">
+        <header className="sticky top-0 px-8 py-4 z-30 backdrop-blur-lg">
       <div className="flex items-center justify-between gap-8">
         {/* Welcome Section */}
         <div>

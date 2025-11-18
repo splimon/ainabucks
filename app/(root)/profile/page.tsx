@@ -36,6 +36,15 @@ const ProfilePage = async () => {
             <p className="text-gray-700">
               <span className="font-semibold">Email:</span> {session.user.email}
             </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Total Āina Bucks Earned:</span> 0
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Total Āina Bucks Redeemed:</span> 0
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Total Hours Volunteered:</span> 0
+            </p>
           </div>
         </div>
 

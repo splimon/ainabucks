@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
   return (
     <div
       className={cn(
-        "w-64 bg-white border-r border-gray-200 flex flex-col h-screen justify-between",
+        "w-64 bg-white border-r border-gray-200 flex flex-col h-screen justify-between fixed left-0 top-0 z-40",
         className
       )}
     >

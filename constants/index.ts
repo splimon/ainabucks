@@ -67,7 +67,7 @@ export const sampleEvents = [
   },
   {
     id: 4,
-    title: "Native Tree Planting",
+    title: "Tree Planting",
     date: "2024-07-25",
     time: "08:00 AM",
     location: "Manoa Valley",

@@ -14,7 +14,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Sprout } from "lucide-react";
+import { LogOut, Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -57,8 +57,8 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
                     href="/volunteer"
                     className={
                       pathname === "/volunteer"
-                        ? "text-green-700 bg-gray-100 font-medium"
-                        : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                        ? "text-green-700 font-medium"
+                        : " hover:text-green-700 hover:scale-105 font-medium transition-colors"
                     }
                   >
                     Volunteer
@@ -73,8 +73,8 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
                     href="/rewards"
                     className={
                       pathname === "/rewards"
-                        ? "text-green-700 bg-gray-100 font-medium"
-                        : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                        ? "text-green-700 font-medium"
+                        : " hover:text-green-700 hover:scale-105 font-medium transition-colors"
                     }
                   >
                     Rewards
@@ -96,8 +96,8 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
                       href="/profile"
                       className={
                         pathname === "/profile"
-                          ? "text-green-700 bg-gray-100 font-medium"
-                          : "text-gray-700 hover:text-green-700 hover:scale-105 font-medium transition-colors"
+                          ? "text-green-700 font-medium"
+                          : " hover:text-green-700 hover:scale-105 font-medium transition-colors"
                       }
                     >
                       {session?.user?.name || "Profile"}
@@ -110,13 +110,16 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
 
           {/* Auth Buttons */}
           <div className="flex gap-3">
-            <Button
-              onClick={() => signOut({ callbackUrl: "/" })}
+            {/*<Button
               variant="outline"
               className="px-6 py-2.5 border-2 border-red-300 text-red-700 font-semibold hover:border-red-700 hover:scale-105 hover: cursor-pointer"
             >
               Sign Out
-            </Button>
+            </Button>*/}
+            <LogOut 
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="w-6 h-6 text-red-700 hover:text-red-900 hover:cursor-pointer transition-colors"
+            />
           </div>
         </div>
       </div>
