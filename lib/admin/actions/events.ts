@@ -1,0 +1,272 @@
+// lib/admin/actions/events.ts
+// Server actions for event management
+// These functions run on the server and handle database operations
+
+"use server";
+
+import { db } from "@/database/drizzle";
+import { eventsTable } from "@/database/schema";
+import { eq } from "drizzle-orm";
+
+// Parameters that createEvent accepts
+interface CreateEventParams {
+  title: string;
+  category: string;
+  description: string;
+  imageUrl?: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  locationName: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  volunteersNeeded: number;
+  duration: number;
+  ainaBucks: number;
+  bucksPerHour: number;
+  whatToBring?: string[];
+  requirements?: string[];
+  coordinatorName: string;
+  coordinatorEmail: string;
+  coordinatorPhone: string;
+}
+
+// Standard response format for server actions
+interface ServerActionResponse<T = unknown> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+// ============================================
+// CREATE EVENT ACTION
+// ============================================
+
+/**
+ * Creates a new volunteer event in the database
+ * 
+ * @param params - Event data from the form
+ * @returns Success response with created event, or error response
+ * 
+ * Example usage:
+ * const result = await createEvent(formData);
+ * if (result.success) {
+ *   console.log("Created event:", result.data);
+ * } else {
+ *   console.error("Error:", result.error);
+ * }
+ */
+export const createEvent = async (
+  params: CreateEventParams
+): Promise<ServerActionResponse> => {
+  try {
+    // Insert new event into database
+    const [newEvent] = await db
+      .insert(eventsTable)
+      .values({
+        // Basic Information
+        title: params.title,
+        category: params.category,
+        description: params.description,
+        imageUrl: params.imageUrl || null, // Use null if empty
+        
+        // Date & Time
+        date: params.date,
+        startTime: params.startTime,
+        endTime: params.endTime,
+        
+        // Location
+        locationName: params.locationName,
+        address: params.address,
+        city: params.city,
+        state: params.state.toUpperCase(), // Ensure uppercase
+        zipCode: params.zipCode,
+        
+        // Volunteers & Rewards
+        volunteersNeeded: params.volunteersNeeded,
+        duration: params.duration.toString(), // Convert to string for decimal type
+        ainaBucks: params.ainaBucks,
+        bucksPerHour: params.bucksPerHour,
+        
+        // Dynamic Arrays
+        whatToBring: params.whatToBring || [], // Default to empty array
+        requirements: params.requirements || [],
+        
+        // Coordinator
+        coordinatorName: params.coordinatorName,
+        coordinatorEmail: params.coordinatorEmail,
+        coordinatorPhone: params.coordinatorPhone,
+      })
+      .returning(); // Get the created event back from database
+
+    // Return success response
+    // JSON.parse(JSON.stringify()) ensures data is serializable for client
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(newEvent)),
+    };
+  } catch (error) {
+    // Log error for debugging (visible in server logs)
+    console.error("Error creating event:", error);
+    
+    // Return user-friendly error message
+    return {
+      success: false,
+      error: "An error occurred while creating the event. Please try again.",
+    };
+  }
+};
+
+// ============================================
+// GET EVENT BY ID ACTION
+// ============================================
+
+/**
+ * Retrieves a single event by its ID
+ * 
+ * @param eventId - UUID of the event
+ * @returns Event data or error
+ */
+export const getEventById = async (
+  eventId: string
+): Promise<ServerActionResponse> => {
+  try {
+    // Query database for event with matching ID
+    const [event] = await db
+      .select()
+      .from(eventsTable)
+      .where(eq(eventsTable.id, eventId))
+      .limit(1);
+
+    // Check if event was found
+    if (!event) {
+      return {
+        success: false,
+        error: "Event not found",
+      };
+    }
+
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(event)),
+    };
+  } catch (error) {
+    console.error("Error fetching event:", error);
+    return {
+      success: false,
+      error: "Failed to fetch event",
+    };
+  }
+};
+
+// ============================================
+// GET ALL EVENTS ACTION
+// ============================================
+
+/**
+ * Retrieves all events from the database
+ * 
+ * @returns Array of all events or error
+ */
+export const getAllEvents = async (): Promise<ServerActionResponse> => {
+  try {
+    // Get all events, ordered by creation date (newest first)
+    const allEvents = await db
+      .select()
+      .from(eventsTable)
+      .orderBy(eventsTable.createdAt);
+
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(allEvents)),
+    };
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return {
+      success: false,
+      error: "Failed to fetch events",
+    };
+  }
+};
+
+// ============================================
+// UPDATE EVENT ACTION (Optional - for future use)
+// ============================================
+
+/**
+ * Updates an existing event
+ * 
+ * @param eventId - UUID of event to update
+ * @param updates - Fields to update
+ * @returns Updated event or error
+ */
+export const updateEvent = async (
+  eventId: string,
+  updates: Partial<CreateEventParams>
+): Promise<ServerActionResponse> => {
+  try {
+    // Convert duration to string if it exists in updates
+    const processedUpdates = {
+      ...updates,
+      duration: updates.duration !== undefined ? updates.duration.toString() : undefined,
+      updatedAt: new Date(),
+    };
+
+    const [updatedEvent] = await db
+      .update(eventsTable)
+      .set(processedUpdates)
+      .where(eq(eventsTable.id, eventId))
+      .returning();
+
+    if (!updatedEvent) {
+      return {
+        success: false,
+        error: "Event not found",
+      };
+    }
+
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(updatedEvent)),
+    };
+  } catch (error) {
+    console.error("Error updating event:", error);
+    return {
+      success: false,
+      error: "Failed to update event",
+    };
+  }
+};
+
+// ============================================
+// DELETE EVENT ACTION (Optional - for future use)
+// ============================================
+
+/**
+ * Deletes an event from the database
+ * 
+ * @param eventId - UUID of event to delete
+ * @returns Success confirmation or error
+ */
+export const deleteEvent = async (
+  eventId: string
+): Promise<ServerActionResponse> => {
+  try {
+    await db
+      .delete(eventsTable)
+      .where(eq(eventsTable.id, eventId));
+
+    return {
+      success: true,
+      data: { message: "Event deleted successfully" },
+    };
+  } catch (error) {
+    console.error("Error deleting event:", error);
+    return {
+      success: false,
+      error: "Failed to delete event",
+    };
+  }
+};

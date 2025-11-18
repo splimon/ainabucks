@@ -1,9 +1,12 @@
+// components/admin/events/EventCreationForm.tsx
+// Main form component for creating volunteer events
+
 "use client";
 
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EventCreationSchema } from "@/lib/validations";
+import { EventCreationSchema, type EventCreationInput } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,55 +22,94 @@ import { Textarea } from "@/components/ui/textarea";
 import { Plus, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import z from "zod";
+import { createEvent } from "@/lib/admin/actions/events";
 
 const EventCreationForm = () => {
   const router = useRouter();
+  
+  // State for dynamic array inputs
+  // These manage the "What to Bring" and "Requirements" lists
   const [whatToBringItems, setWhatToBringItems] = useState<string[]>([""]);
   const [requirementItems, setRequirementItems] = useState<string[]>([""]);
 
-  const form = useForm<z.infer<typeof EventCreationSchema>>({
-    resolver: zodResolver(EventCreationSchema),
+  // Initialize react-hook-form with Zod validation
+  const form = useForm({
+    resolver: zodResolver(EventCreationSchema), // Validates on submit
     defaultValues: {
+      // Basic Information
       title: "",
       category: "",
       description: "",
+      imageUrl: "",
+      
+      // Date & Time
       date: "",
       startTime: "",
       endTime: "",
+      
+      // Location
       locationName: "",
       address: "",
       city: "",
       state: "",
       zipCode: "",
+      
+      // Volunteers & Rewards
       volunteersNeeded: 0,
       ainaBucks: 0,
       bucksPerHour: 0,
       duration: 0,
-      imageUrl: "",
+      
+      // Arrays
       whatToBring: [],
       requirements: [],
+      
+      // Coordinator
       coordinatorName: "",
       coordinatorEmail: "",
       coordinatorPhone: "",
     },
-  });
+  } as const);
 
-  const onSubmit = async (data: z.infer<typeof EventCreationSchema>) => {
-    // Filter out empty items
-    const filteredWhatToBring = whatToBringItems.filter(item => item.trim() !== "");
-    const filteredRequirements = requirementItems.filter(item => item.trim() !== "");
+  /**
+   * Handle form submission
+   * 1. Filter out empty array items
+   * 2. Call server action
+   * 3. Handle success/error response
+   */
+  const onSubmit = async (data: EventCreationInput) => {
+    // Remove empty strings from dynamic arrays
+    const filteredWhatToBring = whatToBringItems.filter(
+      (item) => item.trim() !== ""
+    );
+    const filteredRequirements = requirementItems.filter(
+      (item) => item.trim() !== ""
+    );
 
+    // Prepare final event data
     const eventData = {
       ...data,
       whatToBring: filteredWhatToBring,
       requirements: filteredRequirements,
     };
 
-    console.log("Event Data:", eventData);
-    toast.success("Event created successfully!");
-    // TODO: Add your API call here to create the event
+    // Call server action to create event
+    const result = await createEvent(eventData);
+
+    // Handle response
+    if (result.success) {
+      // Success: Show toast and navigate to event page
+      toast.success("Event created successfully!");
+      router.push(`/admin/events`); // Or `/admin/events/${result.data.id}` for detail page
+    } else {
+      // Error: Show error message
+      toast.error(result.error || "Failed to create event");
+    }
   };
+
+  // ============================================
+  // WHAT TO BRING - Array Management Functions
+  // ============================================
 
   const addWhatToBringItem = () => {
     setWhatToBringItems([...whatToBringItems, ""]);
@@ -82,6 +124,10 @@ const EventCreationForm = () => {
     updated[index] = value;
     setWhatToBringItems(updated);
   };
+
+  // ============================================
+  // REQUIREMENTS - Array Management Functions
+  // ============================================
 
   const addRequirementItem = () => {
     setRequirementItems([...requirementItems, ""]);
@@ -101,17 +147,25 @@ const EventCreationForm = () => {
     <div className="max-w-4xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Event Form</h1>
-        <p className="text-gray-600 mt-2">Create a new volunteer opportunity</p>
+        <h1 className="text-3xl font-bold text-gray-900">Create New Event</h1>
+        <p className="text-gray-600 mt-2">
+          Create a new volunteer opportunity for your community
+        </p>
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          {/* Basic Information Section */}
+          
+          {/* ========================================== */}
+          {/* BASIC INFORMATION SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Basic Information</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
+              Basic Information
+            </h2>
             
             <div className="space-y-6">
+              {/* Event Title */}
               <FormField
                 control={form.control}
                 name="title"
@@ -119,13 +173,17 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Event Title *</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Food Bank Sorting" {...field} />
+                      <Input 
+                        placeholder="e.g., Food Bank Sorting & Distribution" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Category */}
               <FormField
                 control={form.control}
                 name="category"
@@ -133,13 +191,17 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Category *</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Community Service" {...field} />
+                      <Input 
+                        placeholder="e.g., Community Service, Environmental" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Description */}
               <FormField
                 control={form.control}
                 name="description"
@@ -148,7 +210,7 @@ const EventCreationForm = () => {
                     <FormLabel>Event Description *</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Describe the volunteer opportunity..."
+                        placeholder="Describe the volunteer opportunity, what volunteers will do, and the impact they'll make..."
                         className="min-h-32"
                         {...field}
                       />
@@ -158,6 +220,7 @@ const EventCreationForm = () => {
                 )}
               />
 
+              {/* Image URL */}
               <FormField
                 control={form.control}
                 name="imageUrl"
@@ -165,10 +228,13 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Event Photo URL</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
+                      <Input 
+                        placeholder="https://example.com/event-photo.jpg" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormDescription>
-                      Optional: Add a photo URL for the event
+                      Optional: Add a photo URL to make your event more appealing
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -177,11 +243,16 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* Date & Time Section */}
+          {/* ========================================== */}
+          {/* DATE & TIME SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Date & Time</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
+              Date & Time
+            </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Date */}
               <FormField
                 control={form.control}
                 name="date"
@@ -196,6 +267,7 @@ const EventCreationForm = () => {
                 )}
               />
 
+              {/* Start Time */}
               <FormField
                 control={form.control}
                 name="startTime"
@@ -210,6 +282,7 @@ const EventCreationForm = () => {
                 )}
               />
 
+              {/* End Time */}
               <FormField
                 control={form.control}
                 name="endTime"
@@ -226,11 +299,14 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* Location Section */}
+          {/* ========================================== */}
+          {/* LOCATION SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Location</h2>
             
             <div className="space-y-6">
+              {/* Location Name */}
               <FormField
                 control={form.control}
                 name="locationName"
@@ -238,13 +314,17 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Location Name *</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Hawaii Foodbank" {...field} />
+                      <Input 
+                        placeholder="e.g., Hawaii Foodbank Warehouse" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Street Address */}
               <FormField
                 control={form.control}
                 name="address"
@@ -252,13 +332,17 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Street Address *</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., 2611 Kilihau St" {...field} />
+                      <Input 
+                        placeholder="e.g., 2611 Kilihau St" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* City, State, Zip */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <FormField
                   control={form.control}
@@ -281,7 +365,12 @@ const EventCreationForm = () => {
                     <FormItem>
                       <FormLabel>State *</FormLabel>
                       <FormControl>
-                        <Input placeholder="HI" maxLength={2} {...field} />
+                        <Input 
+                          placeholder="HI" 
+                          maxLength={2} 
+                          {...field}
+                          onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -305,11 +394,16 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* Volunteers & Rewards Section */}
+          {/* ========================================== */}
+          {/* VOLUNTEERS & REWARDS SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Volunteers & Rewards</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
+              Volunteers & Rewards
+            </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Volunteers Needed */}
               <FormField
                 control={form.control}
                 name="volunteersNeeded"
@@ -324,11 +418,15 @@ const EventCreationForm = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Total number of volunteer spots available
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Duration */}
               <FormField
                 control={form.control}
                 name="duration"
@@ -344,11 +442,15 @@ const EventCreationForm = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
+                    <FormDescription>
+                      How many hours will volunteers work?
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Total Aina Bucks */}
               <FormField
                 control={form.control}
                 name="ainaBucks"
@@ -363,11 +465,15 @@ const EventCreationForm = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Total reward amount for completion
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Bucks Per Hour */}
               <FormField
                 control={form.control}
                 name="bucksPerHour"
@@ -382,6 +488,9 @@ const EventCreationForm = () => {
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
+                    <FormDescription>
+                      Reward rate per hour of volunteering
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -389,10 +498,19 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* What to Bring Section */}
+          {/* ========================================== */}
+          {/* WHAT TO BRING SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">What to Bring</h2>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  What to Bring
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  List items volunteers should bring (optional)
+                </p>
+              </div>
               <Button
                 type="button"
                 variant="outline"
@@ -429,10 +547,17 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* Requirements Section */}
+          {/* ========================================== */}
+          {/* REQUIREMENTS SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Requirements</h2>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Requirements</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  List any requirements or qualifications (optional)
+                </p>
+              </div>
               <Button
                 type="button"
                 variant="outline"
@@ -469,11 +594,16 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* Event Coordinator Section */}
+          {/* ========================================== */}
+          {/* EVENT COORDINATOR SECTION */}
+          {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-6">Event Coordinator</h2>
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
+              Event Coordinator
+            </h2>
             
             <div className="space-y-6">
+              {/* Coordinator Name */}
               <FormField
                 control={form.control}
                 name="coordinatorName"
@@ -488,6 +618,7 @@ const EventCreationForm = () => {
                 )}
               />
 
+              {/* Coordinator Email */}
               <FormField
                 control={form.control}
                 name="coordinatorEmail"
@@ -506,6 +637,7 @@ const EventCreationForm = () => {
                 )}
               />
 
+              {/* Coordinator Phone */}
               <FormField
                 control={form.control}
                 name="coordinatorPhone"
@@ -513,7 +645,10 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Coordinator Phone *</FormLabel>
                     <FormControl>
-                      <Input placeholder="(808) 555-1234" {...field} />
+                      <Input 
+                        placeholder="(808) 555-1234" 
+                        {...field} 
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -522,7 +657,9 @@ const EventCreationForm = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
+          {/* ========================================== */}
+          {/* SUBMIT BUTTONS */}
+          {/* ========================================== */}
           <div className="flex justify-end gap-4">
             <Button
               type="button"
