@@ -3,7 +3,6 @@
  * Volunteer page component that displays volunteer opportunities.
  */
 
-import SearchBar from "@/components/volunteer/SearchBar";
 import React from "react";
 import { auth } from "../auth";
 import { db } from "@/database/drizzle";
@@ -33,11 +32,11 @@ const Volunteer = async () => {
   return (
     <div className="min-h-[calc(100vh-73px)] bg-linear-to-b from-green-50 to-green-100 py-6">
       {/* Header Section */}
-      <div className="mb-8 max-w-7xl mx-auto">
-        <h1 className="text-2xl font-bold leading-tight py-3">
+      <div className="mb-8 max-w-7xl mx-auto px-6">
+        <h1 className="text-4xl font-bold leading-tight mb-3">
           Volunteer Opportunities
         </h1>
-        <p className="text-sm text-gray-600 max-w-4xl leading-relaxed">
+        <p className="text-lg text-gray-600 leading-relaxed mb-8">
           Browse through upcoming volunteer opportunities. Attend these
           volunteer events to earn ʻĀina Bucks.
         </p>

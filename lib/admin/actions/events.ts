@@ -7,6 +7,7 @@
 import { db } from "@/database/drizzle";
 import { eventsTable } from "@/database/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 
 // Parameters that createEvent accepts
 interface CreateEventParams {
@@ -254,9 +255,13 @@ export const deleteEvent = async (
   eventId: string
 ): Promise<ServerActionResponse> => {
   try {
+    // Delete event from database
     await db
       .delete(eventsTable)
       .where(eq(eventsTable.id, eventId));
+
+    // Revalidate admin events page to show updated list
+    revalidatePath("/admin/events");
 
     return {
       success: true,
@@ -266,7 +271,7 @@ export const deleteEvent = async (
     console.error("Error deleting event:", error);
     return {
       success: false,
-      error: "Failed to delete event",
+      error: "Failed to delete event. Please try again.",
     };
   }
 };

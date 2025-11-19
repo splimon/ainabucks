@@ -13,7 +13,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { Button } from "@/components/ui/button";
 import { LogOut, Sprout } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
