@@ -1,6 +1,5 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Search as SearchIcon } from "lucide-react";
 
 interface SearchProps {
@@ -9,7 +8,7 @@ interface SearchProps {
   onSortClick: () => void;
 }
 
-const Search = ({ searchQuery, onSearchChange, onSortClick }: SearchProps) => {
+const Search = ({ searchQuery, onSearchChange }: SearchProps) => {
   return (
     <div className="flex gap-4 mb-8 max-w-7xl mx-auto">
       <div className="flex-1 relative">
@@ -22,13 +21,6 @@ const Search = ({ searchQuery, onSearchChange, onSortClick }: SearchProps) => {
           className="pl-12 py-6 text-base bg-white border-gray-300 rounded-xl"
         />
       </div>
-      <Button
-        onClick={onSortClick}
-        variant="outline"
-        className="px-8 py-6 text-base font-medium border-gray-300 rounded-xl hover:bg-gray-50"
-      >
-        Sort By
-      </Button>
     </div>
   );
 };

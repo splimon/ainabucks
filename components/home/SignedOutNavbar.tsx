@@ -24,7 +24,7 @@ const SignedOutNavbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b border-gray-200 px-6 py-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 px-6 py-4">
       <div className="max-w-7xl mx-auto flex justify-between">
         {/* Logo */}
         <div className="flex items-center gap-3">

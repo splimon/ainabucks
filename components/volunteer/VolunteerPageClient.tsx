@@ -1,5 +1,5 @@
 // components/volunteer/VolunteerPageClient.tsx
-"use client"; // ← Makes this a Client Component
+"use client";
 
 import { useState } from "react";
 import SearchBar from "@/components/volunteer/SearchBar";
@@ -7,43 +7,58 @@ import VolunteerList from "@/components/volunteer/VolunteerList";
 import type { Event } from "@/database/schema";
 
 interface VolunteerPageClientProps {
-  initialEvents: Event[]; // Receive events from Server Component
+  initialEvents: Event[];
 }
 
 export default function VolunteerPageClient({ 
   initialEvents 
 }: VolunteerPageClientProps) {
-  // State for search query
   const [searchQuery, setSearchQuery] = useState("");
-  
-  // Filter events based on search query
-  const filteredEvents = initialEvents.filter((event) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      event.title.toLowerCase().includes(query) ||
-      event.category.toLowerCase().includes(query) ||
-      event.description.toLowerCase().includes(query) ||
-      event.locationName.toLowerCase().includes(query)
-    );
-  });
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
-  // Handle sort (you can implement this later)
-  const handleSort = () => {
-    console.log("Sort clicked");
-    // TODO: Implement sort functionality
-    // Example: Sort by date, volunteers needed, etc.
-  };
+  // Get unique categories
+  const categories = ["all", ...new Set(initialEvents.map(e => e.category))];
+
+  // Filter events
+  const filteredEvents = initialEvents.filter((event) => {
+    const matchesSearch = searchQuery === "" || 
+      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      event.description.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesCategory = selectedCategory === "all" || 
+      event.category === selectedCategory;
+    
+    return matchesSearch && matchesCategory;
+  });
 
   return (
     <>
-      {/* Search Bar with real handlers */}
+      {/* Category Filter */}
+      <div className="max-w-7xl mx-auto px-4 mb-4">
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+                selectedCategory === category
+                  ? "bg-green-700 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-100"
+              }`}
+            >
+              {category === "all" ? "All Events" : category}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <SearchBar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        onSortClick={handleSort}
+        onSortClick={() => {}}
       />
 
-      {/* Event List with filtered results */}
       <VolunteerList events={filteredEvents} />
     </>
   );
