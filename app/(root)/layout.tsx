@@ -17,9 +17,7 @@ const Layout = async ({ children }: { children: ReactNode }) => {
       <div className="mx-auto max-w">
         <div>
           {session ? <SignedInNavbar session={session} /> : <SignedOutNavbar />}
-          <div className="pt-[73px]">
-            {children}
-          </div>
+          <div className="pt-[73px]">{children}</div>
         </div>
       </div>
     </main>

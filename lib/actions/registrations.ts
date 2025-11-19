@@ -1,3 +1,5 @@
+// lib/actions/registrations.ts
+
 "use server";
 
 import { db } from "@/database/drizzle";

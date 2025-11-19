@@ -1,3 +1,4 @@
+// database/schema.ts
 import {
   decimal,
   integer,
@@ -131,3 +132,11 @@ export type NewEvent = typeof eventsTable.$inferInsert; // For inserting new eve
 
 export type EventRegistration = typeof eventRegistrationsTable.$inferSelect; // For reading registration data
 export type NewEventRegistration = typeof eventRegistrationsTable.$inferInsert; // For inserting new registrations
+
+/**
+ * Extended Event type that includes the current registration count
+ * Used in components that need to display real-time registration data
+ */
+export type EventWithRegistrations = Event & {
+  volunteersRegistered: number;
+};
