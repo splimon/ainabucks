@@ -15,6 +15,13 @@
       "when": 1763466523509,
       "tag": "0001_curvy_mikhail_rasputin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1763524864592,
+      "tag": "0002_cool_jane_foster",
+      "breakpoints": true
     }
   ]
 }

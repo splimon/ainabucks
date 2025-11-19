@@ -1,7 +1,7 @@
 // app/(root)/volunteer/[id]/page.tsx
 import { db } from "@/database/drizzle";
-import { eventsTable } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { eventsTable, eventRegistrationsTable } from "@/database/schema";
+import { eq, and, sql } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,27 +18,81 @@ import {
   AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
+import { auth } from "@/app/(root)/auth";
+import RegisterButton from "@/components/volunteer/RegisterButton";
 
 interface EventDetailPageProps {
   params: Promise<{
     id: string;
-  }>; // ← CHANGED: params is now a Promise
+  }>;
 }
 
 export default async function EventDetailPage({ params }: EventDetailPageProps) {
-  // ← CHANGED: Await params before using it
   const { id } = await params;
 
-  // Fetch event from database
-  const [event] = await db
-    .select()
+  // Get current user session
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  // Fetch event from database with registration count
+  const [eventData] = await db
+    .select({
+      // All event fields
+      id: eventsTable.id,
+      title: eventsTable.title,
+      category: eventsTable.category,
+      description: eventsTable.description,
+      imageUrl: eventsTable.imageUrl,
+      date: eventsTable.date,
+      startTime: eventsTable.startTime,
+      endTime: eventsTable.endTime,
+      locationName: eventsTable.locationName,
+      address: eventsTable.address,
+      city: eventsTable.city,
+      state: eventsTable.state,
+      zipCode: eventsTable.zipCode,
+      volunteersNeeded: eventsTable.volunteersNeeded,
+      duration: eventsTable.duration,
+      ainaBucks: eventsTable.ainaBucks,
+      bucksPerHour: eventsTable.bucksPerHour,
+      whatToBring: eventsTable.whatToBring,
+      requirements: eventsTable.requirements,
+      coordinatorName: eventsTable.coordinatorName,
+      coordinatorEmail: eventsTable.coordinatorEmail,
+      coordinatorPhone: eventsTable.coordinatorPhone,
+      
+      // Count current registrations
+      registrationCount: sql<number>`(
+        SELECT COUNT(*) 
+        FROM ${eventRegistrationsTable} 
+        WHERE ${eventRegistrationsTable.eventId} = ${eventsTable.id}
+        AND ${eventRegistrationsTable.status} = 'REGISTERED'
+      )`.as('registration_count'),
+    })
     .from(eventsTable)
-    .where(eq(eventsTable.id, id)) // ← Now using the awaited id
+    .where(eq(eventsTable.id, id))
     .limit(1);
 
-  // If event not found, show 404
-  if (!event) {
+  if (!eventData) {
     notFound();
+  }
+
+  // Check if current user is already registered
+  let isRegistered = false;
+  if (userId) {
+    const registration = await db
+      .select()
+      .from(eventRegistrationsTable)
+      .where(
+        and(
+          eq(eventRegistrationsTable.userId, userId),
+          eq(eventRegistrationsTable.eventId, id),
+          eq(eventRegistrationsTable.status, "REGISTERED")
+        )
+      )
+      .limit(1);
+    
+    isRegistered = registration.length > 0;
   }
 
   // Helper functions
@@ -60,11 +114,12 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
-  const duration = typeof event.duration === 'string' 
-    ? parseFloat(event.duration) 
-    : event.duration;
+  const duration = typeof eventData.duration === 'string' 
+    ? parseFloat(eventData.duration) 
+    : eventData.duration;
 
-  const spotsRemaining = event.volunteersNeeded - (event.volunteersRegistered || 0);
+  // Calculate spots remaining
+  const spotsRemaining = eventData.volunteersNeeded - eventData.registrationCount;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -77,11 +132,11 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         </Link>
 
         {/* Event Header Image */}
-        {event.imageUrl && (
+        {eventData.imageUrl && (
           <div className="w-full h-96 rounded-xl overflow-hidden mb-8">
             <img
-              src={event.imageUrl}
-              alt={event.title}
+              src={eventData.imageUrl}
+              alt={eventData.title}
               className="w-full h-full object-cover"
             />
           </div>
@@ -94,10 +149,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             {/* Title and Category */}
             <div>
               <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-sm font-semibold rounded-full mb-4">
-                {event.category}
+                {eventData.category}
               </span>
               <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                {event.title}
+                {eventData.title}
               </h1>
             </div>
 
@@ -107,19 +162,19 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 About This Event
               </h2>
               <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                {event.description}
+                {eventData.description}
               </p>
             </div>
 
             {/* What to Bring */}
-            {event.whatToBring && event.whatToBring.length > 0 && (
+            {eventData.whatToBring && eventData.whatToBring.length > 0 && (
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <Backpack className="w-5 h-5" />
                   What to Bring
                 </h2>
                 <ul className="space-y-2">
-                  {event.whatToBring.map((item, index) => (
+                  {eventData.whatToBring.map((item, index) => (
                     <li key={index} className="flex items-start gap-2 text-gray-700">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
                       <span>{item}</span>
@@ -130,14 +185,14 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
             )}
 
             {/* Requirements */}
-            {event.requirements && event.requirements.length > 0 && (
+            {eventData.requirements && eventData.requirements.length > 0 && (
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                 <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5" />
                   Requirements
                 </h2>
                 <ul className="space-y-2">
-                  {event.requirements.map((requirement, index) => (
+                  {eventData.requirements.map((requirement, index) => (
                     <li key={index} className="flex items-start gap-2 text-gray-700">
                       <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
                       <span>{requirement}</span>
@@ -154,9 +209,9 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 Location
               </h2>
               <div className="space-y-2 text-gray-700">
-                <p className="font-semibold">{event.locationName}</p>
-                <p>{event.address}</p>
-                <p>{event.city}, {event.state} {event.zipCode}</p>
+                <p className="font-semibold">{eventData.locationName}</p>
+                <p>{eventData.address}</p>
+                <p>{eventData.city}, {eventData.state} {eventData.zipCode}</p>
               </div>
             </div>
 
@@ -168,24 +223,24 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               </h2>
               <div className="space-y-3">
                 <p className="font-semibold text-gray-900">
-                  {event.coordinatorName}
+                  {eventData.coordinatorName}
                 </p>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Mail className="w-4 h-4" />
                   <a 
-                    href={`mailto:${event.coordinatorEmail}`}
+                    href={`mailto:${eventData.coordinatorEmail}`}
                     className="hover:text-green-700 transition-colors"
                   >
-                    {event.coordinatorEmail}
+                    {eventData.coordinatorEmail}
                   </a>
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Phone className="w-4 h-4" />
                   <a 
-                    href={`tel:${event.coordinatorPhone}`}
+                    href={`tel:${eventData.coordinatorPhone}`}
                     className="hover:text-green-700 transition-colors"
                   >
-                    {event.coordinatorPhone}
+                    {eventData.coordinatorPhone}
                   </a>
                 </div>
               </div>
@@ -200,12 +255,12 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <DollarSign className="w-6 h-6 text-orange-600" />
                   <span className="text-4xl font-bold text-orange-600">
-                    {event.ainaBucks}
+                    {eventData.ainaBucks}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600">ʻĀina Bucks</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  {event.bucksPerHour} bucks per hour
+                  {eventData.bucksPerHour} bucks per hour
                 </p>
               </div>
 
@@ -216,10 +271,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                   <Calendar className="w-5 h-5 text-gray-600 mt-1" />
                   <div>
                     <p className="font-semibold text-gray-900">
-                      {formatDate(event.date)}
+                      {formatDate(eventData.date)}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {formatTime(event.startTime)} - {formatTime(event.endTime)}
+                      {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
                     </p>
                   </div>
                 </div>
@@ -236,21 +291,21 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-700">
-                    {spotsRemaining} of {event.volunteersNeeded} spots left
+                    {spotsRemaining} of {eventData.volunteersNeeded} spots left
                   </span>
                 </div>
               </div>
 
-              {/* Registration Button */}
-              <Button 
-                className="w-full bg-green-700 hover:bg-green-800 text-white py-6 text-lg font-semibold"
-                disabled={spotsRemaining === 0}
-              >
-                {spotsRemaining === 0 ? "Event Full" : "Register Now"}
-              </Button>
+              {/* Registration Button Component */}
+              <RegisterButton 
+                eventId={id}
+                isRegistered={isRegistered}
+                spotsRemaining={spotsRemaining}
+                isLoggedIn={!!userId}
+              />
 
               {/* Status Message */}
-              {spotsRemaining <= 5 && spotsRemaining > 0 && (
+              {spotsRemaining <= 5 && spotsRemaining > 0 && !isRegistered && (
                 <p className="text-sm text-orange-600 text-center">
                   ⚠️ Only {spotsRemaining} spots remaining!
                 </p>
@@ -263,14 +318,13 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
   );
 }
 
-// ← CHANGED: Also await params in generateMetadata
 export async function generateMetadata({ params }: EventDetailPageProps) {
-  const { id } = await params; // ← Await params here too
+  const { id } = await params;
 
   const [event] = await db
     .select()
     .from(eventsTable)
-    .where(eq(eventsTable.id, id)) // ← Use awaited id
+    .where(eq(eventsTable.id, id))
     .limit(1);
 
   if (!event) {
