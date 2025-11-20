@@ -1,3 +1,8 @@
+/**
+ * /components/volunteer/RegisterButton.tsx
+ * RegisterButton component handles user registration and cancellation for events.
+ */
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -39,6 +44,7 @@ export default function RegisterButton({
 
     if (result.success) {
       toast.success("Successfully registered for event!");
+      router.refresh(); // Refresh the page to show updated data
     } else {
       toast.error(result.error || "Failed to register");
     }
@@ -53,6 +59,7 @@ export default function RegisterButton({
 
     if (result.success) {
       toast.success("Registration cancelled successfully");
+      router.refresh(); // Refresh the page to show updated data
     } else {
       toast.error(result.error || "Failed to cancel registration");
     }

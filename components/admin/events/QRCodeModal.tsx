@@ -7,11 +7,11 @@
 
 import { X, Download, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { Event } from "@/database/schema";
+import type { Event, EventWithRegistrations } from "@/database/schema";
 import { generateEventQRCodes } from "@/lib/utils/qr";
 
 interface QRCodeModalProps {
-  event: Event;
+  event: Event | EventWithRegistrations;
   isOpen: boolean;
   onClose: () => void;
 }

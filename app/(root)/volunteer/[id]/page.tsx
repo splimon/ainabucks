@@ -1,7 +1,11 @@
-// app/(root)/volunteer/[id]/page.tsx
+/**
+ * app/(root)/volunteer/[id]/page.tsx
+ * Event Detail Page - Displays detailed information about a specific volunteer event
+ */
+
 import { db } from "@/database/drizzle";
 import { eventsTable, eventRegistrationsTable } from "@/database/schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +25,9 @@ import Link from "next/link";
 import { auth } from "@/app/(root)/auth";
 import RegisterButton from "@/components/volunteer/RegisterButton";
 
+// Revalidate every 10 seconds - good balance between performance and freshness
+export const revalidate = 10;
+
 interface EventDetailPageProps {
   params: Promise<{
     id: string;
@@ -36,41 +43,9 @@ export default async function EventDetailPage({
   const session = await auth();
   const userId = session?.user?.id;
 
-  // Fetch event from database with registration count
+  // Fetch event from database
   const [eventData] = await db
-    .select({
-      // All event fields
-      id: eventsTable.id,
-      title: eventsTable.title,
-      category: eventsTable.category,
-      description: eventsTable.description,
-      imageUrl: eventsTable.imageUrl,
-      date: eventsTable.date,
-      startTime: eventsTable.startTime,
-      endTime: eventsTable.endTime,
-      locationName: eventsTable.locationName,
-      address: eventsTable.address,
-      city: eventsTable.city,
-      state: eventsTable.state,
-      zipCode: eventsTable.zipCode,
-      volunteersNeeded: eventsTable.volunteersNeeded,
-      duration: eventsTable.duration,
-      ainaBucks: eventsTable.ainaBucks,
-      bucksPerHour: eventsTable.bucksPerHour,
-      whatToBring: eventsTable.whatToBring,
-      requirements: eventsTable.requirements,
-      coordinatorName: eventsTable.coordinatorName,
-      coordinatorEmail: eventsTable.coordinatorEmail,
-      coordinatorPhone: eventsTable.coordinatorPhone,
-
-      // Count current registrations
-      registrationCount: sql<number>`(
-        SELECT COUNT(*) 
-        FROM ${eventRegistrationsTable} 
-        WHERE ${eventRegistrationsTable.eventId} = ${eventsTable.id}
-        AND ${eventRegistrationsTable.status} = 'REGISTERED'
-      )`.as("registration_count"),
-    })
+    .select()
     .from(eventsTable)
     .where(eq(eventsTable.id, id))
     .limit(1);
@@ -78,6 +53,19 @@ export default async function EventDetailPage({
   if (!eventData) {
     notFound();
   }
+
+  // Count registrations for this event
+  const registrations = await db
+    .select()
+    .from(eventRegistrationsTable)
+    .where(
+      and(
+        eq(eventRegistrationsTable.eventId, id),
+        eq(eventRegistrationsTable.status, "REGISTERED"),
+      ),
+    );
+
+  const registrationCount = registrations.length;
 
   // Check if current user is already registered
   let isRegistered = false;
@@ -122,8 +110,17 @@ export default async function EventDetailPage({
       : eventData.duration;
 
   // Calculate spots remaining
-  const spotsRemaining =
-    eventData.volunteersNeeded - eventData.registrationCount;
+  const spotsRemaining = eventData.volunteersNeeded - registrationCount;
+
+  // Debug logging
+  console.log("Event Detail Page - Registration Data:", {
+    eventId: id,
+    volunteersNeeded: eventData.volunteersNeeded,
+    registrationCount: registrationCount,
+    registrationCountType: typeof registrationCount,
+    spotsRemaining,
+    isRegistered,
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">

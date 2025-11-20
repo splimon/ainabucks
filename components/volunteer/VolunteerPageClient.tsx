@@ -1,13 +1,17 @@
-// components/volunteer/VolunteerPageClient.tsx
+/**
+ * components/volunteer/VolunteerPageClient.tsx
+ * Client-side component for the volunteer page, handling search and category filtering.
+ */
+
 "use client";
 
 import { useState } from "react";
 import SearchBar from "@/components/volunteer/SearchBar";
 import VolunteerList from "@/components/volunteer/VolunteerList";
-import type { Event } from "@/database/schema";
+import type { EventWithRegistrations } from "@/database/schema";
 
 interface VolunteerPageClientProps {
-  initialEvents: Event[];
+  initialEvents: EventWithRegistrations[];
 }
 
 export default function VolunteerPageClient({

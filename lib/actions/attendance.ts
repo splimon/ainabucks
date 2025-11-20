@@ -401,7 +401,10 @@ export async function awardAinaBucks(
     }
 
     // Check if already awarded
-    if (attendance.currentHoursWorked && parseFloat(attendance.currentHoursWorked) > 0) {
+    if (
+      attendance.currentHoursWorked &&
+      parseFloat(attendance.currentHoursWorked) > 0
+    ) {
       return {
         success: false,
         error: "ʻĀina Bucks have already been awarded for this attendance",
@@ -470,14 +473,14 @@ export async function awardAinaBucks(
     };
   } catch (error) {
     console.error("Error awarding ʻĀina Bucks:", error);
-    
+
     // Provide more detailed error information
     let errorMessage = "Failed to award ʻĀina Bucks. Please try again.";
     if (error instanceof Error) {
       console.error("Detailed error:", error.message);
       errorMessage = `Error: ${error.message}`;
     }
-    
+
     return {
       success: false,
       error: errorMessage,

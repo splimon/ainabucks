@@ -6,7 +6,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Event } from "@/database/schema";
+import type { EventWithRegistrations } from "@/database/schema";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Eye, QrCode, Users } from "lucide-react";
 import Link from "next/link";
@@ -16,13 +16,14 @@ import { useRouter } from "next/navigation";
 import QRCodeModal from "./QRCodeModal";
 
 interface EventsTableProps {
-  events: Event[];
+  events: EventWithRegistrations[];
 }
 
 export default function EventsTable({ events }: EventsTableProps) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedEvent, setSelectedEvent] =
+    useState<EventWithRegistrations | null>(null);
   const [showQRModal, setShowQRModal] = useState(false);
 
   const formatDate = (dateString: string) => {
@@ -52,14 +53,14 @@ export default function EventsTable({ events }: EventsTableProps) {
       } else {
         toast.error(result.error || "Failed to delete event");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred while deleting the event");
     } finally {
       setDeletingId(null);
     }
   };
 
-  const handleShowQR = (event: Event) => {
+  const handleShowQR = (event: EventWithRegistrations) => {
     setSelectedEvent(event);
     setShowQRModal(true);
   };
@@ -110,7 +111,7 @@ export default function EventsTable({ events }: EventsTableProps) {
             ) : (
               events.map((event) => {
                 const spotsRemaining =
-                  event.volunteersNeeded - (event.volunteersRegistered || 0);
+                  event.volunteersNeeded - event.volunteersRegistered;
                 const duration =
                   typeof event.duration === "string"
                     ? parseFloat(event.duration)
@@ -172,7 +173,7 @@ export default function EventsTable({ events }: EventsTableProps) {
                     <td className="px-6 py-4">
                       <div className="text-sm">
                         <p className="font-medium text-gray-900">
-                          {event.volunteersRegistered || 0} /{" "}
+                          {event.volunteersRegistered} /{" "}
                           {event.volunteersNeeded}
                         </p>
                         <p

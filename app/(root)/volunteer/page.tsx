@@ -4,29 +4,46 @@
  */
 
 import React from "react";
-import { auth } from "../auth";
 import { db } from "@/database/drizzle";
-import { eventsTable } from "@/database/schema";
-import { desc } from "drizzle-orm";
-import type { Event } from "@/database/schema";
+import { eventsTable, eventRegistrationsTable } from "@/database/schema";
+import { desc, eq } from "drizzle-orm";
 import VolunteerPageClient from "@/components/volunteer/VolunteerPageClient";
+import type { EventWithRegistrations } from "@/database/schema";
+
+// Revalidate every 10 seconds - good balance between performance and freshness
+export const revalidate = 10;
 
 const Volunteer = async () => {
-  const session = await auth();
-
-  // Fetch all events from database, ordered by newest first
-  const latestEvents: Event[] = await db
+  // Fetch all events
+  const allEvents = await db
     .select()
     .from(eventsTable)
     .orderBy(desc(eventsTable.createdAt));
 
-  // Transform database results to match component expectations
-  // This handles the decimal duration conversion and null handling
-  const transformedEvents = latestEvents.map((event) => ({
-    ...event,
-    whatToBring: event.whatToBring || [], // Convert null to empty array
-    requirements: event.requirements || [], // Convert null to empty array
-  }));
+  // Fetch all REGISTERED registrations
+  const allRegistrations = await db
+    .select()
+    .from(eventRegistrationsTable)
+    .where(eq(eventRegistrationsTable.status, "REGISTERED"));
+
+  // Count registrations per event
+  const registrationCounts = allRegistrations.reduce(
+    (acc, reg) => {
+      acc[reg.eventId] = (acc[reg.eventId] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  // Combine events with their registration counts
+  const transformedEvents: EventWithRegistrations[] = allEvents.map(
+    (event) => ({
+      ...event,
+      whatToBring: event.whatToBring || [],
+      requirements: event.requirements || [],
+      volunteersRegistered: registrationCounts[event.id] || 0,
+    }),
+  );
 
   return (
     <div className="background-gradient">

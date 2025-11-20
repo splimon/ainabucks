@@ -1,4 +1,8 @@
-// components/volunteer/VolunteerList.tsx
+/**
+ * components/volunteer/VolunteerList.tsx
+ * VolunteerList component displays a list of volunteer events with details
+ */
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,11 +15,11 @@ import {
   DollarSign,
   Tag,
 } from "lucide-react";
-import type { Event } from "@/database/schema";
+import type { EventWithRegistrations } from "@/database/schema";
 import Link from "next/link";
 
 interface VolunteerListProps {
-  events: Event[];
+  events: EventWithRegistrations[];
 }
 
 const VolunteerList = ({ events }: VolunteerListProps) => {
@@ -48,14 +52,14 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
   /**
    * Calculate spots remaining
    */
-  const getSpotsRemaining = (event: Event) => {
-    return event.volunteersNeeded - (event.volunteersRegistered || 0);
+  const getSpotsRemaining = (event: EventWithRegistrations) => {
+    return event.volunteersNeeded - event.volunteersRegistered;
   };
 
   /**
    * Get status badge color based on availability
    */
-  const getStatusBadge = (event: Event) => {
+  const getStatusBadge = (event: EventWithRegistrations) => {
     const spotsRemaining = getSpotsRemaining(event);
 
     if (spotsRemaining === 0) {

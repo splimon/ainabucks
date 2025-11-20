@@ -39,12 +39,16 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
   // Fetch attendance records
   const attendanceResult = await getEventAttendance(id);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const attendance = attendanceResult.success ? (attendanceResult.data as any) : [];
+  const attendance = attendanceResult.success
+    ? (attendanceResult.data as any)
+    : [];
 
   // Fetch registrations (users who registered but haven't checked in)
   const registrationsResult = await getEventRegistrations(id);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const registrations = registrationsResult.success ? (registrationsResult.data as any) : [];
+  const registrations = registrationsResult.success
+    ? (registrationsResult.data as any)
+    : [];
 
   // Calculate stats
   const totalRegistered = attendance.length + registrations.length;
@@ -53,7 +57,9 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const checkedOut = attendance.filter((a: any) => a.checkOutTime).length;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const awarded = attendance.filter((a: any) => a.hoursWorked && parseFloat(a.hoursWorked) > 0).length;
+  const awarded = attendance.filter(
+    (a: any) => a.hoursWorked && parseFloat(a.hoursWorked) > 0,
+  ).length;
 
   return (
     <div className="min-h-screen bg-gray-50">

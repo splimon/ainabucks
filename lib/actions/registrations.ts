@@ -1,4 +1,7 @@
-// lib/actions/registrations.ts
+/**
+ * lib/actions/registrations.ts
+ * Actions related to event registrations, including registering and cancelling.
+ */
 
 "use server";
 
@@ -50,10 +53,10 @@ export async function registerForEvent(eventId: string) {
       .select({
         volunteersNeeded: eventsTable.volunteersNeeded,
         registrationCount: sql<number>`(
-          SELECT COUNT(*) 
-          FROM ${eventRegistrationsTable} 
-          WHERE ${eventRegistrationsTable.eventId} = ${eventId}
-          AND ${eventRegistrationsTable.status} = 'REGISTERED'
+          SELECT CAST(COUNT(*) AS INTEGER)
+          FROM event_registrations
+          WHERE event_registrations.event_id = ${eventsTable.id}
+          AND event_registrations.status = 'REGISTERED'
         )`.as("registration_count"),
       })
       .from(eventsTable)
@@ -83,6 +86,7 @@ export async function registerForEvent(eventId: string) {
     revalidatePath("/volunteer");
     revalidatePath(`/volunteer/${eventId}`);
     revalidatePath("/profile");
+    revalidatePath("/admin/events");
 
     return { success: true };
   } catch (error) {
@@ -128,6 +132,7 @@ export async function cancelRegistration(eventId: string) {
     revalidatePath("/volunteer");
     revalidatePath(`/volunteer/${eventId}`);
     revalidatePath("/profile");
+    revalidatePath("/admin/events");
 
     return { success: true };
   } catch (error) {
