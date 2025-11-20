@@ -14,7 +14,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { LogOut, Sprout, Menu, X } from "lucide-react";
+import { LogOut, Sprout, Menu, X, Shield } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
@@ -55,6 +55,21 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
         <div className="hidden lg:flex items-center gap-8">
           <NavigationMenu>
             <NavigationMenuList className="gap-6">
+              {/* Admin Panel - Only visible to admins */}
+              {session.user.role === "ADMIN" && (
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-2 text-purple-700 hover:text-purple-800 font-medium transition-colors border border-purple-200 px-3 py-1.5 rounded-lg hover:bg-purple-50"
+                    >
+                      <Shield className="w-4 h-4" />
+                      Admin Panel
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              )}
+
               {/* Volunteer */}
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
@@ -187,6 +202,18 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
             >
               Rewards
             </Link>
+
+            {/* Admin Panel - Only visible to admins */}
+            {session.user.role === "ADMIN" && (
+              <Link
+                href="/admin"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 text-purple-700 hover:text-purple-800 font-medium transition-colors border border-purple-200 px-3 py-1.5 rounded-lg hover:bg-purple-50"
+              >
+                <Shield className="w-5 h-5" />
+                Admin Panel
+              </Link>
+            )}
 
             {/* Sign Out */}
             <button

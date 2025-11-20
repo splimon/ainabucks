@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn, getInitials } from "@/lib/utils";
-import { Home, Users, Book, UserPlus, LogOut, Sprout } from "lucide-react";
+import { Home, Users, Book, UserPlus, LogOut, Sprout, ArrowLeft } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
@@ -51,6 +51,14 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
 
         {/* Navigation Menu */}
         <nav className="flex flex-col mt-6 px-3 space-y-1">
+          {/* Back to User View Button */}
+          <Link href="/profile">
+            <div className="flex items-center gap-3 px-4 py-3 mb-2 rounded-lg transition-colors cursor-pointer text-gray-600 hover:bg-gray-100 border border-gray-200">
+              <ArrowLeft className="w-5 h-5" />
+              <span className="font-medium">Back to User View</span>
+            </div>
+          </Link>
+
           {menuItems.map((item) => {
             const Icon = item.icon;
             const isSelected =
