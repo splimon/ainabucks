@@ -4,7 +4,15 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn, getInitials } from "@/lib/utils";
-import { Home, Users, Book, UserPlus, LogOut, Sprout, ArrowLeft } from "lucide-react";
+import {
+  Home,
+  Users,
+  Book,
+  UserPlus,
+  LogOut,
+  Sprout,
+  ArrowLeft,
+} from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
