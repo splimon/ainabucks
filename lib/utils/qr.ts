@@ -2,7 +2,7 @@
  * lib/utils/qr.ts
  * Utility functions for QR code generation
  * Generates QR code URLs for event check-in and check-out
- * Uses an external API to create QR codes
+ * Uses free QR code API (qrserver.com) to generate QR code images
  */
 
 /**

@@ -1,6 +1,6 @@
 /**
  * components/admin/events/QRCodeModal.tsx
- * Modal to display and download QR codes for check-in/out
+ * Modal to display and download/print QR codes for check-in/out
  */
 
 "use client";

@@ -8,7 +8,7 @@
 import { useState } from "react";
 import type { Event } from "@/database/schema";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2, Eye, QrCode } from "lucide-react";
+import { Pencil, Trash2, Eye, QrCode, Users } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { deleteEvent } from "@/lib/admin/actions/events";
@@ -218,11 +218,21 @@ export default function EventsTable({ events }: EventsTableProps) {
                     {/* Actions */}
                     <td className="px-6 py-4">
                       <div className="flex items-center justify-center gap-2">
-                        <Link href={`/volunteer/${event.id}`} target="_blank">
+                        <Link href={`/admin/events/${event.id}/attendance`}>
                           <Button
                             variant="ghost"
                             size="sm"
                             className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                            title="Manage Attendance"
+                          >
+                            <Users className="w-4 h-4" />
+                          </Button>
+                        </Link>
+
+                        <Link href={`/volunteer/${event.id}`} target="_blank">
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             title="View Event"
                           >
                             <Eye className="w-4 h-4" />
