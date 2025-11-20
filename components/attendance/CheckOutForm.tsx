@@ -185,7 +185,7 @@ export default function CheckOutForm({
           {/* Actions */}
           <div className="space-y-3">
             <Link href="/profile">
-              <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white">
+              <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white mb-3">
                 View My Profile
               </Button>
             </Link>

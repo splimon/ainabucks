@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn, getInitials } from "@/lib/utils";
 import { Home, Users, Book, UserPlus, LogOut, Sprout } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 
@@ -83,13 +83,9 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
         <div className="flex items-center gap-3 px-2 py-2">
           <div className="relative">
             <Avatar>
-              {session?.user?.image ? (
-                <AvatarImage src={session.user.image} />
-              ) : (
-                <AvatarFallback className="bg-blue-200 text-green-900 font-semibold">
-                  {getInitials(session?.user?.name || "User")}
-                </AvatarFallback>
-              )}
+              <AvatarFallback className="bg-blue-200 text-green-900 font-semibold">
+                {getInitials(session?.user?.name || "User")}
+              </AvatarFallback>
             </Avatar>
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white" />
           </div>

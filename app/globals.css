@@ -116,15 +116,28 @@
   * {
     @apply border-border outline-ring/50;
   }
+  
+  html {
+    /* Prevent overscroll bounce effect on all browsers */
+    overscroll-behavior-y: none;
+    /* Prevent horizontal scroll */
+    overflow-x: hidden;
+  }
+  
   body {
     @apply bg-background text-foreground;
+    /* Prevent overscroll bounce effect */
+    overscroll-behavior-y: none;
+    overflow-x: hidden;
+    /* Prevent pull-to-refresh on mobile */
+    touch-action: pan-y;
   }
 }
 
 @layer components {
   /* Auth Container - Centers the auth card on the page */
   .auth-container {
-    @apply min-h-screen bg-gradient-to-b from-green-50 to-green-100 
+    @apply min-h-screen bg-linear-to-b from-green-50 to-green-100 
           flex flex-col items-center justify-center py-12 px-4;
   }
 
@@ -166,6 +179,11 @@
     @apply w-full px-4 py-3 text-base border border-gray-300 rounded-xl
           focus:ring-2 focus:ring-green-500 focus:border-transparent
           placeholder:text-gray-400;
+  }
+
+  /* Background Gradient for Full Pages */
+  .background-gradient {
+    @apply min-h-screen bg-linear-to-b from-green-50 to-green-100 py-6;
   }
 }
 

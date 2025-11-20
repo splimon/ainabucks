@@ -137,7 +137,7 @@ export default function CheckInForm({
           {/* Actions */}
           <div className="space-y-3">
             <Link href="/profile">
-              <Button className="w-full bg-green-700 hover:bg-green-800 text-white">
+              <Button className="w-full bg-green-700 hover:bg-green-800 text-white mb-3">
                 Go to My Profile
               </Button>
             </Link>

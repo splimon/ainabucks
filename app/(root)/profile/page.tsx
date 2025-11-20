@@ -103,7 +103,7 @@ const ProfilePage = async () => {
     : 0;
 
   return (
-    <div className="min-h-[calc(100vh-73px)] bg-linear-to-b from-green-50 to-green-100 py-6">
+    <div className="background-gradient">
       <div className="mb-8 max-w-7xl mx-auto px-6">
         <h1 className="text-4xl font-bold leading-tight mb-3">
           Welcome, {session.user.name}!
@@ -133,15 +133,14 @@ const ProfilePage = async () => {
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
               <DollarSign className="w-8 h-8 text-orange-600" />
-              <Award className="w-6 h-6 opacity-80" />
             </div>
-            <p className="text-orange-100 text-sm font-medium mb-1">
+            <p className="text-gray-600 text-sm font-medium mb-1">
               Current Balance
             </p>
             <p className="text-4xl font-bold">
               {userData?.currentAinaBucks || 0}
             </p>
-            <p className="text-orange-100 text-xs mt-1">ʻĀina Bucks</p>
+            <p className="text-gray-500 text-xs mt-1">ʻĀina Bucks</p>
           </div>
 
           {/* Total Earned */}

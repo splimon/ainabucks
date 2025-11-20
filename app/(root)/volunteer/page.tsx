@@ -29,7 +29,7 @@ const Volunteer = async () => {
   }));
 
   return (
-    <div className="min-h-[calc(100vh-73px)] bg-linear-to-b from-green-50 to-green-100 py-6">
+    <div className="background-gradient">
       {/* Header Section */}
       <div className="mb-8 max-w-7xl mx-auto px-6">
         <h1 className="text-4xl font-bold leading-tight mb-3">
