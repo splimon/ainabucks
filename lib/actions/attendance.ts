@@ -377,11 +377,14 @@ export async function awardAinaBucks(
       };
     }
 
-    // Get attendance record
+    // Get attendance record with complete details
     const [attendance] = await db
       .select({
+        id: eventAttendanceTable.id,
         userId: eventAttendanceTable.userId,
         eventId: eventAttendanceTable.eventId,
+        registrationId: eventAttendanceTable.registrationId,
+        currentHoursWorked: eventAttendanceTable.hoursWorked,
         bucksPerHour: eventsTable.bucksPerHour,
         eventTitle: eventsTable.title,
       })
@@ -397,6 +400,14 @@ export async function awardAinaBucks(
       };
     }
 
+    // Check if already awarded
+    if (attendance.currentHoursWorked && parseFloat(attendance.currentHoursWorked) > 0) {
+      return {
+        success: false,
+        error: "ʻĀina Bucks have already been awarded for this attendance",
+      };
+    }
+
     // Calculate ʻĀina Bucks
     const ainaBucks = Math.round(hoursWorked * attendance.bucksPerHour);
 
@@ -408,7 +419,7 @@ export async function awardAinaBucks(
         .set({
           hoursWorked: hoursWorked.toString(),
           status: "CHECKED_OUT",
-          adminNotes,
+          adminNotes: adminNotes || null,
           updatedAt: new Date(),
         })
         .where(eq(eventAttendanceTable.id, attendanceId));
@@ -435,24 +446,20 @@ export async function awardAinaBucks(
         })
         .where(eq(usersTable.id, attendance.userId));
 
-      // 4. Update registration status
+      // 4. Update registration status to ATTENDED
       await tx
         .update(eventRegistrationsTable)
         .set({
           status: "ATTENDED",
           updatedAt: new Date(),
         })
-        .where(
-          and(
-            eq(eventRegistrationsTable.userId, attendance.userId),
-            eq(eventRegistrationsTable.eventId, attendance.eventId),
-          ),
-        );
+        .where(eq(eventRegistrationsTable.id, attendance.registrationId));
     });
 
     // Revalidate pages
     revalidatePath("/admin/events");
     revalidatePath(`/admin/events/${attendance.eventId}/attendance`);
+    revalidatePath("/profile");
 
     return {
       success: true,
@@ -463,9 +470,17 @@ export async function awardAinaBucks(
     };
   } catch (error) {
     console.error("Error awarding ʻĀina Bucks:", error);
+    
+    // Provide more detailed error information
+    let errorMessage = "Failed to award ʻĀina Bucks. Please try again.";
+    if (error instanceof Error) {
+      console.error("Detailed error:", error.message);
+      errorMessage = `Error: ${error.message}`;
+    }
+    
     return {
       success: false,
-      error: "Failed to award ʻĀina Bucks. Please try again.",
+      error: errorMessage,
     };
   }
 }
@@ -475,7 +490,8 @@ export async function awardAinaBucks(
  */
 export async function getEventRegistrations(eventId: string) {
   try {
-    const registrations = await db
+    // Get all registrations for the event
+    const allRegistrations = await db
       .select({
         userId: usersTable.id,
         userName: usersTable.fullName,
@@ -486,17 +502,29 @@ export async function getEventRegistrations(eventId: string) {
       })
       .from(eventRegistrationsTable)
       .innerJoin(usersTable, eq(eventRegistrationsTable.userId, usersTable.id))
-      .where(
-        and(
-          eq(eventRegistrationsTable.eventId, eventId),
-          eq(eventRegistrationsTable.status, "REGISTERED"),
-        ),
-      )
+      .where(eq(eventRegistrationsTable.eventId, eventId))
       .orderBy(eventRegistrationsTable.registeredAt);
+
+    // Get all users who have checked in (have attendance records)
+    const attendedUsers = await db
+      .select({
+        userId: eventAttendanceTable.userId,
+      })
+      .from(eventAttendanceTable)
+      .where(eq(eventAttendanceTable.eventId, eventId));
+
+    const attendedUserIds = new Set(attendedUsers.map((a) => a.userId));
+
+    // Filter out users who have already checked in
+    const registrationsOnly = allRegistrations.filter(
+      (reg) =>
+        !attendedUserIds.has(reg.userId) &&
+        reg.registrationStatus === "REGISTERED",
+    );
 
     return {
       success: true,
-      data: JSON.parse(JSON.stringify(registrations)),
+      data: JSON.parse(JSON.stringify(registrationsOnly)),
     };
   } catch (error) {
     console.error("Error fetching registrations:", error);

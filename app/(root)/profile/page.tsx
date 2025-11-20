@@ -137,7 +137,7 @@ const ProfilePage = async () => {
             <p className="text-gray-600 text-sm font-medium mb-1">
               Current Balance
             </p>
-            <p className="text-4xl font-bold">
+            <p className="text-3xl font-bold">
               {userData?.currentAinaBucks || 0}
             </p>
             <p className="text-gray-500 text-xs mt-1">ʻĀina Bucks</p>

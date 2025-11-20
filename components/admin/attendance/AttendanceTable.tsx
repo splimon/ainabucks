@@ -38,14 +38,12 @@ interface Registration {
 interface AttendanceTableProps {
   attendance: AttendanceRecord[];
   registrations: Registration[];
-  eventId: string;
   bucksPerHour: number;
 }
 
 export default function AttendanceTable({
   attendance,
   registrations,
-  eventId,
   bucksPerHour,
 }: AttendanceTableProps) {
   const router = useRouter();
@@ -97,7 +95,7 @@ export default function AttendanceTable({
       } else {
         toast.error(result.error || "Failed to award ʻĀina Bucks");
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred");
     } finally {
       setAwardingId(null);
@@ -132,185 +130,189 @@ export default function AttendanceTable({
 
         <tbody className="bg-white divide-y divide-gray-200">
           {/* Checked-in volunteers */}
-          {attendance.map((record) => {
-            const defaultHours = calculateDefaultHours(
-              record.checkInTime,
-              record.checkOutTime,
-            );
-            const currentHours = hoursInputs[record.id] ?? defaultHours;
-            const estimatedBucks = Math.round(currentHours * bucksPerHour);
-            const isAwarded =
-              record.hoursWorked && parseFloat(record.hoursWorked) > 0;
+          {attendance.length > 0 &&
+            attendance.map((record) => {
+              const defaultHours = calculateDefaultHours(
+                record.checkInTime,
+                record.checkOutTime,
+              );
+              const currentHours = hoursInputs[record.id] ?? defaultHours;
+              const estimatedBucks = Math.round(currentHours * bucksPerHour);
+              const isAwarded =
+                record.hoursWorked && parseFloat(record.hoursWorked) > 0;
 
-            return (
-              <tr key={record.id} className="hover:bg-gray-50">
-                {/* Volunteer Info */}
-                <td className="px-6 py-4">
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {record.userName}
-                    </p>
-                    <p className="text-sm text-gray-500">{record.userEmail}</p>
-                  </div>
-                </td>
-
-                {/* Check-In Time */}
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    {record.checkInTime && (
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                    )}
-                    <span className="text-sm text-gray-700">
-                      {formatDateTime(record.checkInTime)}
-                    </span>
-                  </div>
-                </td>
-
-                {/* Check-Out Time */}
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-2">
-                    {record.checkOutTime ? (
-                      <>
-                        <CheckCircle className="w-4 h-4 text-green-600" />
-                        <span className="text-sm text-gray-700">
-                          {formatDateTime(record.checkOutTime)}
-                        </span>
-                      </>
-                    ) : (
-                      <span className="text-sm text-gray-500 flex items-center gap-2">
-                        <Clock className="w-4 h-4" />
-                        Still at event
-                      </span>
-                    )}
-                  </div>
-                </td>
-
-                {/* Hours Display */}
-                <td className="px-6 py-4">
-                  {isAwarded ? (
-                    <span className="font-bold text-gray-900">
-                      {parseFloat(record.hoursWorked!).toFixed(1)} hrs
-                    </span>
-                  ) : (
-                    <span className="text-sm text-gray-500">
-                      {defaultHours.toFixed(1)} hrs (auto)
-                    </span>
-                  )}
-                </td>
-
-                {/* Status */}
-                <td className="px-6 py-4">
-                  {isAwarded ? (
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1 w-fit">
-                      <Award className="w-3 h-3" />
-                      Awarded
-                    </span>
-                  ) : record.checkOutTime ? (
-                    <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
-                      Ready to Award
-                    </span>
-                  ) : (
-                    <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
-                      In Progress
-                    </span>
-                  )}
-                </td>
-
-                {/* Award Controls */}
-                <td className="px-6 py-4">
-                  {isAwarded ? (
-                    <div className="text-sm">
-                      <p className="font-bold text-orange-600 mb-1">
-                        {Math.round(
-                          parseFloat(record.hoursWorked!) * bucksPerHour,
-                        )}{" "}
-                        Bucks
+              return (
+                <tr key={record.id} className="hover:bg-gray-50">
+                  {/* Volunteer Info */}
+                  <td className="px-6 py-4">
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {record.userName}
                       </p>
-                      {record.adminNotes && (
-                        <p className="text-xs text-gray-500 italic">
-                          Note: {record.adminNotes}
-                        </p>
+                      <p className="text-sm text-gray-500">
+                        {record.userEmail}
+                      </p>
+                    </div>
+                  </td>
+
+                  {/* Check-In Time */}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      {record.checkInTime && (
+                        <CheckCircle className="w-4 h-4 text-green-600" />
+                      )}
+                      <span className="text-sm text-gray-700">
+                        {formatDateTime(record.checkInTime)}
+                      </span>
+                    </div>
+                  </td>
+
+                  {/* Check-Out Time */}
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      {record.checkOutTime ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 text-green-600" />
+                          <span className="text-sm text-gray-700">
+                            {formatDateTime(record.checkOutTime)}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-sm text-gray-500 flex items-center gap-2">
+                          <Clock className="w-4 h-4" />
+                          Still at event
+                        </span>
                       )}
                     </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {/* Hours Input */}
-                      <div className="flex items-center gap-2">
+                  </td>
+
+                  {/* Hours Display */}
+                  <td className="px-6 py-4">
+                    {isAwarded ? (
+                      <span className="font-bold text-gray-900">
+                        {parseFloat(record.hoursWorked!).toFixed(1)} hrs
+                      </span>
+                    ) : (
+                      <span className="text-sm text-gray-500">
+                        {defaultHours.toFixed(1)} hrs (auto)
+                      </span>
+                    )}
+                  </td>
+
+                  {/* Status */}
+                  <td className="px-6 py-4">
+                    {isAwarded ? (
+                      <span className="px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full flex items-center gap-1 w-fit">
+                        <Award className="w-3 h-3" />
+                        Awarded
+                      </span>
+                    ) : record.checkOutTime ? (
+                      <span className="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                        Ready to Award
+                      </span>
+                    ) : (
+                      <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
+                        In Progress
+                      </span>
+                    )}
+                  </td>
+
+                  {/* Award Controls */}
+                  <td className="px-6 py-4">
+                    {isAwarded ? (
+                      <div className="text-sm">
+                        <p className="font-bold text-orange-600 mb-1">
+                          {Math.round(
+                            parseFloat(record.hoursWorked!) * bucksPerHour,
+                          )}{" "}
+                          Bucks
+                        </p>
+                        {record.adminNotes && (
+                          <p className="text-xs text-gray-500 italic">
+                            Note: {record.adminNotes}
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {/* Hours Input */}
+                        <div className="flex items-center gap-2">
+                          <Input
+                            type="number"
+                            step="0.5"
+                            min="0"
+                            placeholder="Hours"
+                            value={hoursInputs[record.id] ?? defaultHours}
+                            onChange={(e) =>
+                              setHoursInputs({
+                                ...hoursInputs,
+                                [record.id]: parseFloat(e.target.value) || 0,
+                              })
+                            }
+                            className="w-24"
+                          />
+                          <span className="text-sm text-gray-600">
+                            = {estimatedBucks} bucks
+                          </span>
+                        </div>
+
+                        {/* Notes Input */}
                         <Input
-                          type="number"
-                          step="0.5"
-                          min="0"
-                          placeholder="Hours"
-                          value={hoursInputs[record.id] ?? defaultHours}
+                          placeholder="Admin notes (optional)"
+                          value={notesInputs[record.id] || ""}
                           onChange={(e) =>
-                            setHoursInputs({
-                              ...hoursInputs,
-                              [record.id]: parseFloat(e.target.value) || 0,
+                            setNotesInputs({
+                              ...notesInputs,
+                              [record.id]: e.target.value,
                             })
                           }
-                          className="w-24"
+                          className="text-sm"
                         />
-                        <span className="text-sm text-gray-600">
-                          = {estimatedBucks} bucks
-                        </span>
+
+                        {/* Award Button */}
+                        <Button
+                          onClick={() => handleAward(record.id)}
+                          disabled={
+                            awardingId === record.id ||
+                            !currentHours ||
+                            currentHours <= 0
+                          }
+                          className="w-full bg-orange-600 hover:bg-orange-700 text-white"
+                          size="sm"
+                        >
+                          {awardingId === record.id ? (
+                            "Awarding..."
+                          ) : (
+                            <>
+                              <Award className="w-4 h-4 mr-2" />
+                              Award {estimatedBucks} Bucks
+                            </>
+                          )}
+                        </Button>
                       </div>
-
-                      {/* Notes Input */}
-                      <Input
-                        placeholder="Admin notes (optional)"
-                        value={notesInputs[record.id] || ""}
-                        onChange={(e) =>
-                          setNotesInputs({
-                            ...notesInputs,
-                            [record.id]: e.target.value,
-                          })
-                        }
-                        className="text-sm"
-                      />
-
-                      {/* Award Button */}
-                      <Button
-                        onClick={() => handleAward(record.id)}
-                        disabled={
-                          awardingId === record.id ||
-                          !currentHours ||
-                          currentHours <= 0
-                        }
-                        className="w-full bg-orange-600 hover:bg-orange-700 text-white"
-                        size="sm"
-                      >
-                        {awardingId === record.id ? (
-                          "Awarding..."
-                        ) : (
-                          <>
-                            <Award className="w-4 h-4 mr-2" />
-                            Award {estimatedBucks} Bucks
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
 
           {/* Registered but not checked in */}
-          {registrations.map((reg) => (
-            <tr key={reg.registrationId} className="bg-gray-50">
-              <td className="px-6 py-4">
-                <div>
-                  <p className="font-medium text-gray-900">{reg.userName}</p>
-                  <p className="text-sm text-gray-500">{reg.userEmail}</p>
-                </div>
-              </td>
-              <td colSpan={5} className="px-6 py-4">
-                <span className="text-sm text-gray-500 italic">
-                  Registered but not checked in yet
-                </span>
-              </td>
-            </tr>
-          ))}
+          {registrations.length > 0 &&
+            registrations.map((reg) => (
+              <tr key={`reg-${reg.registrationId}`} className="bg-gray-50">
+                <td className="px-6 py-4">
+                  <div>
+                    <p className="font-medium text-gray-900">{reg.userName}</p>
+                    <p className="text-sm text-gray-500">{reg.userEmail}</p>
+                  </div>
+                </td>
+                <td colSpan={5} className="px-6 py-4">
+                  <span className="text-sm text-gray-500 italic">
+                    Registered but not checked in yet
+                  </span>
+                </td>
+              </tr>
+            ))}
 
           {/* Empty state */}
           {attendance.length === 0 && registrations.length === 0 && (
