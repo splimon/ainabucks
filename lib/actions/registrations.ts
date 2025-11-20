@@ -17,9 +17,9 @@ export async function registerForEvent(eventId: string) {
     // Get current user session
     const session = await auth();
     if (!session || !session.user?.id) {
-      return { 
-        success: false, 
-        error: "You must be logged in to register for events" 
+      return {
+        success: false,
+        error: "You must be logged in to register for events",
       };
     }
 
@@ -33,15 +33,15 @@ export async function registerForEvent(eventId: string) {
         and(
           eq(eventRegistrationsTable.userId, userId),
           eq(eventRegistrationsTable.eventId, eventId),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       )
       .limit(1);
 
     if (existingRegistration.length > 0) {
-      return { 
-        success: false, 
-        error: "You are already registered for this event" 
+      return {
+        success: false,
+        error: "You are already registered for this event",
       };
     }
 
@@ -54,7 +54,7 @@ export async function registerForEvent(eventId: string) {
           FROM ${eventRegistrationsTable} 
           WHERE ${eventRegistrationsTable.eventId} = ${eventId}
           AND ${eventRegistrationsTable.status} = 'REGISTERED'
-        )`.as('registration_count'),
+        )`.as("registration_count"),
       })
       .from(eventsTable)
       .where(eq(eventsTable.id, eventId))
@@ -66,9 +66,9 @@ export async function registerForEvent(eventId: string) {
 
     // Check if event is full
     if (event.registrationCount >= event.volunteersNeeded) {
-      return { 
-        success: false, 
-        error: "This event is full. No spots remaining." 
+      return {
+        success: false,
+        error: "This event is full. No spots remaining.",
       };
     }
 
@@ -87,9 +87,9 @@ export async function registerForEvent(eventId: string) {
     return { success: true };
   } catch (error) {
     console.error("Error registering for event:", error);
-    return { 
-      success: false, 
-      error: "Failed to register for event. Please try again." 
+    return {
+      success: false,
+      error: "Failed to register for event. Please try again.",
     };
   }
 }
@@ -101,9 +101,9 @@ export async function cancelRegistration(eventId: string) {
   try {
     const session = await auth();
     if (!session || !session.user?.id) {
-      return { 
-        success: false, 
-        error: "You must be logged in to cancel registrations" 
+      return {
+        success: false,
+        error: "You must be logged in to cancel registrations",
       };
     }
 
@@ -112,7 +112,7 @@ export async function cancelRegistration(eventId: string) {
     // Update registration status to CANCELLED
     await db
       .update(eventRegistrationsTable)
-      .set({ 
+      .set({
         status: "CANCELLED",
         updatedAt: new Date(),
       })
@@ -120,8 +120,8 @@ export async function cancelRegistration(eventId: string) {
         and(
           eq(eventRegistrationsTable.userId, userId),
           eq(eventRegistrationsTable.eventId, eventId),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       );
 
     // Revalidate relevant pages
@@ -132,9 +132,9 @@ export async function cancelRegistration(eventId: string) {
     return { success: true };
   } catch (error) {
     console.error("Error cancelling registration:", error);
-    return { 
-      success: false, 
-      error: "Failed to cancel registration. Please try again." 
+    return {
+      success: false,
+      error: "Failed to cancel registration. Please try again.",
     };
   }
 }
@@ -162,7 +162,7 @@ export async function getUserUpcomingEvents(userId: string) {
         zipCode: eventsTable.zipCode,
         duration: eventsTable.duration,
         ainaBucks: eventsTable.ainaBucks,
-        
+
         // Registration details
         registrationId: eventRegistrationsTable.id,
         registrationStatus: eventRegistrationsTable.status,
@@ -171,13 +171,13 @@ export async function getUserUpcomingEvents(userId: string) {
       .from(eventRegistrationsTable)
       .innerJoin(
         eventsTable,
-        eq(eventRegistrationsTable.eventId, eventsTable.id)
+        eq(eventRegistrationsTable.eventId, eventsTable.id),
       )
       .where(
         and(
           eq(eventRegistrationsTable.userId, userId),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       )
       .orderBy(eventsTable.date, eventsTable.startTime);
 
@@ -200,8 +200,8 @@ export async function isUserRegistered(userId: string, eventId: string) {
         and(
           eq(eventRegistrationsTable.userId, userId),
           eq(eventRegistrationsTable.eventId, eventId),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       )
       .limit(1);
 

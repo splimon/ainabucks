@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { registerForEvent, cancelRegistration } from "@/lib/actions/registrations";
+import {
+  registerForEvent,
+  cancelRegistration,
+} from "@/lib/actions/registrations";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -74,10 +77,7 @@ export default function RegisterButton({
   // If event is full, show disabled button
   if (spotsRemaining === 0) {
     return (
-      <Button
-        disabled
-        className="w-full py-6 text-lg font-semibold"
-      >
+      <Button disabled className="w-full py-6 text-lg font-semibold">
         Event Full
       </Button>
     );

@@ -10,25 +10,26 @@ interface VolunteerPageClientProps {
   initialEvents: Event[];
 }
 
-export default function VolunteerPageClient({ 
-  initialEvents 
+export default function VolunteerPageClient({
+  initialEvents,
 }: VolunteerPageClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // Get unique categories
-  const categories = ["all", ...new Set(initialEvents.map(e => e.category))];
+  const categories = ["all", ...new Set(initialEvents.map((e) => e.category))];
 
   // Filter events
   const filteredEvents = initialEvents.filter((event) => {
-    const matchesSearch = searchQuery === "" || 
+    const matchesSearch =
+      searchQuery === "" ||
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.description.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesCategory = selectedCategory === "all" || 
-      event.category === selectedCategory;
-    
+
+    const matchesCategory =
+      selectedCategory === "all" || event.category === selectedCategory;
+
     return matchesSearch && matchesCategory;
   });
 

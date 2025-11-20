@@ -5,7 +5,7 @@ import { db } from "@/database/drizzle";
 import { eventsTable } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import EventEditForm from '@/components/admin/events/EditEventForm';
+import EventEditForm from "@/components/admin/events/EditEventForm";
 
 interface EditEventPageProps {
   params: Promise<{

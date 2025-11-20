@@ -100,7 +100,7 @@ export const signUp = async (params: AuthCredentials) => {
         fullName,
       },
     });
-    
+
     // Sign in the user after successful sign up
     await signInWithCredentials({ email, password });
     return { success: true, message: "User created successfully" };

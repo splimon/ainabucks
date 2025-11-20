@@ -53,10 +53,16 @@ export default async function AdminEventsPage() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           {/* Table Header */}
           <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">Events Table</h2>
-            
+            <h2 className="text-xl font-semibold text-gray-900">
+              Events Table
+            </h2>
+
             {/* Sort button (can be implemented later) */}
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
               <ArrowUpDown className="w-4 h-4" />
               Sort
             </Button>

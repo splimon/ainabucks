@@ -19,9 +19,9 @@ interface CheckOutPageProps {
   }>;
 }
 
-export default async function CheckOutPage({ 
-  params, 
-  searchParams 
+export default async function CheckOutPage({
+  params,
+  searchParams,
 }: CheckOutPageProps) {
   const { eventId } = await params;
   const { token } = await searchParams;
@@ -30,7 +30,9 @@ export default async function CheckOutPage({
   const session = await auth();
   if (!session || !session.user?.id) {
     // Redirect to sign-in with return URL
-    redirect(`/sign-in?callbackUrl=/attendance/check-out/${eventId}?token=${token}`);
+    redirect(
+      `/sign-in?callbackUrl=/attendance/check-out/${eventId}?token=${token}`,
+    );
   }
 
   // Verify token exists
@@ -70,7 +72,8 @@ export default async function CheckOutPage({
             Invalid QR Code
           </h1>
           <p className="text-gray-600">
-            This QR code is not valid. Please scan the correct check-out QR code.
+            This QR code is not valid. Please scan the correct check-out QR
+            code.
           </p>
         </div>
       </div>
@@ -79,7 +82,7 @@ export default async function CheckOutPage({
 
   return (
     <div className="min-h-screen bg-linear-to-b from-orange-50 to-orange-100 flex items-center justify-center p-4">
-      <CheckOutForm 
+      <CheckOutForm
         event={event}
         token={token}
         userName={session.user.name || ""}

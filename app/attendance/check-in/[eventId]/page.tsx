@@ -19,9 +19,9 @@ interface CheckInPageProps {
   }>;
 }
 
-export default async function CheckInPage({ 
-  params, 
-  searchParams 
+export default async function CheckInPage({
+  params,
+  searchParams,
 }: CheckInPageProps) {
   const { eventId } = await params;
   const { token } = await searchParams;
@@ -30,7 +30,9 @@ export default async function CheckInPage({
   const session = await auth();
   if (!session || !session.user?.id) {
     // Redirect to sign-in with return URL
-    redirect(`/sign-in?callbackUrl=/attendance/check-in/${eventId}?token=${token}`);
+    redirect(
+      `/sign-in?callbackUrl=/attendance/check-in/${eventId}?token=${token}`,
+    );
   }
 
   // Verify token exists
@@ -79,7 +81,7 @@ export default async function CheckInPage({
 
   return (
     <div className="min-h-screen bg-linear-to-b from-green-50 to-green-100 flex items-center justify-center p-4">
-      <CheckInForm 
+      <CheckInForm
         event={event}
         token={token}
         userName={session.user.name || ""}

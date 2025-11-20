@@ -36,7 +36,7 @@ export default function EventsTable({ events }: EventsTableProps) {
 
   const handleDelete = async (eventId: string, eventTitle: string) => {
     const confirmed = confirm(
-      `Are you sure you want to delete "${eventTitle}"? This action cannot be undone.`
+      `Are you sure you want to delete "${eventTitle}"? This action cannot be undone.`,
     );
 
     if (!confirmed) return;
@@ -109,14 +109,16 @@ export default function EventsTable({ events }: EventsTableProps) {
               </tr>
             ) : (
               events.map((event) => {
-                const spotsRemaining = event.volunteersNeeded - (event.volunteersRegistered || 0);
-                const duration = typeof event.duration === 'string' 
-                  ? parseFloat(event.duration) 
-                  : event.duration;
+                const spotsRemaining =
+                  event.volunteersNeeded - (event.volunteersRegistered || 0);
+                const duration =
+                  typeof event.duration === "string"
+                    ? parseFloat(event.duration)
+                    : event.duration;
 
                 return (
-                  <tr 
-                    key={event.id} 
+                  <tr
+                    key={event.id}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     {/* Event Title */}
@@ -150,9 +152,7 @@ export default function EventsTable({ events }: EventsTableProps) {
                         <p className="font-medium text-gray-900">
                           {formatDate(event.date)}
                         </p>
-                        <p className="text-gray-500">
-                          {event.startTime}
-                        </p>
+                        <p className="text-gray-500">{event.startTime}</p>
                       </div>
                     </td>
 
@@ -172,17 +172,20 @@ export default function EventsTable({ events }: EventsTableProps) {
                     <td className="px-6 py-4">
                       <div className="text-sm">
                         <p className="font-medium text-gray-900">
-                          {event.volunteersRegistered || 0} / {event.volunteersNeeded}
+                          {event.volunteersRegistered || 0} /{" "}
+                          {event.volunteersNeeded}
                         </p>
-                        <p className={`text-xs ${
-                          spotsRemaining === 0 
-                            ? "text-red-600" 
-                            : spotsRemaining <= 5 
-                              ? "text-yellow-600" 
-                              : "text-green-600"
-                        }`}>
-                          {spotsRemaining === 0 
-                            ? "Full" 
+                        <p
+                          className={`text-xs ${
+                            spotsRemaining === 0
+                              ? "text-red-600"
+                              : spotsRemaining <= 5
+                                ? "text-yellow-600"
+                                : "text-green-600"
+                          }`}
+                        >
+                          {spotsRemaining === 0
+                            ? "Full"
                             : `${spotsRemaining} spots left`}
                         </p>
                       </div>
@@ -194,9 +197,7 @@ export default function EventsTable({ events }: EventsTableProps) {
                         <p className="font-bold text-orange-600">
                           {event.ainaBucks}
                         </p>
-                        <p className="text-gray-500 text-xs">
-                          {duration} hrs
-                        </p>
+                        <p className="text-gray-500 text-xs">{duration} hrs</p>
                       </div>
                     </td>
 
@@ -230,11 +231,7 @@ export default function EventsTable({ events }: EventsTableProps) {
                         </Link>
 
                         <Link href={`/volunteer/${event.id}`} target="_blank">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            title="View Event"
-                          >
+                          <Button variant="ghost" size="sm" title="View Event">
                             <Eye className="w-4 h-4" />
                           </Button>
                         </Link>

@@ -20,7 +20,6 @@ const Volunteer = async () => {
     .from(eventsTable)
     .orderBy(desc(eventsTable.createdAt));
 
-
   // Transform database results to match component expectations
   // This handles the decimal duration conversion and null handling
   const transformedEvents = latestEvents.map((event) => ({

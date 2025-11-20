@@ -1,7 +1,7 @@
 /*
-* types.d.ts
-* Shared TypeScript types
-*/
+ * types.d.ts
+ * Shared TypeScript types
+ */
 
 interface AuthCredentials {
   fullName: string;

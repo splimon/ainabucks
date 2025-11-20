@@ -6,7 +6,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { EventCreationSchema, type EventCreationInput } from "@/lib/validations";
+import {
+  EventCreationSchema,
+  type EventCreationInput,
+} from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,7 +29,7 @@ import { createEvent } from "@/lib/admin/actions/events";
 
 const EventCreationForm = () => {
   const router = useRouter();
-  
+
   // State for dynamic array inputs
   // These manage the "What to Bring" and "Requirements" lists
   const [whatToBringItems, setWhatToBringItems] = useState<string[]>([""]);
@@ -41,29 +44,29 @@ const EventCreationForm = () => {
       category: "",
       description: "",
       imageUrl: "",
-      
+
       // Date & Time
       date: "",
       startTime: "",
       endTime: "",
-      
+
       // Location
       locationName: "",
       address: "",
       city: "",
       state: "",
       zipCode: "",
-      
+
       // Volunteers & Rewards
       volunteersNeeded: 0,
       ainaBucks: 0,
       bucksPerHour: 0,
       duration: 0,
-      
+
       // Arrays
       whatToBring: [],
       requirements: [],
-      
+
       // Coordinator
       coordinatorName: "",
       coordinatorEmail: "",
@@ -80,10 +83,10 @@ const EventCreationForm = () => {
   const onSubmit = async (data: EventCreationInput) => {
     // Remove empty strings from dynamic arrays
     const filteredWhatToBring = whatToBringItems.filter(
-      (item) => item.trim() !== ""
+      (item) => item.trim() !== "",
     );
     const filteredRequirements = requirementItems.filter(
-      (item) => item.trim() !== ""
+      (item) => item.trim() !== "",
     );
 
     // Prepare final event data
@@ -155,7 +158,6 @@ const EventCreationForm = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          
           {/* ========================================== */}
           {/* BASIC INFORMATION SECTION */}
           {/* ========================================== */}
@@ -163,7 +165,7 @@ const EventCreationForm = () => {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Basic Information
             </h2>
-            
+
             <div className="space-y-6">
               {/* Event Title */}
               <FormField
@@ -173,9 +175,9 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Event Title *</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="e.g., Food Bank Sorting & Distribution" 
-                        {...field} 
+                      <Input
+                        placeholder="e.g., Food Bank Sorting & Distribution"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -191,9 +193,9 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Category *</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="e.g., Community Service, Environmental" 
-                        {...field} 
+                      <Input
+                        placeholder="e.g., Community Service, Environmental"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -228,13 +230,14 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Event Photo URL</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="https://example.com/event-photo.jpg" 
-                        {...field} 
+                      <Input
+                        placeholder="https://example.com/event-photo.jpg"
+                        {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      Optional: Add a photo URL to make your event more appealing
+                      Optional: Add a photo URL to make your event more
+                      appealing
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -250,7 +253,7 @@ const EventCreationForm = () => {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Date & Time
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Date */}
               <FormField
@@ -304,7 +307,7 @@ const EventCreationForm = () => {
           {/* ========================================== */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-6">Location</h2>
-            
+
             <div className="space-y-6">
               {/* Location Name */}
               <FormField
@@ -314,9 +317,9 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Location Name *</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="e.g., Hawaii Foodbank Warehouse" 
-                        {...field} 
+                      <Input
+                        placeholder="e.g., Hawaii Foodbank Warehouse"
+                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -332,10 +335,7 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Street Address *</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="e.g., 2611 Kilihau St" 
-                        {...field} 
-                      />
+                      <Input placeholder="e.g., 2611 Kilihau St" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -365,11 +365,13 @@ const EventCreationForm = () => {
                     <FormItem>
                       <FormLabel>State *</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="HI" 
-                          maxLength={2} 
+                        <Input
+                          placeholder="HI"
+                          maxLength={2}
                           {...field}
-                          onChange={(e) => field.onChange(e.target.value.toUpperCase())}
+                          onChange={(e) =>
+                            field.onChange(e.target.value.toUpperCase())
+                          }
                         />
                       </FormControl>
                       <FormMessage />
@@ -401,7 +403,7 @@ const EventCreationForm = () => {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Volunteers & Rewards
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Volunteers Needed */}
               <FormField
@@ -522,14 +524,16 @@ const EventCreationForm = () => {
                 Add Item
               </Button>
             </div>
-            
+
             <div className="space-y-3">
               {whatToBringItems.map((item, index) => (
                 <div key={index} className="flex gap-2">
                   <Input
                     placeholder="e.g., Closed-toe shoes (required for safety)"
                     value={item}
-                    onChange={(e) => updateWhatToBringItem(index, e.target.value)}
+                    onChange={(e) =>
+                      updateWhatToBringItem(index, e.target.value)
+                    }
                     className="flex-1"
                   />
                   {whatToBringItems.length > 1 && (
@@ -553,7 +557,9 @@ const EventCreationForm = () => {
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Requirements</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Requirements
+                </h2>
                 <p className="text-sm text-gray-500 mt-1">
                   List any requirements or qualifications (optional)
                 </p>
@@ -569,14 +575,16 @@ const EventCreationForm = () => {
                 Add Requirement
               </Button>
             </div>
-            
+
             <div className="space-y-3">
               {requirementItems.map((item, index) => (
                 <div key={index} className="flex gap-2">
                   <Input
                     placeholder="e.g., Must be at least 16 years old"
                     value={item}
-                    onChange={(e) => updateRequirementItem(index, e.target.value)}
+                    onChange={(e) =>
+                      updateRequirementItem(index, e.target.value)
+                    }
                     className="flex-1"
                   />
                   {requirementItems.length > 1 && (
@@ -601,7 +609,7 @@ const EventCreationForm = () => {
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               Event Coordinator
             </h2>
-            
+
             <div className="space-y-6">
               {/* Coordinator Name */}
               <FormField
@@ -645,10 +653,7 @@ const EventCreationForm = () => {
                   <FormItem>
                     <FormLabel>Coordinator Phone *</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="(808) 555-1234" 
-                        {...field} 
-                      />
+                      <Input placeholder="(808) 555-1234" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

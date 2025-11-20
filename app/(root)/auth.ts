@@ -18,7 +18,7 @@ declare module "next-auth" {
     role: "USER" | "ADMIN";
     status: "PENDING" | "APPROVED" | "REJECTED";
   }
-  
+
   interface Session {
     user: {
       id: string;
@@ -94,7 +94,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string;
         session.user.name = token.name as string;
         session.user.role = token.role as "USER" | "ADMIN";
-        session.user.status = token.status as "PENDING" | "APPROVED" | "REJECTED";
+        session.user.status = token.status as
+          | "PENDING"
+          | "APPROVED"
+          | "REJECTED";
       }
       return session;
     },

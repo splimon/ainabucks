@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
     <div
       className={cn(
         "w-64 bg-white border-r border-gray-200 flex flex-col h-screen justify-between fixed left-0 top-0 z-40",
-        className
+        className,
       )}
     >
       {/* Logo Section */}
@@ -66,7 +66,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
                     "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors cursor-pointer",
                     isSelected
                       ? "bg-green-700 text-white shadow-sm"
-                      : "text-gray-600 hover:bg-gray-100"
+                      : "text-gray-600 hover:bg-gray-100",
                   )}
                 >
                   <Icon className="w-5 h-5" />
@@ -105,9 +105,10 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
             className="p-2 text-gray-400 hover:text-red-800 hover:cursor-pointer transition-colors"
             aria-label="Logout"
           >
-            <LogOut 
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-5 h-5" />
+            <LogOut
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="w-5 h-5"
+            />
           </button>
         </div>
       </div>

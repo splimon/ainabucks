@@ -27,7 +27,9 @@ interface EventDetailPageProps {
   }>;
 }
 
-export default async function EventDetailPage({ params }: EventDetailPageProps) {
+export default async function EventDetailPage({
+  params,
+}: EventDetailPageProps) {
   const { id } = await params;
 
   // Get current user session
@@ -60,14 +62,14 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
       coordinatorName: eventsTable.coordinatorName,
       coordinatorEmail: eventsTable.coordinatorEmail,
       coordinatorPhone: eventsTable.coordinatorPhone,
-      
+
       // Count current registrations
       registrationCount: sql<number>`(
         SELECT COUNT(*) 
         FROM ${eventRegistrationsTable} 
         WHERE ${eventRegistrationsTable.eventId} = ${eventsTable.id}
         AND ${eventRegistrationsTable.status} = 'REGISTERED'
-      )`.as('registration_count'),
+      )`.as("registration_count"),
     })
     .from(eventsTable)
     .where(eq(eventsTable.id, id))
@@ -87,11 +89,11 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
         and(
           eq(eventRegistrationsTable.userId, userId),
           eq(eventRegistrationsTable.eventId, id),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       )
       .limit(1);
-    
+
     isRegistered = registration.length > 0;
   }
 
@@ -114,12 +116,14 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
-  const duration = typeof eventData.duration === 'string' 
-    ? parseFloat(eventData.duration) 
-    : eventData.duration;
+  const duration =
+    typeof eventData.duration === "string"
+      ? parseFloat(eventData.duration)
+      : eventData.duration;
 
   // Calculate spots remaining
-  const spotsRemaining = eventData.volunteersNeeded - eventData.registrationCount;
+  const spotsRemaining =
+    eventData.volunteersNeeded - eventData.registrationCount;
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -175,7 +179,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </h2>
                 <ul className="space-y-2">
                   {eventData.whatToBring.map((item, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-700">
+                    <li
+                      key={index}
+                      className="flex items-start gap-2 text-gray-700"
+                    >
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
                       <span>{item}</span>
                     </li>
@@ -193,7 +200,10 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </h2>
                 <ul className="space-y-2">
                   {eventData.requirements.map((requirement, index) => (
-                    <li key={index} className="flex items-start gap-2 text-gray-700">
+                    <li
+                      key={index}
+                      className="flex items-start gap-2 text-gray-700"
+                    >
                       <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 shrink-0" />
                       <span>{requirement}</span>
                     </li>
@@ -211,7 +221,9 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               <div className="space-y-2 text-gray-700">
                 <p className="font-semibold">{eventData.locationName}</p>
                 <p>{eventData.address}</p>
-                <p>{eventData.city}, {eventData.state} {eventData.zipCode}</p>
+                <p>
+                  {eventData.city}, {eventData.state} {eventData.zipCode}
+                </p>
               </div>
             </div>
 
@@ -227,7 +239,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </p>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Mail className="w-4 h-4" />
-                  <a 
+                  <a
                     href={`mailto:${eventData.coordinatorEmail}`}
                     className="hover:text-green-700 transition-colors"
                   >
@@ -236,7 +248,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Phone className="w-4 h-4" />
-                  <a 
+                  <a
                     href={`tel:${eventData.coordinatorPhone}`}
                     className="hover:text-green-700 transition-colors"
                   >
@@ -274,7 +286,8 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                       {formatDate(eventData.date)}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {formatTime(eventData.startTime)} - {formatTime(eventData.endTime)}
+                      {formatTime(eventData.startTime)} -{" "}
+                      {formatTime(eventData.endTime)}
                     </p>
                   </div>
                 </div>
@@ -283,7 +296,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-700">
-                    {duration} {duration === 1 ? 'hour' : 'hours'}
+                    {duration} {duration === 1 ? "hour" : "hours"}
                   </span>
                 </div>
 
@@ -297,7 +310,7 @@ export default async function EventDetailPage({ params }: EventDetailPageProps) 
               </div>
 
               {/* Registration Button Component */}
-              <RegisterButton 
+              <RegisterButton
                 eventId={id}
                 isRegistered={isRegistered}
                 spotsRemaining={spotsRemaining}

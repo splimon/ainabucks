@@ -1,18 +1,17 @@
-import React, { ReactNode } from 'react'
-import { auth } from '../(root)/auth';
-import { redirect } from 'next/navigation';
-import Sidebar from '@/components/admin/Sidebar';
-import Header from '@/components/admin/Header';
-import { db } from '@/database/drizzle';
-import { usersTable } from '@/database/schema';
+import React, { ReactNode } from "react";
+import { auth } from "../(root)/auth";
+import { redirect } from "next/navigation";
+import Sidebar from "@/components/admin/Sidebar";
+import Header from "@/components/admin/Header";
+import { db } from "@/database/drizzle";
+import { usersTable } from "@/database/schema";
 import { eq } from "drizzle-orm";
 
-const AdminLayout = async ({children} : {children: ReactNode}) => {
+const AdminLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();
 
   // If no session or user ID, redirect to sign-in page
-  if (!session?.user?.id) redirect('/sign-in');
-
+  if (!session?.user?.id) redirect("/sign-in");
 
   const isAdmin = await db
     .select({ isAdmin: usersTable.role })
@@ -23,20 +22,18 @@ const AdminLayout = async ({children} : {children: ReactNode}) => {
 
   if (!isAdmin) redirect("/");
 
-  
   return (
-    <main className='flex min-h-screen w-full flex-row'>
-      <Sidebar session={session}/>
+    <main className="flex min-h-screen w-full flex-row">
+      <Sidebar session={session} />
 
       <div className="flex-1 flex flex-col bg-gray-50 ml-64">
-        <Header session={session}/>
+        <Header session={session} />
         <main className="flex-1 overflow-y-auto bg-gray-50 p-8">
           {children}
         </main>
       </div>
-
     </main>
-  )
-}
+  );
+};
 
-export default AdminLayout
+export default AdminLayout;

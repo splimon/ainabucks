@@ -7,7 +7,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Calendar, MapPin, Clock, Loader2, Award } from "lucide-react";
+import {
+  CheckCircle,
+  Calendar,
+  MapPin,
+  Clock,
+  Loader2,
+  Award,
+} from "lucide-react";
 import { checkOutOfEvent } from "@/lib/actions/attendance";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -26,7 +33,11 @@ interface CheckOutFormProps {
   userName: string;
 }
 
-export default function CheckOutForm({ event, token, userName }: CheckOutFormProps) {
+export default function CheckOutForm({
+  event,
+  token,
+  userName,
+}: CheckOutFormProps) {
   const [isChecking, setIsChecking] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [checkOutData, setCheckOutData] = useState<{
@@ -83,9 +94,7 @@ export default function CheckOutForm({ event, token, userName }: CheckOutFormPro
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-12 h-12 text-orange-600" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Checked Out!
-          </h1>
+          <h1 className="text-3xl font-bold text-white mb-2">Checked Out!</h1>
           <p className="text-orange-100">
             Thank you for volunteering, {userName}
           </p>
@@ -119,13 +128,17 @@ export default function CheckOutForm({ event, token, userName }: CheckOutFormPro
               <div className="flex justify-between">
                 <span className="text-orange-700">Check-in:</span>
                 <span className="font-bold text-orange-900">
-                  {checkOutData.checkInTime ? formatDateTime(checkOutData.checkInTime) : 'N/A'}
+                  {checkOutData.checkInTime
+                    ? formatDateTime(checkOutData.checkInTime)
+                    : "N/A"}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-orange-700">Check-out:</span>
                 <span className="font-bold text-orange-900">
-                  {checkOutData.checkOutTime ? formatDateTime(checkOutData.checkOutTime) : 'N/A'}
+                  {checkOutData.checkOutTime
+                    ? formatDateTime(checkOutData.checkOutTime)
+                    : "N/A"}
                 </span>
               </div>
               <div className="border-t border-orange-300 pt-2 mt-2">
@@ -150,8 +163,9 @@ export default function CheckOutForm({ event, token, userName }: CheckOutFormPro
                   🎉 ʻĀina Bucks Coming Soon!
                 </p>
                 <p className="text-sm text-green-700">
-                  Your ʻĀina Bucks will be awarded by the event coordinator after 
-                  they review your attendance. Check your profile soon to see your rewards!
+                  Your ʻĀina Bucks will be awarded by the event coordinator
+                  after they review your attendance. Check your profile soon to
+                  see your rewards!
                 </p>
               </div>
             </div>
@@ -163,7 +177,7 @@ export default function CheckOutForm({ event, token, userName }: CheckOutFormPro
               🙏 Thank You for Making a Difference!
             </p>
             <p className="text-sm text-blue-700">
-              Your {checkOutData.hoursWorked} hours of service help strengthen 
+              Your {checkOutData.hoursWorked} hours of service help strengthen
               our community. We appreciate your dedication and time!
             </p>
           </div>
@@ -203,9 +217,7 @@ export default function CheckOutForm({ event, token, userName }: CheckOutFormPro
       <div className="p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Check Out
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Check Out</h1>
           <p className="text-gray-600">
             Finished volunteering? Check out below
           </p>

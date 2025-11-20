@@ -7,11 +7,22 @@ import React from "react";
 import { auth } from "../auth";
 import { redirect } from "next/navigation";
 import { getUserUpcomingEvents } from "@/lib/actions/registrations";
-import { Calendar, MapPin, Clock, DollarSign, Award, TrendingUp } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  Clock,
+  DollarSign,
+  Award,
+  TrendingUp,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { db } from "@/database/drizzle";
-import { usersTable, ainaBucksTransactionsTable, eventsTable } from "@/database/schema";
+import {
+  usersTable,
+  ainaBucksTransactionsTable,
+  eventsTable,
+} from "@/database/schema";
 import { eq, desc } from "drizzle-orm";
 
 const ProfilePage = async () => {
@@ -50,7 +61,7 @@ const ProfilePage = async () => {
     .from(ainaBucksTransactionsTable)
     .leftJoin(
       eventsTable,
-      eq(ainaBucksTransactionsTable.eventId, eventsTable.id)
+      eq(ainaBucksTransactionsTable.eventId, eventsTable.id),
     )
     .where(eq(ainaBucksTransactionsTable.userId, session.user.id))
     .orderBy(desc(ainaBucksTransactionsTable.createdAt))
@@ -87,8 +98,8 @@ const ProfilePage = async () => {
     });
   };
 
-  const totalHours = userData?.totalHoursVolunteered 
-    ? parseFloat(userData.totalHoursVolunteered.toString()) 
+  const totalHours = userData?.totalHoursVolunteered
+    ? parseFloat(userData.totalHoursVolunteered.toString())
     : 0;
 
   return (
@@ -118,7 +129,6 @@ const ProfilePage = async () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-
           {/* Current Balance */}
           <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between mb-2">
@@ -186,7 +196,9 @@ const ProfilePage = async () => {
           {upcomingEvents.length === 0 ? (
             <div className="text-center py-8">
               <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 mb-4">No upcoming events scheduled.</p>
+              <p className="text-gray-600 mb-4">
+                No upcoming events scheduled.
+              </p>
               <Link href="/volunteer">
                 <Button className="bg-green-700 hover:bg-green-800 text-white">
                   Browse Volunteer Opportunities
@@ -196,9 +208,10 @@ const ProfilePage = async () => {
           ) : (
             <div className="space-y-4">
               {upcomingEvents.map((event: any) => {
-                const duration = typeof event.duration === 'string' 
-                  ? parseFloat(event.duration) 
-                  : event.duration;
+                const duration =
+                  typeof event.duration === "string"
+                    ? parseFloat(event.duration)
+                    : event.duration;
 
                 return (
                   <Link
@@ -233,9 +246,13 @@ const ProfilePage = async () => {
                             <div className="text-right">
                               <div className="flex items-center gap-1 text-orange-600">
                                 <DollarSign className="w-4 h-4" />
-                                <span className="font-bold">{event.ainaBucks}</span>
+                                <span className="font-bold">
+                                  {event.ainaBucks}
+                                </span>
                               </div>
-                              <p className="text-xs text-gray-500">ʻĀina Bucks</p>
+                              <p className="text-xs text-gray-500">
+                                ʻĀina Bucks
+                              </p>
                             </div>
                           </div>
 
@@ -247,7 +264,8 @@ const ProfilePage = async () => {
                             <div className="flex items-center gap-2">
                               <Clock className="w-4 h-4" />
                               <span>
-                                {formatTime(event.startTime)} - {formatTime(event.endTime)}
+                                {formatTime(event.startTime)} -{" "}
+                                {formatTime(event.endTime)}
                               </span>
                             </div>
                             <div className="flex items-center gap-2">
@@ -265,7 +283,7 @@ const ProfilePage = async () => {
           )}
         </div>
 
-      {/* Recent Transactions */}
+        {/* Recent Transactions */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mt-6">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">
             Recent Transactions
@@ -313,7 +331,10 @@ const ProfilePage = async () => {
                       </p>
                       {transaction.hoursWorked && (
                         <p className="text-sm text-gray-600">
-                          {parseFloat(transaction.hoursWorked.toString()).toFixed(1)} hours worked
+                          {parseFloat(
+                            transaction.hoursWorked.toString(),
+                          ).toFixed(1)}{" "}
+                          hours worked
                         </p>
                       )}
                     </div>

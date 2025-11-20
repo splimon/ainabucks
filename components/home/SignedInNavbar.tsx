@@ -115,9 +115,9 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
             >
               Sign Out
             </Button>*/}
-            <LogOut 
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="w-6 h-6 text-red-700 hover:text-red-900 hover:cursor-pointer transition-colors"
+            <LogOut
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="w-6 h-6 text-red-700 hover:text-red-900 hover:cursor-pointer transition-colors"
             />
           </div>
         </div>

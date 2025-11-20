@@ -25,7 +25,11 @@ interface CheckInFormProps {
   userName: string;
 }
 
-export default function CheckInForm({ event, token, userName }: CheckInFormProps) {
+export default function CheckInForm({
+  event,
+  token,
+  userName,
+}: CheckInFormProps) {
   const [isChecking, setIsChecking] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [checkInTime, setCheckInTime] = useState<Date | null>(null);
@@ -77,12 +81,8 @@ export default function CheckInForm({ event, token, userName }: CheckInFormProps
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
             <CheckCircle className="w-12 h-12 text-green-600" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Checked In!
-          </h1>
-          <p className="text-green-100">
-            Welcome, {userName}
-          </p>
+          <h1 className="text-3xl font-bold text-white mb-2">Checked In!</h1>
+          <p className="text-green-100">Welcome, {userName}</p>
         </div>
 
         {/* Event Details */}
@@ -169,12 +169,8 @@ export default function CheckInForm({ event, token, userName }: CheckInFormProps
       <div className="p-8">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Check In
-          </h1>
-          <p className="text-gray-600">
-            Ready to start volunteering?
-          </p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Check In</h1>
+          <p className="text-gray-600">Ready to start volunteering?</p>
         </div>
 
         {/* Event Details */}

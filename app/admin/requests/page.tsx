@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const RequestsPage = () => {
-  return (
-    <div>REQUESTS PAGE</div>
-  )
-}
+  return <div>REQUESTS PAGE</div>;
+};
 
-export default RequestsPage
+export default RequestsPage;

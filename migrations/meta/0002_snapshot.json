@@ -56,12 +56,8 @@
           "name": "event_registrations_user_id_users_table_id_fk",
           "tableFrom": "event_registrations",
           "tableTo": "users_table",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -69,12 +65,8 @@
           "name": "event_registrations_event_id_events_id_fk",
           "tableFrom": "event_registrations",
           "tableTo": "events",
-          "columnsFrom": [
-            "event_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["event_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -84,9 +76,7 @@
         "event_registrations_id_unique": {
           "name": "event_registrations_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -252,9 +242,7 @@
         "events_id_unique": {
           "name": "events_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -321,16 +309,12 @@
         "users_table_id_unique": {
           "name": "users_table_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         },
         "users_table_email_unique": {
           "name": "users_table_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -342,39 +326,22 @@
     "public.event_status": {
       "name": "event_status",
       "schema": "public",
-      "values": [
-        "DRAFT",
-        "PUBLISHED",
-        "CANCELLED",
-        "COMPLETED"
-      ]
+      "values": ["DRAFT", "PUBLISHED", "CANCELLED", "COMPLETED"]
     },
     "public.registration_status": {
       "name": "registration_status",
       "schema": "public",
-      "values": [
-        "REGISTERED",
-        "ATTENDED",
-        "NO_SHOW",
-        "CANCELLED"
-      ]
+      "values": ["REGISTERED", "ATTENDED", "NO_SHOW", "CANCELLED"]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "USER",
-        "ADMIN"
-      ]
+      "values": ["USER", "ADMIN"]
     },
     "public.status": {
       "name": "status",
       "schema": "public",
-      "values": [
-        "PENDING",
-        "APPROVED",
-        "REJECTED"
-      ]
+      "values": ["PENDING", "APPROVED", "REJECTED"]
     }
   },
   "schemas": {},

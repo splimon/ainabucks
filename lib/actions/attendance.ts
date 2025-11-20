@@ -45,7 +45,7 @@ interface AwardAinaBucksResponse {
  */
 export async function checkInToEvent(
   eventId: string,
-  token: string
+  token: string,
 ): Promise<ServerActionResponse<CheckInData>> {
   try {
     // Get current user session
@@ -95,8 +95,8 @@ export async function checkInToEvent(
         and(
           eq(eventRegistrationsTable.userId, userId),
           eq(eventRegistrationsTable.eventId, eventId),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       )
       .limit(1);
 
@@ -114,8 +114,8 @@ export async function checkInToEvent(
       .where(
         and(
           eq(eventAttendanceTable.userId, userId),
-          eq(eventAttendanceTable.eventId, eventId)
-        )
+          eq(eventAttendanceTable.eventId, eventId),
+        ),
       )
       .limit(1);
 
@@ -170,7 +170,7 @@ interface CheckOutData {
  */
 export async function checkOutOfEvent(
   eventId: string,
-  token: string
+  token: string,
 ): Promise<ServerActionResponse<CheckOutData>> {
   try {
     // Get current user session
@@ -217,8 +217,8 @@ export async function checkOutOfEvent(
       .where(
         and(
           eq(eventAttendanceTable.userId, userId),
-          eq(eventAttendanceTable.eventId, eventId)
-        )
+          eq(eventAttendanceTable.eventId, eventId),
+        ),
       )
       .limit(1);
 
@@ -278,7 +278,7 @@ export async function checkOutOfEvent(
  * Get user's attendance record for an event
  */
 export async function getUserEventAttendance(
-  eventId: string
+  eventId: string,
 ): Promise<ServerActionResponse> {
   try {
     const session = await auth();
@@ -292,8 +292,8 @@ export async function getUserEventAttendance(
       .where(
         and(
           eq(eventAttendanceTable.userId, session.user.id),
-          eq(eventAttendanceTable.eventId, eventId)
-        )
+          eq(eventAttendanceTable.eventId, eventId),
+        ),
       )
       .limit(1);
 
@@ -324,31 +324,25 @@ export async function getEventAttendance(eventId: string) {
         hoursWorked: eventAttendanceTable.hoursWorked,
         status: eventAttendanceTable.status,
         adminNotes: eventAttendanceTable.adminNotes,
-        
+
         // User info
         userId: usersTable.id,
         userName: usersTable.fullName,
         userEmail: usersTable.email,
-        
+
         // Event info
         eventTitle: eventsTable.title,
         bucksPerHour: eventsTable.bucksPerHour,
-        
+
         // Registration info
         registrationStatus: eventRegistrationsTable.status,
       })
       .from(eventAttendanceTable)
-      .innerJoin(
-        usersTable,
-        eq(eventAttendanceTable.userId, usersTable.id)
-      )
-      .innerJoin(
-        eventsTable,
-        eq(eventAttendanceTable.eventId, eventsTable.id)
-      )
+      .innerJoin(usersTable, eq(eventAttendanceTable.userId, usersTable.id))
+      .innerJoin(eventsTable, eq(eventAttendanceTable.eventId, eventsTable.id))
       .innerJoin(
         eventRegistrationsTable,
-        eq(eventAttendanceTable.registrationId, eventRegistrationsTable.id)
+        eq(eventAttendanceTable.registrationId, eventRegistrationsTable.id),
       )
       .where(eq(eventAttendanceTable.eventId, eventId));
 
@@ -371,7 +365,7 @@ export async function getEventAttendance(eventId: string) {
 export async function awardAinaBucks(
   attendanceId: string,
   hoursWorked: number,
-  adminNotes?: string
+  adminNotes?: string,
 ): Promise<ServerActionResponse<AwardAinaBucksResponse>> {
   try {
     // Verify admin
@@ -392,10 +386,7 @@ export async function awardAinaBucks(
         eventTitle: eventsTable.title,
       })
       .from(eventAttendanceTable)
-      .innerJoin(
-        eventsTable,
-        eq(eventAttendanceTable.eventId, eventsTable.id)
-      )
+      .innerJoin(eventsTable, eq(eventAttendanceTable.eventId, eventsTable.id))
       .where(eq(eventAttendanceTable.id, attendanceId))
       .limit(1);
 
@@ -454,8 +445,8 @@ export async function awardAinaBucks(
         .where(
           and(
             eq(eventRegistrationsTable.userId, attendance.userId),
-            eq(eventRegistrationsTable.eventId, attendance.eventId)
-          )
+            eq(eventRegistrationsTable.eventId, attendance.eventId),
+          ),
         );
     });
 
@@ -494,15 +485,12 @@ export async function getEventRegistrations(eventId: string) {
         registeredAt: eventRegistrationsTable.registeredAt,
       })
       .from(eventRegistrationsTable)
-      .innerJoin(
-        usersTable,
-        eq(eventRegistrationsTable.userId, usersTable.id)
-      )
+      .innerJoin(usersTable, eq(eventRegistrationsTable.userId, usersTable.id))
       .where(
         and(
           eq(eventRegistrationsTable.eventId, eventId),
-          eq(eventRegistrationsTable.status, "REGISTERED")
-        )
+          eq(eventRegistrationsTable.status, "REGISTERED"),
+        ),
       )
       .orderBy(eventRegistrationsTable.registeredAt);
 

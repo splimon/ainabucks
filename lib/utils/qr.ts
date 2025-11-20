@@ -18,7 +18,7 @@ export function generateQRCodeURL(data: string, size: number = 300): string {
  * Generate check-in URL for an event
  */
 export function getCheckInURL(eventId: string, checkInToken: string): string {
-  const baseURL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const baseURL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   return `${baseURL}/attendance/check-in/${eventId}?token=${checkInToken}`;
 }
 
@@ -26,7 +26,7 @@ export function getCheckInURL(eventId: string, checkInToken: string): string {
  * Generate check-out URL for an event
  */
 export function getCheckOutURL(eventId: string, checkOutToken: string): string {
-  const baseURL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const baseURL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
   return `${baseURL}/attendance/check-out/${eventId}?token=${checkOutToken}`;
 }
 
@@ -36,11 +36,11 @@ export function getCheckOutURL(eventId: string, checkOutToken: string): string {
 export function generateEventQRCodes(
   eventId: string,
   checkInToken: string,
-  checkOutToken: string
+  checkOutToken: string,
 ) {
   const checkInURL = getCheckInURL(eventId, checkInToken);
   const checkOutURL = getCheckOutURL(eventId, checkOutToken);
-  
+
   return {
     checkIn: {
       url: checkInURL,

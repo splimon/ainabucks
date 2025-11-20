@@ -63,7 +63,10 @@ export default function AttendanceTable({
     });
   };
 
-  const calculateDefaultHours = (checkIn: Date | null, checkOut: Date | null) => {
+  const calculateDefaultHours = (
+    checkIn: Date | null,
+    checkOut: Date | null,
+  ) => {
     if (!checkIn || !checkOut) return 0;
     const diff = new Date(checkOut).getTime() - new Date(checkIn).getTime();
     return Math.round((diff / (1000 * 60 * 60)) * 2) / 2; // Round to nearest 0.5
@@ -83,12 +86,12 @@ export default function AttendanceTable({
       const result = await awardAinaBucks(
         attendanceId,
         hours,
-        notesInputs[attendanceId] || undefined // optional notes
+        notesInputs[attendanceId] || undefined, // optional notes
       );
 
       if (result.success && result.data) {
         toast.success(
-          `Awarded ${result.data.ainaBucks} ʻĀina Bucks for ${result.data.hoursWorked} hours!`
+          `Awarded ${result.data.ainaBucks} ʻĀina Bucks for ${result.data.hoursWorked} hours!`,
         );
         router.refresh();
       } else {
@@ -132,18 +135,21 @@ export default function AttendanceTable({
           {attendance.map((record) => {
             const defaultHours = calculateDefaultHours(
               record.checkInTime,
-              record.checkOutTime
+              record.checkOutTime,
             );
             const currentHours = hoursInputs[record.id] ?? defaultHours;
             const estimatedBucks = Math.round(currentHours * bucksPerHour);
-            const isAwarded = record.hoursWorked && parseFloat(record.hoursWorked) > 0;
+            const isAwarded =
+              record.hoursWorked && parseFloat(record.hoursWorked) > 0;
 
             return (
               <tr key={record.id} className="hover:bg-gray-50">
                 {/* Volunteer Info */}
                 <td className="px-6 py-4">
                   <div>
-                    <p className="font-medium text-gray-900">{record.userName}</p>
+                    <p className="font-medium text-gray-900">
+                      {record.userName}
+                    </p>
                     <p className="text-sm text-gray-500">{record.userEmail}</p>
                   </div>
                 </td>
@@ -215,7 +221,10 @@ export default function AttendanceTable({
                   {isAwarded ? (
                     <div className="text-sm">
                       <p className="font-bold text-orange-600 mb-1">
-                        {Math.round(parseFloat(record.hoursWorked!) * bucksPerHour)} Bucks
+                        {Math.round(
+                          parseFloat(record.hoursWorked!) * bucksPerHour,
+                        )}{" "}
+                        Bucks
                       </p>
                       {record.adminNotes && (
                         <p className="text-xs text-gray-500 italic">

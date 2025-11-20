@@ -11,7 +11,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import AttendanceTable from "@/components/admin/attendance/AttendanceTable";
-import { getEventAttendance, getEventRegistrations } from "@/lib/actions/attendance";
+import {
+  getEventAttendance,
+  getEventRegistrations,
+} from "@/lib/actions/attendance";
 
 interface AttendancePageProps {
   params: Promise<{
@@ -39,13 +42,17 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
 
   // Fetch registrations (users who registered but haven't checked in)
   const registrationsResult = await getEventRegistrations(id);
-  const registrations = registrationsResult.success ? registrationsResult.data : [];
+  const registrations = registrationsResult.success
+    ? registrationsResult.data
+    : [];
 
   // Calculate stats
   const totalRegistered = attendance.length + registrations.length;
   const checkedIn = attendance.filter((a: any) => a.checkInTime).length;
   const checkedOut = attendance.filter((a: any) => a.checkOutTime).length;
-  const awarded = attendance.filter((a: any) => a.hoursWorked && parseFloat(a.hoursWorked) > 0).length;
+  const awarded = attendance.filter(
+    (a: any) => a.hoursWorked && parseFloat(a.hoursWorked) > 0,
+  ).length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -65,9 +72,7 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Attendance Management
             </h1>
-            <p className="text-lg text-gray-600 mb-6">
-              {event.title}
-            </p>
+            <p className="text-lg text-gray-600 mb-6">{event.title}</p>
 
             {/* Event Info */}
             <div className="flex flex-wrap gap-4 text-sm">
@@ -98,7 +103,9 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
           {/* Total Registered */}
           <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
             <p className="text-sm text-gray-600 mb-2">Total Registered</p>
-            <p className="text-3xl font-bold text-gray-900">{totalRegistered}</p>
+            <p className="text-3xl font-bold text-gray-900">
+              {totalRegistered}
+            </p>
           </div>
 
           {/* Checked In */}
@@ -131,7 +138,7 @@ export default async function AttendancePage({ params }: AttendancePageProps) {
             </p>
           </div>
 
-          <AttendanceTable 
+          <AttendanceTable
             attendance={attendance}
             registrations={registrations}
             eventId={id}

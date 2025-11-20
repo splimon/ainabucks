@@ -1,15 +1,15 @@
 // components/volunteer/VolunteerList.tsx
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { 
-  Calendar, 
-  MapPin, 
-  ChevronRight, 
+import {
+  Calendar,
+  MapPin,
+  ChevronRight,
   ImageIcon,
   Users,
   Clock,
   DollarSign,
-  Tag
+  Tag,
 } from "lucide-react";
 import type { Event } from "@/database/schema";
 import Link from "next/link";
@@ -57,7 +57,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
    */
   const getStatusBadge = (event: Event) => {
     const spotsRemaining = getSpotsRemaining(event);
-    
+
     if (spotsRemaining === 0) {
       return (
         <span className="px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-full">
@@ -84,9 +84,10 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {events.map((event) => {
           const spotsRemaining = getSpotsRemaining(event);
-          const duration = typeof event.duration === 'string' 
-            ? parseFloat(event.duration) 
-            : event.duration;
+          const duration =
+            typeof event.duration === "string"
+              ? parseFloat(event.duration)
+              : event.duration;
 
           return (
             <div
@@ -106,7 +107,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                     <ImageIcon className="w-20 h-20 text-gray-400" />
                   </div>
                 )}
-                
+
                 {/* Category Badge - Top Left */}
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-gray-800 text-xs font-semibold rounded-full flex items-center gap-1">
@@ -138,7 +139,8 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                         {formatDate(event.date)}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {formatTime(event.startTime)} - {formatTime(event.endTime)}
+                        {formatTime(event.startTime)} -{" "}
+                        {formatTime(event.endTime)}
                       </p>
                     </div>
                   </div>
@@ -147,7 +149,9 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                   <div className="flex items-start gap-3 text-gray-600">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
                     <div className="flex-1">
-                      <p className="text-sm font-medium">{event.locationName}</p>
+                      <p className="text-sm font-medium">
+                        {event.locationName}
+                      </p>
                       <p className="text-sm text-gray-500">
                         {event.city}, {event.state}
                       </p>
@@ -158,7 +162,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                   <div className="flex items-center gap-3 text-gray-600">
                     <Clock className="w-5 h-5 shrink-0" />
                     <span className="text-sm">
-                      {duration} {duration === 1 ? 'hour' : 'hours'}
+                      {duration} {duration === 1 ? "hour" : "hours"}
                     </span>
                   </div>
 
@@ -166,7 +170,8 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                   <div className="flex items-center gap-3 text-gray-600">
                     <Users className="w-5 h-5 shrink-0" />
                     <span className="text-sm">
-                      {spotsRemaining} of {event.volunteersNeeded} spots available
+                      {spotsRemaining} of {event.volunteersNeeded} spots
+                      available
                     </span>
                   </div>
                 </div>
@@ -194,7 +199,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
 
                   {/* Learn More Button */}
                   <Link href={`/volunteer/${event.id}`}>
-                    <Button 
+                    <Button
                       className="bg-green-700 hover:bg-green-800 text-white px-6 py-2 rounded-lg font-semibold flex items-center gap-2 transition-colors"
                       disabled={spotsRemaining === 0}
                     >

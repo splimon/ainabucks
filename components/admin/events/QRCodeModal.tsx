@@ -16,19 +16,23 @@ interface QRCodeModalProps {
   onClose: () => void;
 }
 
-export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps) {
+export default function QRCodeModal({
+  event,
+  isOpen,
+  onClose,
+}: QRCodeModalProps) {
   if (!isOpen) return null;
 
   // Generate QR codes
   const qrCodes = generateEventQRCodes(
     event.id,
     event.checkInToken!,
-    event.checkOutToken!
+    event.checkOutToken!,
   );
 
   // Download QR code as image
   const downloadQR = (url: string, filename: string) => {
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
@@ -44,22 +48,18 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div 
+      <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onClose}
       />
-      
+
       {/* Modal Content */}
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">
-              Event QR Codes
-            </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {event.title}
-            </p>
+            <h2 className="text-2xl font-bold text-gray-900">Event QR Codes</h2>
+            <p className="text-sm text-gray-600 mt-1">{event.title}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -94,7 +94,7 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
                 Scan to sign in to the event
               </p>
             </div>
-            
+
             {/* QR Code */}
             <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
               <img
@@ -114,10 +114,9 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
 
             {/* Download Button */}
             <Button
-              onClick={() => downloadQR(
-                qrCodes.checkIn.qrCode,
-                `${event.title}-checkin.png`
-              )}
+              onClick={() =>
+                downloadQR(qrCodes.checkIn.qrCode, `${event.title}-checkin.png`)
+              }
               className="w-full bg-green-700 hover:bg-green-800 text-white print:hidden"
             >
               <Download className="w-4 h-4 mr-2" />
@@ -135,7 +134,7 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
                 Scan to sign out of the event
               </p>
             </div>
-            
+
             {/* QR Code */}
             <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
               <img
@@ -155,10 +154,12 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
 
             {/* Download Button */}
             <Button
-              onClick={() => downloadQR(
-                qrCodes.checkOut.qrCode,
-                `${event.title}-checkout.png`
-              )}
+              onClick={() =>
+                downloadQR(
+                  qrCodes.checkOut.qrCode,
+                  `${event.title}-checkout.png`,
+                )
+              }
               className="w-full bg-orange-700 hover:bg-orange-800 text-white print:hidden"
             >
               <Download className="w-4 h-4 mr-2" />
@@ -185,7 +186,9 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
             </li>
             <li className="flex gap-2">
               <span className="font-bold">4.</span>
-              <span>Review attendance and award ʻĀina Bucks in the admin panel</span>
+              <span>
+                Review attendance and award ʻĀina Bucks in the admin panel
+              </span>
             </li>
           </ol>
         </div>
@@ -194,11 +197,22 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
         <div className="hidden print:block p-6 border-t border-gray-200">
           <h4 className="font-bold text-gray-900 mb-2">Event Details:</h4>
           <div className="text-sm text-gray-700 space-y-1">
-            <p><strong>Title:</strong> {event.title}</p>
-            <p><strong>Date:</strong> {event.date}</p>
-            <p><strong>Time:</strong> {event.startTime} - {event.endTime}</p>
-            <p><strong>Location:</strong> {event.locationName}</p>
-            <p><strong>Reward:</strong> {event.ainaBucks} ʻĀina Bucks ({event.bucksPerHour}/hour)</p>
+            <p>
+              <strong>Title:</strong> {event.title}
+            </p>
+            <p>
+              <strong>Date:</strong> {event.date}
+            </p>
+            <p>
+              <strong>Time:</strong> {event.startTime} - {event.endTime}
+            </p>
+            <p>
+              <strong>Location:</strong> {event.locationName}
+            </p>
+            <p>
+              <strong>Reward:</strong> {event.ainaBucks} ʻĀina Bucks (
+              {event.bucksPerHour}/hour)
+            </p>
           </div>
         </div>
       </div>
