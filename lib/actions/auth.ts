@@ -92,7 +92,7 @@ export const signUp = async (params: AuthCredentials) => {
 
     // console.log(`✅ User created: ${email}`); // DEBUGGING
 
-    // Trigger welcome email workflow via Upstash Workflow
+    // Trigger pending approval email workflow via Upstash Workflow
     await workflowClient.trigger({
       url: `${config.env.prodApiEndpoint}/api/workflow/onboarding`,
       body: {
@@ -101,7 +101,7 @@ export const signUp = async (params: AuthCredentials) => {
       },
     });
 
-    // Sign in the user after successful sign up
+    // Sign in the user after successful sign up (they'll be redirected to pending page by middleware)
     await signInWithCredentials({ email, password });
     return { success: true, message: "User created successfully" };
   } catch (error) {

@@ -9,6 +9,8 @@ import { db } from "@/database/drizzle";
 import { usersTable } from "@/database/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { workflowClient } from "@/lib/workflow";
+import config from "@/lib/config";
 
 // Standard response format for server actions
 interface ServerActionResponse<T = unknown> {
@@ -209,6 +211,169 @@ export const updateUserStatus = async (
     return {
       success: false,
       error: "Failed to update user status. Please try again.",
+    };
+  }
+};
+
+// ============================================
+// GET PENDING USERS ACTION
+// ============================================
+
+/**
+ * Fetches all users with PENDING status
+ * Returns users sorted by creation date (oldest first for review queue)
+ *
+ * @returns Success response with pending users array, or error response
+ */
+export const getPendingUsers = async (): Promise<
+  ServerActionResponse<UserData[]>
+> => {
+  try {
+    const pendingUsers = await db
+      .select({
+        id: usersTable.id,
+        fullName: usersTable.fullName,
+        email: usersTable.email,
+        role: usersTable.role,
+        status: usersTable.status,
+        totalAinaBucksEarned: usersTable.totalAinaBucksEarned,
+        currentAinaBucks: usersTable.currentAinaBucks,
+        totalHoursVolunteered: usersTable.totalHoursVolunteered,
+        createdAt: usersTable.createdAt,
+      })
+      .from(usersTable)
+      .where(eq(usersTable.status, "PENDING"))
+      .orderBy(usersTable.createdAt); // Oldest first
+
+    return {
+      success: true,
+      data: pendingUsers,
+    };
+  } catch (error) {
+    console.error("Error fetching pending users:", error);
+    return {
+      success: false,
+      error: "Failed to fetch pending users. Please try again.",
+    };
+  }
+};
+
+// ============================================
+// APPROVE USER ACCOUNT ACTION
+// ============================================
+
+/**
+ * Approves a pending user account and sends approval email
+ *
+ * @param userId - The ID of the user to approve
+ * @returns Success response or error response
+ */
+export const approveUserAccount = async (
+  userId: string,
+): Promise<ServerActionResponse> => {
+  try {
+    // Get user details
+    const user = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId))
+      .limit(1);
+
+    if (user.length === 0) {
+      return {
+        success: false,
+        error: "User not found.",
+      };
+    }
+
+    // Update user status to APPROVED
+    await db
+      .update(usersTable)
+      .set({ status: "APPROVED" })
+      .where(eq(usersTable.id, userId));
+
+    // Send approval email via workflow
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflow/account-approval`,
+      body: {
+        email: user[0].email,
+        fullName: user[0].fullName,
+      },
+    });
+
+    // Revalidate pages
+    revalidatePath("/admin/requests");
+    revalidatePath("/admin/users");
+
+    return {
+      success: true,
+      data: { userId, status: "APPROVED" },
+    };
+  } catch (error) {
+    console.error("Error approving user account:", error);
+    return {
+      success: false,
+      error: "Failed to approve user account. Please try again.",
+    };
+  }
+};
+
+// ============================================
+// REJECT USER ACCOUNT ACTION
+// ============================================
+
+/**
+ * Rejects a pending user account and sends rejection email
+ *
+ * @param userId - The ID of the user to reject
+ * @returns Success response or error response
+ */
+export const rejectUserAccount = async (
+  userId: string,
+): Promise<ServerActionResponse> => {
+  try {
+    // Get user details
+    const user = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, userId))
+      .limit(1);
+
+    if (user.length === 0) {
+      return {
+        success: false,
+        error: "User not found.",
+      };
+    }
+
+    // Update user status to REJECTED
+    await db
+      .update(usersTable)
+      .set({ status: "REJECTED" })
+      .where(eq(usersTable.id, userId));
+
+    // Send rejection email via workflow
+    await workflowClient.trigger({
+      url: `${config.env.prodApiEndpoint}/api/workflow/account-rejection`,
+      body: {
+        email: user[0].email,
+        fullName: user[0].fullName,
+      },
+    });
+
+    // Revalidate pages
+    revalidatePath("/admin/requests");
+    revalidatePath("/admin/users");
+
+    return {
+      success: true,
+      data: { userId, status: "REJECTED" },
+    };
+  } catch (error) {
+    console.error("Error rejecting user account:", error);
+    return {
+      success: false,
+      error: "Failed to reject user account. Please try again.",
     };
   }
 };

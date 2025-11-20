@@ -14,7 +14,7 @@ import {
   QrCode,
   Users,
   Search,
-  ChevronDown,
+  ArrowUpDown,
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -110,7 +110,7 @@ export default function EventsTable({ events }: EventsTableProps) {
               className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1"
             >
               Sort
-              <ChevronDown
+              <ArrowUpDown
                 className={`w-4 h-4 transition-transform ${
                   sortOrder === "desc" ? "rotate-180" : ""
                 }`}
@@ -132,7 +132,7 @@ export default function EventsTable({ events }: EventsTableProps) {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-lg">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>

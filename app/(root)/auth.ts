@@ -101,5 +101,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
+    // Redirect users based on their account status
+    async authorized({ auth, request }) {
+      const { pathname } = request.nextUrl;
+      const isLoggedIn = !!auth?.user;
+      const userStatus = auth?.user?.status;
+      const userRole = auth?.user?.role;
+
+      // Public routes that don't require authentication
+      const isPublicRoute =
+        pathname.startsWith("/sign-in") || pathname.startsWith("/sign-up");
+
+      // Allow access to pending approval page for pending users
+      if (pathname === "/pending-approval") {
+        return isLoggedIn;
+      }
+
+      // Redirect pending or rejected users to pending approval page
+      if (
+        isLoggedIn &&
+        (userStatus === "PENDING" || userStatus === "REJECTED") &&
+        !pathname.startsWith("/pending-approval") &&
+        !isPublicRoute
+      ) {
+        const url = request.nextUrl.clone();
+        url.pathname = "/pending-approval";
+        return Response.redirect(url);
+      }
+
+      // Admin routes - only allow APPROVED admins
+      if (pathname.startsWith("/admin")) {
+        return isLoggedIn && userRole === "ADMIN" && userStatus === "APPROVED";
+      }
+
+      // Protected routes - require authentication and approved status
+      if (!isPublicRoute) {
+        return isLoggedIn && userStatus === "APPROVED";
+      }
+
+      // Public routes
+      return true;
+    },
   },
 });

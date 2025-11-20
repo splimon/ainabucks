@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { UserData } from "@/lib/admin/actions/users";
 import { updateUserRole, deleteUser } from "@/lib/admin/actions/users";
 import { toast } from "sonner";
-import { Trash2, ChevronDown, Check, Search } from "lucide-react";
+import { Trash2, ChevronDown, Check, Search, ArrowUpDown } from "lucide-react";
 
 interface UsersTableProps {
   users: UserData[];
@@ -114,7 +114,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
             className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1"
           >
             A-Z
-            <ChevronDown
+            <ArrowUpDown
               className={`w-4 h-4 transition-transform ${
                 sortOrder === "desc" ? "rotate-180" : ""
               }`}
@@ -284,7 +284,7 @@ const UsersTable = ({ users }: UsersTableProps) => {
                     <button
                       onClick={() => handleDeleteUser(user.id, user.fullName)}
                       disabled={isLoading === user.id}
-                      className={`text-red-600 hover:text-red-800 transition-colors ${
+                      className={`text-red-600 hover:text-red-800 hover:bg-red-200 transition-colors rounded p-1 ${
                         isLoading === user.id
                           ? "opacity-50 cursor-not-allowed"
                           : ""
