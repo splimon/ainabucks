@@ -23,9 +23,291 @@ interface ServerActionResponse<T = unknown> {
   error?: string;
 }
 
+interface CheckInData {
+  eventTitle: string;
+  checkInTime: Date | null;
+}
+
+interface CheckOutData {
+  eventTitle: string;
+  checkInTime: Date | null;
+  checkOutTime: Date | null;
+  hoursWorked: number;
+}
+
 interface AwardAinaBucksResponse {
   ainaBucks: number;
   hoursWorked: number;
+}
+
+/**
+ * Check in to an event using QR code token
+ */
+export async function checkInToEvent(
+  eventId: string,
+  token: string
+): Promise<ServerActionResponse<CheckInData>> {
+  try {
+    // Get current user session
+    const session = await auth();
+    if (!session || !session.user?.id) {
+      return {
+        success: false,
+        error: "You must be logged in to check in",
+      };
+    }
+
+    const userId = session.user.id;
+
+    // Verify the event exists and token is valid
+    const [event] = await db
+      .select({
+        id: eventsTable.id,
+        title: eventsTable.title,
+        checkInToken: eventsTable.checkInToken,
+        date: eventsTable.date,
+        startTime: eventsTable.startTime,
+      })
+      .from(eventsTable)
+      .where(eq(eventsTable.id, eventId))
+      .limit(1);
+
+    if (!event) {
+      return {
+        success: false,
+        error: "Event not found",
+      };
+    }
+
+    // Verify token matches
+    if (event.checkInToken !== token) {
+      return {
+        success: false,
+        error: "Invalid check-in token. Please scan the correct QR code.",
+      };
+    }
+
+    // Check if user is registered for this event
+    const [registration] = await db
+      .select()
+      .from(eventRegistrationsTable)
+      .where(
+        and(
+          eq(eventRegistrationsTable.userId, userId),
+          eq(eventRegistrationsTable.eventId, eventId),
+          eq(eventRegistrationsTable.status, "REGISTERED")
+        )
+      )
+      .limit(1);
+
+    if (!registration) {
+      return {
+        success: false,
+        error: "You are not registered for this event. Please register first.",
+      };
+    }
+
+    // Check if already checked in
+    const [existingAttendance] = await db
+      .select()
+      .from(eventAttendanceTable)
+      .where(
+        and(
+          eq(eventAttendanceTable.userId, userId),
+          eq(eventAttendanceTable.eventId, eventId)
+        )
+      )
+      .limit(1);
+
+    if (existingAttendance) {
+      return {
+        success: false,
+        error: "You have already checked in to this event.",
+      };
+    }
+
+    // Create attendance record with check-in time
+    const [attendance] = await db
+      .insert(eventAttendanceTable)
+      .values({
+        userId,
+        eventId,
+        registrationId: registration.id,
+        checkInTime: new Date(),
+        status: "CHECKED_IN",
+      })
+      .returning();
+
+    // Revalidate pages
+    revalidatePath(`/volunteer/${eventId}`);
+    revalidatePath("/profile");
+
+    return {
+      success: true,
+      data: {
+        eventTitle: event.title,
+        checkInTime: attendance.checkInTime,
+      },
+    };
+  } catch (error) {
+    console.error("Error checking in:", error);
+    return {
+      success: false,
+      error: "Failed to check in. Please try again.",
+    };
+  }
+}
+
+interface CheckOutData {
+  eventTitle: string;
+  checkInTime: Date | null;
+  checkOutTime: Date | null;
+  hoursWorked: number;
+}
+
+/**
+ * Check out of an event using QR code token
+ */
+export async function checkOutOfEvent(
+  eventId: string,
+  token: string
+): Promise<ServerActionResponse<CheckOutData>> {
+  try {
+    // Get current user session
+    const session = await auth();
+    if (!session || !session.user?.id) {
+      return {
+        success: false,
+        error: "You must be logged in to check out",
+      };
+    }
+
+    const userId = session.user.id;
+
+    // Verify the event exists and token is valid
+    const [event] = await db
+      .select({
+        id: eventsTable.id,
+        title: eventsTable.title,
+        checkOutToken: eventsTable.checkOutToken,
+      })
+      .from(eventsTable)
+      .where(eq(eventsTable.id, eventId))
+      .limit(1);
+
+    if (!event) {
+      return {
+        success: false,
+        error: "Event not found",
+      };
+    }
+
+    // Verify token matches
+    if (event.checkOutToken !== token) {
+      return {
+        success: false,
+        error: "Invalid check-out token. Please scan the correct QR code.",
+      };
+    }
+
+    // Get attendance record
+    const [attendance] = await db
+      .select()
+      .from(eventAttendanceTable)
+      .where(
+        and(
+          eq(eventAttendanceTable.userId, userId),
+          eq(eventAttendanceTable.eventId, eventId)
+        )
+      )
+      .limit(1);
+
+    if (!attendance) {
+      return {
+        success: false,
+        error: "You haven't checked in to this event yet.",
+      };
+    }
+
+    if (attendance.checkOutTime) {
+      return {
+        success: false,
+        error: "You have already checked out of this event.",
+      };
+    }
+
+    // Update attendance record with check-out time
+    const [updatedAttendance] = await db
+      .update(eventAttendanceTable)
+      .set({
+        checkOutTime: new Date(),
+        status: "CHECKED_OUT",
+        updatedAt: new Date(),
+      })
+      .where(eq(eventAttendanceTable.id, attendance.id))
+      .returning();
+
+    // Calculate hours worked (for display only - admin will finalize)
+    const checkInTime = new Date(attendance.checkInTime!).getTime();
+    const checkOutTime = new Date(updatedAttendance.checkOutTime!).getTime();
+    const hoursWorked = (checkOutTime - checkInTime) / (1000 * 60 * 60);
+
+    // Revalidate pages
+    revalidatePath(`/volunteer/${eventId}`);
+    revalidatePath("/profile");
+
+    return {
+      success: true,
+      data: {
+        eventTitle: event.title,
+        checkInTime: attendance.checkInTime,
+        checkOutTime: updatedAttendance.checkOutTime,
+        hoursWorked: Math.round(hoursWorked * 10) / 10, // Round to 1 decimal
+      },
+    };
+  } catch (error) {
+    console.error("Error checking out:", error);
+    return {
+      success: false,
+      error: "Failed to check out. Please try again.",
+    };
+  }
+}
+
+/**
+ * Get user's attendance record for an event
+ */
+export async function getUserEventAttendance(
+  eventId: string
+): Promise<ServerActionResponse> {
+  try {
+    const session = await auth();
+    if (!session || !session.user?.id) {
+      return { success: false, error: "Not authenticated" };
+    }
+
+    const [attendance] = await db
+      .select()
+      .from(eventAttendanceTable)
+      .where(
+        and(
+          eq(eventAttendanceTable.userId, session.user.id),
+          eq(eventAttendanceTable.eventId, eventId)
+        )
+      )
+      .limit(1);
+
+    return {
+      success: true,
+      data: attendance || null,
+    };
+  } catch (error) {
+    console.error("Error fetching attendance:", error);
+    return {
+      success: false,
+      error: "Failed to fetch attendance",
+    };
+  }
 }
 
 /**

@@ -85,7 +85,7 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
         {/* QR Codes Grid */}
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Check-In QR Code */}
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border-2 border-green-200">
+          <div className="bg-linear-to-br from-green-50 to-green-100 rounded-xl p-6 border-2 border-green-200">
             <div className="text-center mb-4">
               <h3 className="text-xl font-bold text-green-900 mb-1">
                 Check-In
@@ -126,7 +126,7 @@ export default function QRCodeModal({ event, isOpen, onClose }: QRCodeModalProps
           </div>
 
           {/* Check-Out QR Code */}
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border-2 border-orange-200">
+          <div className="bg-linear-to-br from-orange-50 to-orange-100 rounded-xl p-6 border-2 border-orange-200">
             <div className="text-center mb-4">
               <h3 className="text-xl font-bold text-orange-900 mb-1">
                 Check-Out
