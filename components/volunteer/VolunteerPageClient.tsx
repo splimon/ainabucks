@@ -76,8 +76,8 @@ export default function VolunteerPageClient({
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
                   selectedCategory === category
-                    ? "bg-linear-to-r from-green-600 to-emerald-600 text-white shadow-md transform scale-105"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-105"
+                    ? "bg-linear-to-r from-green-600 to-emerald-600 text-white shadow-md transform scale-102"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200 hover:scale-102"
                 }`}
               >
                 {category === "all"

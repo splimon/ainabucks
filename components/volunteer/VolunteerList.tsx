@@ -94,7 +94,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
           return (
             <div
               key={event.id}
-              className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 hover:-translate-y-1"
+              className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200"
             >
               {/* Event Image Section */}
               <div className="relative w-full h-56 bg-linear-to-br from-gray-100 to-gray-200 overflow-hidden">
@@ -102,7 +102,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                   <img
                     src={event.imageUrl}
                     alt={event.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center">
@@ -139,7 +139,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                 </div>
 
                 {/* Gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
               {/* Card Content */}

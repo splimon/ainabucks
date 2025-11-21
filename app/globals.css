@@ -183,7 +183,7 @@
 
   /* Background Gradient for Full Pages */
   .background-gradient {
-    @apply min-h-screen bg-linear-to-b from-green-50 to-green-100 py-6;
+    @apply min-h-screen bg-linear-to-b from-emerald-50 to-emerald-200 py-6;
   }
 }
 
