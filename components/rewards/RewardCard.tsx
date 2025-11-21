@@ -71,7 +71,7 @@ export const RewardCard = ({ reward, userBalance }: RewardCardProps) => {
   return (
     <div className="group bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-green-200 hover:-translate-y-1">
       {/* Reward Image */}
-      <div className="relative w-full h-56 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+      <div className="relative w-full h-56 bg-linear-to-br from-gray-100 to-gray-200 overflow-hidden">
         {reward.imageUrl ? (
           <img
             src={reward.imageUrl}
@@ -116,7 +116,7 @@ export const RewardCard = ({ reward, userBalance }: RewardCardProps) => {
           )}
 
         {/* Gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </div>
 
       {/* Reward Details */}
@@ -125,14 +125,14 @@ export const RewardCard = ({ reward, userBalance }: RewardCardProps) => {
           {reward.name}
         </h3>
 
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-[40px]">
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2 min-h-10">
           {reward.description}
         </p>
 
         {/* Cost and Inventory Section */}
         <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-100">
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            <span className="text-3xl font-extrabold bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
               {reward.ainaBucksCost}
             </span>
             <span className="text-sm text-gray-500 font-medium">ʻĀB</span>
@@ -177,7 +177,7 @@ export const RewardCard = ({ reward, userBalance }: RewardCardProps) => {
           className={`w-full h-11 font-semibold text-base transition-all duration-200 ${
             !canAfford || !isInStock
               ? "bg-gray-100 text-gray-500 border-2 border-gray-200 hover:bg-gray-100 cursor-not-allowed"
-              : "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-md hover:shadow-lg"
+              : "bg-linear-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-md hover:shadow-lg"
           }`}
         >
           {isRedeeming ? (

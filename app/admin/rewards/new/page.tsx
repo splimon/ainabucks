@@ -5,23 +5,27 @@
 
 import React from "react";
 import { RewardCreationForm } from "@/components/admin/rewards/RewardCreationForm";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 const NewRewardPage = () => {
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Create New Reward</h1>
-        <p className="text-gray-600 mt-1">
-          Add a new reward that users can redeem with their ʻĀina Bucks
-        </p>
-      </div>
+    <>
+      <Button
+        asChild
+        className="bg-white text-black border border-gray-200 hover:bg-gray-300"
+      >
+        <Link href="/admin/rewards">
+          <ArrowLeft className="w-4 h-4" />
+          Go Back
+        </Link>
+      </Button>
 
-      {/* Form */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <section className="w-full max-w">
         <RewardCreationForm />
-      </div>
-    </div>
+      </section>
+    </>
   );
 };
 

@@ -211,7 +211,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                 </div>
 
                 {/* Description Preview */}
-                <p className="text-sm text-gray-600 mb-5 line-clamp-2 min-h-[40px] leading-relaxed">
+                <p className="text-sm text-gray-600 mb-5 line-clamp-2 min-h-10 leading-relaxed">
                   {event.description}
                 </p>
 
@@ -220,7 +220,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
                   {/* Rewards Info */}
                   <div className="flex flex-col">
                     <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-extrabold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
+                      <span className="text-3xl font-extrabold bg-linear-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
                         {event.ainaBucks}
                       </span>
                       <span className="text-sm text-gray-500 font-medium">
@@ -279,7 +279,7 @@ const VolunteerList = ({ events }: VolunteerListProps) => {
         <div className="text-center py-16">
           <div className="bg-white rounded-2xl shadow-lg p-12 max-w-lg mx-auto border border-gray-100">
             {/* Icon */}
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mb-6">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-gray-100 to-gray-200 rounded-full mb-6">
               <svg
                 className="w-10 h-10 text-gray-400"
                 fill="none"

@@ -65,7 +65,8 @@ const AuthForm = <T extends FieldValues>({
           ? "You have successfully signed in."
           : "You have successfully signed up.",
       );
-      router.push("/");
+      router.push(isSignIn ? "/profile" : "/");
+      router.refresh();
     } else {
       toast.error(result.error ?? "An error occurred. Please try again.");
     }

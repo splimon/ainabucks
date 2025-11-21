@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn, getInitials } from "@/lib/utils";
 import {
-  Home,
   Users,
   Book,
   UserPlus,
@@ -27,7 +26,6 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
   const pathname = usePathname();
 
   const menuItems = [
-    { id: "home", label: "Home", icon: Home, route: "/admin" },
     {
       id: "events",
       label: "Manage Events",

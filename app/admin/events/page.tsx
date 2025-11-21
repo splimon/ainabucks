@@ -75,6 +75,6 @@ export default async function AdminEventsPage() {
 
 // Metadata for the page (for SEO and browser tabs)
 export const metadata = {
-  title: "All Events | ʻĀina Bucks Admin",
+  title: "Events | ʻĀina Bucks Admin",
   description: "Manage all volunteer events",
 };

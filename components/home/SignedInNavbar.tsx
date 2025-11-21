@@ -205,7 +205,7 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
             {/* Admin Panel - Only visible to admins */}
             {session.user.role === "ADMIN" && (
               <Link
-                href="/admin"
+                href="/admin/events"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="flex items-center gap-2 text-purple-700 hover:text-purple-800 font-medium transition-colors border border-purple-200 px-3 py-1.5 rounded-lg hover:bg-purple-50"
               >
@@ -216,13 +216,16 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
 
             {/* Sign Out */}
             <button
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                signOut({ callbackUrl: "/" });
-              }}
-              className="flex items-center gap-2 py-2 text-red-700 hover:text-red-900 font-medium transition-colors"
+              className="p-2 text-gray-400 hover:text-red-800 hover:cursor-pointer transition-colors"
+              aria-label="Logout"
             >
-              <LogOut className="w-5 h-5" />
+              <LogOut
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  signOut({ callbackUrl: "/" });
+                }}
+                className="w-5 h-5"
+              />
               Sign Out
             </button>
           </div>

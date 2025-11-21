@@ -65,7 +65,7 @@ const Rewards = async () => {
 
         {/* User Balance Card - Enhanced Design */}
         <div className="mb-10 sm:mb-12">
-          <div className="relative overflow-hidden bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 rounded-2xl shadow-2xl">
+          <div className="relative overflow-hidden bg-linear-to-r from-green-500 via-green-600 to-emerald-600 rounded-2xl shadow-2xl">
             {/* Decorative Background Pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full -mr-32 -mt-32"></div>

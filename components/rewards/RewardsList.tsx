@@ -23,7 +23,7 @@ export const RewardsList = ({ rewards, userBalance }: RewardsListProps) => {
       <div className="text-center py-16">
         <div className="bg-white rounded-2xl shadow-lg p-12 mx-auto border border-gray-100">
           {/* Gift Icon */}
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mb-6">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-gray-100 to-gray-200 rounded-full mb-6">
             <svg
               className="w-10 h-10 text-gray-400"
               fill="none"
