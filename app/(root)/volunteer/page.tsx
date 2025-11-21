@@ -49,12 +49,12 @@ const Volunteer = async () => {
     <div className="background-gradient">
       {/* Header Section */}
       <div className="mb-8 max-w-7xl mx-auto px-6">
+        {/* Header Section */}
         <h1 className="text-4xl font-bold leading-tight mb-3 mt-3">
-          Volunteer Opportunities
+          Volunteer Opportunities 🌱
         </h1>
         <p className="text-lg text-gray-600 leading-relaxed mb-8">
-          Browse through upcoming volunteer opportunities. Attend these
-          volunteer events to earn ʻĀina Bucks.
+          Volunteer your time and make a difference in your community!
         </p>
       </div>
 
