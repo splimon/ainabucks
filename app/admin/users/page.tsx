@@ -42,6 +42,6 @@ export default UsersPage;
 
 // Metadata for the page (for SEO and browser tabs)
 export const metadata = {
-  title: "All Users | ʻĀina Bucks Admin",
+  title: "Users | ʻĀina Bucks Admin",
   description: "Manage all registered users",
 };

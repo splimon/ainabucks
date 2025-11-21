@@ -12,6 +12,7 @@ import {
   LogOut,
   Sprout,
   ArrowLeft,
+  Trophy,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Session } from "next-auth";
@@ -36,7 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
     {
       id: "rewards",
       label: "Manage Rewards",
-      icon: Book,
+      icon: Trophy,
       route: "/admin/rewards",
     },
     { id: "users", label: "All Users", icon: Users, route: "/admin/users" },

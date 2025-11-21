@@ -61,9 +61,8 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
                   <NavigationMenuLink asChild>
                     <Link
                       href="/admin"
-                      className="flex items-center gap-2 text-purple-700 hover:text-purple-800 font-medium transition-colors border border-purple-200 px-3 py-1.5 rounded-lg hover:bg-purple-50"
+                      className="flex items-center gap-2 text-purple-700 hover:text-purple-800 font-medium transition-colors border border-purple-200 rounded-lg hover:bg-purple-50"
                     >
-                      <Shield className="w-4 h-4" />
                       Admin Panel
                     </Link>
                   </NavigationMenuLink>

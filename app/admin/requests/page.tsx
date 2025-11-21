@@ -52,6 +52,6 @@ export default RequestsPage;
 
 // Metadata for the page (for SEO and browser tabs)
 export const metadata = {
-  title: "Registration Requests | ʻĀina Bucks Admin",
+  title: "Requests | ʻĀina Bucks Admin",
   description: "Manage all pending account registration requests",
 };

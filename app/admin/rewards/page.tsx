@@ -9,6 +9,7 @@ import { RewardsTable } from "@/components/admin/rewards/RewardsTable";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Reward } from "@/database/schema";
+import { Plus } from "lucide-react";
 
 const RewardsPage = async () => {
   // Fetch all rewards from the database
@@ -29,7 +30,7 @@ const RewardsPage = async () => {
   const rewards = (result.data as Reward[]) || [];
 
   return (
-    <div className="p-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="mb-6 flex justify-between items-center">
         <div>
@@ -39,7 +40,10 @@ const RewardsPage = async () => {
           </p>
         </div>
         <Link href="/admin/rewards/new">
-          <Button size="lg">+ Create Reward</Button>
+          <Button size="lg">
+             <Plus className="w-5 h-5" />
+            Create Reward
+            </Button>
         </Link>
       </div>
 
@@ -72,3 +76,9 @@ const RewardsPage = async () => {
 };
 
 export default RewardsPage;
+
+// Metadata for the page (for SEO and browser tabs)
+export const metadata = {
+  title: "Rewards | ʻĀina Bucks Admin",
+  description: "Manage all rewards",
+};

@@ -60,7 +60,7 @@ export default async function AdminEventsPage() {
 
         {/* Create button */}
         <Link href="/admin/events/new">
-          <Button className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 flex items-center gap-2">
+          <Button size="lg">
             <Plus className="w-5 h-5" />
             Create New Event
           </Button>
