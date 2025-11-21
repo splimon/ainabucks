@@ -90,3 +90,37 @@ export const EventCreationSchema = z.object({
 
 // Export the type for use in components
 export type EventCreationInput = z.infer<typeof EventCreationSchema>;
+
+/* Reward Creation Form Validation Schema */
+export const RewardCreationSchema = z.object({
+  // Reward Details
+  name: z
+    .string()
+    .trim()
+    .min(1, "Reward name is required")
+    .max(255, "Name is too long"),
+  description: z
+    .string()
+    .trim()
+    .min(10, "Description must be at least 10 characters")
+    .max(1000, "Description is too long"),
+
+  // Image
+  imageUrl: z.url("Must be a valid URL").optional().or(z.literal("")),
+
+  // Cost
+  ainaBucksCost: z
+    .number()
+    .min(1, "Cost must be at least 1 ʻĀina Buck")
+    .max(10000, "Cost is too high"),
+
+  // Inventory
+  quantityAvailable: z
+    .number()
+    .int("Quantity must be a whole number")
+    .min(-1, "Use -1 for unlimited quantity")
+    .max(10000, "Quantity is too high"),
+});
+
+// Export the type for use in components
+export type RewardCreationInput = z.infer<typeof RewardCreationSchema>;

@@ -49,9 +49,21 @@ export const TRANSACTION_TYPE_ENUM = pgEnum("transaction_type", [
   "ADJUSTED", // Manual adjustment by admin
 ]);
 
+export const REWARD_STATUS_ENUM = pgEnum("reward_status", [
+  "ACTIVE", // Reward is available for redemption
+  "INACTIVE", // Reward is temporarily unavailable
+  "ARCHIVED", // Reward has been archived/deleted
+]);
+
+export const REDEMPTION_STATUS_ENUM = pgEnum("redemption_status", [
+  "PENDING", // Redemption requested, awaiting fulfillment
+  "FULFILLED", // Reward has been given to user
+  "CANCELLED", // Redemption was cancelled
+]);
+
 /* Users table - stores user information */
 export const usersTable = pgTable("users", {
-  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
   fullName: varchar("full_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: text("password_hash").notNull(),
@@ -79,7 +91,7 @@ export const usersTable = pgTable("users", {
 /* Events table - stores all volunteer event data */
 export const eventsTable = pgTable("events", {
   // Primary Key
-  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
 
   // Basic Information
   title: varchar("title", { length: 255 }).notNull(),
@@ -131,7 +143,7 @@ export const eventsTable = pgTable("events", {
 /* Event Registrations table - links users to events they registered for */
 export const eventRegistrationsTable = pgTable("event_registrations", {
   // Primary Key
-  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
 
   // Foreign Keys
   userId: uuid("user_id")
@@ -157,7 +169,7 @@ export const eventRegistrationsTable = pgTable("event_registrations", {
 
 // Track actual attendance with check-in/out times
 export const eventAttendanceTable = pgTable("event_attendance", {
-  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
 
   // Foreign Keys
   userId: uuid("user_id")
@@ -194,7 +206,7 @@ export const eventAttendanceTable = pgTable("event_attendance", {
 
 // Track all ʻĀina Bucks transactions
 export const ainaBucksTransactionsTable = pgTable("aina_bucks_transactions", {
-  id: uuid("id").notNull().primaryKey().defaultRandom().unique(),
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
 
   // Foreign Keys
   userId: uuid("user_id")
@@ -229,6 +241,79 @@ export const ainaBucksTransactionsTable = pgTable("aina_bucks_transactions", {
     .defaultNow(),
 });
 
+/* Rewards table - stores reward items that users can redeem with ʻĀina Bucks */
+export const rewardsTable = pgTable("rewards", {
+  // Primary Key
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+
+  // Reward Details
+  name: varchar("name", { length: 255 }).notNull(), // e.g., "Reusable Water Bottle"
+  description: text("description").notNull(), // Description of the reward
+  imageUrl: text("image_url"), // Optional image of the reward
+  ainaBucksCost: integer("aina_bucks_cost").notNull(), // Cost in ʻĀina Bucks
+
+  // Inventory
+  quantityAvailable: integer("quantity_available").notNull().default(0), // -1 for unlimited
+  quantityRedeemed: integer("quantity_redeemed").notNull().default(0),
+
+  // Status
+  status: REWARD_STATUS_ENUM("status").notNull().default("ACTIVE"),
+
+  // Admin who created the reward
+  createdBy: uuid("created_by")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "set null" }),
+
+  // Timestamps
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+/* Reward Redemptions table - tracks when users redeem rewards */
+export const rewardRedemptionsTable = pgTable("reward_redemptions", {
+  // Primary Key
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+
+  // Foreign Keys
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => usersTable.id, { onDelete: "cascade" }),
+  rewardId: uuid("reward_id")
+    .notNull()
+    .references(() => rewardsTable.id, { onDelete: "cascade" }),
+  transactionId: uuid("transaction_id")
+    .notNull()
+    .references(() => ainaBucksTransactionsTable.id, { onDelete: "cascade" }),
+
+  // Redemption Details
+  ainaBucksSpent: integer("aina_bucks_spent").notNull(),
+  quantity: integer("quantity").notNull().default(1),
+
+  // Status
+  status: REDEMPTION_STATUS_ENUM("status").notNull().default("PENDING"),
+
+  // Admin who fulfilled the redemption
+  fulfilledBy: uuid("fulfilled_by").references(() => usersTable.id, {
+    onDelete: "set null",
+  }),
+  fulfilledAt: timestamp("fulfilled_at", { withTimezone: true }),
+
+  // Notes
+  adminNotes: text("admin_notes"),
+
+  // Timestamps
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
 /* Type Exports */
 export type User = typeof usersTable.$inferSelect; // For reading user data
 export type NewUser = typeof usersTable.$inferInsert; // For inserting new users
@@ -246,6 +331,12 @@ export type AinaBucksTransaction =
   typeof ainaBucksTransactionsTable.$inferSelect; // For reading transaction data
 export type NewAinaBucksTransaction =
   typeof ainaBucksTransactionsTable.$inferInsert; // For inserting new transactions
+
+export type Reward = typeof rewardsTable.$inferSelect; // For reading reward data
+export type NewReward = typeof rewardsTable.$inferInsert; // For inserting new rewards
+
+export type RewardRedemption = typeof rewardRedemptionsTable.$inferSelect; // For reading redemption data
+export type NewRewardRedemption = typeof rewardRedemptionsTable.$inferInsert; // For inserting new redemptions
 
 /**
  * Extended Event type that includes the current registration count

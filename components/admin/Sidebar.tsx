@@ -27,8 +27,19 @@ const Sidebar: React.FC<SidebarProps> = ({ className, session }) => {
 
   const menuItems = [
     { id: "home", label: "Home", icon: Home, route: "/admin" },
+    {
+      id: "events",
+      label: "Manage Events",
+      icon: Book,
+      route: "/admin/events",
+    },
+    {
+      id: "rewards",
+      label: "Manage Rewards",
+      icon: Book,
+      route: "/admin/rewards",
+    },
     { id: "users", label: "All Users", icon: Users, route: "/admin/users" },
-    { id: "books", label: "All Events", icon: Book, route: "/admin/events" },
     {
       id: "account",
       label: "Account Requests",
