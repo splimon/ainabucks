@@ -41,9 +41,9 @@ const RewardsPage = async () => {
         </div>
         <Link href="/admin/rewards/new">
           <Button size="lg">
-             <Plus className="w-5 h-5" />
+            <Plus className="w-5 h-5" />
             Create Reward
-            </Button>
+          </Button>
         </Link>
       </div>
 
