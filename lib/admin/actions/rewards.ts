@@ -342,17 +342,13 @@ export const deleteReward = async (
       };
     }
 
-    // Soft delete by setting status to ARCHIVED
-    const [archivedReward] = await db
-      .update(rewardsTable)
-      .set({
-        status: "ARCHIVED",
-        updatedAt: new Date(),
-      })
+    // Permanently delete the reward from the database
+    const [deletedReward] = await db
+      .delete(rewardsTable)
       .where(eq(rewardsTable.id, rewardId))
       .returning();
 
-    if (!archivedReward) {
+    if (!deletedReward) {
       return {
         success: false,
         error: "Reward not found",
@@ -364,7 +360,7 @@ export const deleteReward = async (
 
     return {
       success: true,
-      data: { message: "Reward archived successfully" },
+      data: { message: "Reward deleted successfully" },
     };
   } catch (error) {
     console.error("Error deleting reward:", error);

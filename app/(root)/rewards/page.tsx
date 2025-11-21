@@ -160,7 +160,7 @@ const Rewards = async () => {
           <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Available Rewards
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 mb-6">
             {rewards.length} {rewards.length === 1 ? "reward" : "rewards"}{" "}
             available to redeem
           </p>

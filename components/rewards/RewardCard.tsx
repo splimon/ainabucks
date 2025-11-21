@@ -132,7 +132,7 @@ export const RewardCard = ({ reward, userBalance }: RewardCardProps) => {
         {/* Cost and Inventory Section */}
         <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-100">
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold bg-linear-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+            <span className="text-3xl font-extrabold bg-linear-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
               {reward.ainaBucksCost}
             </span>
             <span className="text-sm text-gray-500 font-medium">ʻĀB</span>

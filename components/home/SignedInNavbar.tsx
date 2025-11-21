@@ -60,7 +60,7 @@ const SignedInNavbar = ({ session }: { session: Session }) => {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link
-                      href="/admin"
+                      href="/admin/events"
                       className="flex items-center gap-2 text-purple-700 hover:text-purple-800 font-medium transition-colors border border-purple-200 rounded-lg hover:bg-purple-50"
                     >
                       Admin Panel

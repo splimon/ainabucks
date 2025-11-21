@@ -8,9 +8,10 @@
 import React, { useState } from "react";
 import { Reward } from "@/database/schema";
 import { Button } from "@/components/ui/button";
-import { deleteReward, updateReward } from "@/lib/admin/actions/rewards";
+import { deleteReward } from "@/lib/admin/actions/rewards";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 
 interface RewardsTableProps {
   rewards: Reward[];
@@ -19,13 +20,12 @@ interface RewardsTableProps {
 export const RewardsTable = ({ rewards }: RewardsTableProps) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [togglingId, setTogglingId] = useState<string | null>(null);
 
-  // Handle delete reward (soft delete - archives it)
+  // Handle delete reward (permanently delete from database)
   const handleDelete = async (rewardId: string, rewardName: string) => {
     if (
       !confirm(
-        `Are you sure you want to archive "${rewardName}"? This action can be undone by changing its status.`,
+        `Are you sure you want to permanently delete "${rewardName}"? This action cannot be undone.`,
       )
     ) {
       return;
@@ -37,43 +37,16 @@ export const RewardsTable = ({ rewards }: RewardsTableProps) => {
       const result = await deleteReward(rewardId);
 
       if (result.success) {
-        toast.success("Reward archived successfully");
+        toast.success("Reward deleted successfully");
         router.refresh(); // Refresh the page to show updated data
       } else {
-        toast.error(result.error || "Failed to archive reward");
+        toast.error(result.error || "Failed to delete reward");
       }
     } catch (error) {
-      console.error("Error archiving reward:", error);
+      console.error("Error deleting reward:", error);
       toast.error("An unexpected error occurred");
     } finally {
       setDeletingId(null);
-    }
-  };
-
-  // Handle toggle active/inactive status
-  const handleToggleStatus = async (reward: Reward) => {
-    const newStatus = reward.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
-    setTogglingId(reward.id);
-
-    try {
-      const result = await updateReward({
-        id: reward.id,
-        status: newStatus,
-      });
-
-      if (result.success) {
-        toast.success(
-          `Reward ${newStatus === "ACTIVE" ? "activated" : "deactivated"}`,
-        );
-        router.refresh();
-      } else {
-        toast.error(result.error || "Failed to update reward status");
-      }
-    } catch (error) {
-      console.error("Error updating reward status:", error);
-      toast.error("An unexpected error occurred");
-    } finally {
-      setTogglingId(null);
     }
   };
 
@@ -226,22 +199,6 @@ export const RewardsTable = ({ rewards }: RewardsTableProps) => {
                   {/* Actions */}
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex justify-end gap-2">
-                      {/* Toggle Active/Inactive */}
-                      {reward.status !== "ARCHIVED" && (
-                        <Button
-                          onClick={() => handleToggleStatus(reward)}
-                          disabled={togglingId === reward.id}
-                          variant="outline"
-                          size="sm"
-                        >
-                          {togglingId === reward.id
-                            ? "..."
-                            : reward.status === "ACTIVE"
-                              ? "Deactivate"
-                              : "Activate"}
-                        </Button>
-                      )}
-
                       {/* Edit Button */}
                       <Button
                         onClick={() => handleEdit(reward.id)}
@@ -251,17 +208,19 @@ export const RewardsTable = ({ rewards }: RewardsTableProps) => {
                         Edit
                       </Button>
 
-                      {/* Delete/Archive Button */}
-                      {reward.status !== "ARCHIVED" && (
-                        <Button
-                          onClick={() => handleDelete(reward.id, reward.name)}
-                          disabled={deletingId === reward.id}
-                          variant="destructive"
-                          size="sm"
-                        >
-                          {deletingId === reward.id ? "..." : "Archive"}
-                        </Button>
-                      )}
+                      {/* Delete Button */}
+                      <button
+                            onClick={() => handleDelete(reward.id, reward.name)}
+                            disabled={deletingId === reward.id}
+                            className={`text-red-600 hover:text-red-800 hover:bg-red-200 transition-colors rounded p-1 ${
+                              deletingId === reward.id
+                                ? "opacity-50 cursor-not-allowed"
+                                : ""
+                            }`}
+                            title="Delete Reward"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
                     </div>
                   </td>
                 </tr>
