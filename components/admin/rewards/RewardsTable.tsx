@@ -210,17 +210,17 @@ export const RewardsTable = ({ rewards }: RewardsTableProps) => {
 
                       {/* Delete Button */}
                       <button
-                            onClick={() => handleDelete(reward.id, reward.name)}
-                            disabled={deletingId === reward.id}
-                            className={`text-red-600 hover:text-red-800 hover:bg-red-200 transition-colors rounded p-1 ${
-                              deletingId === reward.id
-                                ? "opacity-50 cursor-not-allowed"
-                                : ""
-                            }`}
-                            title="Delete Reward"
-                          >
-                            <Trash2 className="w-5 h-5" />
-                          </button>
+                        onClick={() => handleDelete(reward.id, reward.name)}
+                        disabled={deletingId === reward.id}
+                        className={`text-red-600 hover:text-red-800 hover:bg-red-200 transition-colors rounded p-1 ${
+                          deletingId === reward.id
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                        title="Delete Reward"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
                     </div>
                   </td>
                 </tr>

@@ -25,6 +25,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "'Āina Bucks",
   description: "Volunteer. Earn. Redeem.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
 };
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
